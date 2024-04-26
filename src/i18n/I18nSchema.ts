@@ -1,0 +1,188 @@
+export type I18nCode = keyof I18nSchema;
+
+export interface I18nSchema {
+  readonly UZBEK_LANGUAGE: string;
+  readonly ENGLISH_LANGUAGE: string;
+  readonly RUSSIAN_LANGUAGE: string;
+  readonly SHORT_EN_LANGUAGE: string;
+  readonly SHORT_RU_LANGUAGE: string;
+  readonly SHORT_UZ_LANGUAGE: string;
+
+  // Side bar menu
+
+  readonly SIDE_MENU_OBJECTS_TITLE: string;
+  readonly SIDE_MENU_REGIONS_TITLE: string;
+  readonly SIDE_MENU_USERS_TITLE: string;
+  readonly SIDE_MENU_PROJECTS_TITLE: string;
+  readonly SIDE_MENU_SETTINGS_TITLE: string;
+  readonly SIDE_MENU_PRODUCT_TYPES_TITLE: string;
+  readonly SIDE_MENU_MAP_TITLE: string;
+  readonly SIDE_MENU_OBJECT_CLASSIFICATION_TYPE_TITLE: string;
+
+  // Buttons
+
+  readonly ADD_BUTTON_TITLE: string;
+  readonly BACK_BUTTON_TITLE: string;
+  readonly SAVE_BUTTON_TITLE: string;
+  readonly SEND_BUTTON_TITLE: string;
+
+  readonly LOGOUT_BUTTON_TITLE: string;
+  readonly YES_BUTTON_TITLE: string;
+  readonly NO_BUTTON_TITLE: string;
+  readonly ADD_QUESTION_BUTTON_TITLE: string;
+  readonly REMOVE_QUESTION_BUTTON_TITLE: string;
+  readonly ADD_ANSWER_BUTTON_TITLE: string;
+  readonly UPLOAD_EXCEL_BUTTON_TITLE: string;
+  readonly SHOW_BUTTON_TITLE: string;
+  readonly WRITE_BUTTON_TITLE: string;
+
+  // Inputs
+
+  readonly SEARCH_INPUT_PLACEHOLDER_TITLE: string;
+
+  // Select Pricker
+
+  readonly SELECT_PICKER_PLACEHOLDER_TITLE: string;
+  readonly SELECT_PICKER_NO_OPTIONS_MESSAGE: string;
+
+  readonly STATUS_SELECT_PICKER_ACTIVE_TITLE: string;
+  readonly STATUS_SELECT_PICKER_NON_ACTIVE_TITLE: string;
+  readonly STATUS_SELECT_PICKER_DELETED_TITLE: string;
+
+  readonly ROLE_SELECT_PICKER_ADMIN_TITLE: string;
+  readonly ROLE_SELECT_PICKER_DB_TITLE: string;
+  readonly ROLE_SELECT_PICKER_TEACHER_TITLE: string;
+  readonly ROLE_SELECT_PICKER_ASSISTANT_TITLE: string;
+  readonly ROLE_SELECT_PICKER_STUDENT_TITLE: string;
+
+  // Users Container
+
+  readonly USERS_TABLE_USER_ID_COLUMN_TITLE: string;
+  readonly USERS_TABLE_USER_DATE_COLUMN_TITLE: string;
+  readonly USERS_TABLE_USER_NAME_COLUMN_TITLE: string;
+  readonly USERS_TABLE_USER_FULL_NAME_COLUMN_TITLE: string;
+  readonly USERS_TABLE_USER_EMAIL_COLUMN_TITLE: string;
+  readonly USERS_TABLE_USER_ROLE_COLUMN_TITLE: string;
+  readonly USERS_TABLE_USER_STATUS_COLUMN_TITLE: string;
+
+  readonly USERS_FORM_CRATE_USER_TITLE: string;
+  readonly USERS_FORM_USER_EMAIL_FIELD_TITLE: string;
+  readonly USERS_FORM_USER_FIRST_NAME_FIELD_TITLE: string;
+  readonly USERS_FORM_USER_LAST_NAME_FIELD_TITLE: string;
+  readonly USERS_FORM_USER_NAME_FIELD_TITLE: string;
+  readonly USERS_FORM_USER_ROLE_FIELD_TITLE: string;
+  readonly USERS_FORM_USER_PASSWORD_FIELD_TITLE: string;
+  // readonly USERS_TABLE_USER_COLUMN_TITLE: string;
+
+  readonly EMPTY_TITLE: string;
+
+  // Settings Container
+
+  readonly SETTINGS_FORM_USER_INFO_TITLE: string;
+  readonly SETTINGS_FORM_USER_LANGUAGE_TITLE: string;
+  readonly SETTINGS_FORM_RESET_PASSWORD_TITLE: string;
+  readonly SETTINGS_FORM_USER_EMAIL_FIELD_TITLE: string;
+  readonly SETTINGS_FORM_USER_NAME_FIELD_TITLE: string;
+  readonly SETTINGS_FORM_USER_PASSWORD_FIELD_TITLE: string;
+  readonly SETTINGS_FORM_USER_OLD_PASSWORD_FIELD_TITLE: string;
+  readonly SETTINGS_FORM_USER_NEW_PASSWORD_FIELD_TITLE: string;
+  readonly SETTINGS_FORM_USER_CONFIRM_PASSWORD_FIELD_TITLE: string;
+
+  readonly SETTINGS_FORM_LANGUAGE_QUESTION_TITLE: string;
+
+  readonly SETTINGS_TABLE_USER_ROLES_TITLE: string;
+  readonly SETTINGS_TABLE_CREATE_LESSON_COLUMN_TITLE: string;
+  readonly SETTINGS_TABLE_CREATE_USER_COLUMN_TITLE: string;
+  readonly SETTINGS_TABLE_CREATE_TEACHER_COLUMN_TITLE: string;
+  readonly SETTINGS_TABLE_CREATE_ADMIN_COLUMN_TITLE: string;
+
+  // Auth Container
+
+  readonly AUTH_ADMIN_TITLE: string;
+
+  readonly AUTH_REQUIRED_USERNAME_TITLE: string;
+  readonly AUTH_REQUIRED_PASSWORD_TITLE: string;
+  readonly AUTH_FORM_USERNAME_FIELD_TITLE: string;
+  readonly AUTH_FORM_PASSWORD_FIELD_TITLE: string;
+
+  // Some title for global site
+
+  readonly EMPTY_TABLE_TITLE: string;
+
+  // OBJECT title
+
+  readonly OBJECT_FORM_REGION_NAME_FIELD_TITLE: string;
+  readonly OBJECT_FORM_DISTRICT_NAME_FIELD_TITLE: string;
+  readonly OBJECT_FORM_PROEJCT_NAME_FIELD_TITLE: string;
+  readonly OBJECT_FORM_NUMBER_OF_ORDER_FIELD_TITLE: string;
+  readonly OBJECT_FORM_OBJECT_CLASS_TYPE_FIELD_TITLE: string;
+  readonly OBJECT_FORM_OBJECT_CLASS_FIELD_TITLE: string;
+  readonly OBJECT_FORM_HOME_FIELD_TITLE: string;
+  readonly OBJECT_FORM_NAME_FIELD_TITLE: string;
+  readonly OBJECT_FORM_LONGITUDE_FIELD_TITLE: string;
+  readonly OBJECT_FORM_LATITUDE_FIELD_TITLE: string;
+  readonly OBJECT_FORM_STREET_FIELD_TITLE: string;
+  readonly OBJECT_FORM_INFO_FIELD_TITLE: string;
+
+  readonly OBJECT_TABLE_ID_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_PRODUCTS_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_PRODUCTS_VIEW_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_CREATED_DATE_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_UPDATED_DATE_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_NAME_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_HOME_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_LONGITUDE_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_LATITUDE_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_STREET_COLUMN_TITLE: string;
+  readonly OBJECT_TABLE_INFO_COLUMN_TITLE: string;
+
+  // Region title
+
+  readonly REGION_TABLE_ID_COLUMN_TITLE: string;
+  readonly REGION_TABLE_CREATED_DATE_COLUMN_TITLE: string;
+  readonly REGION_TABLE_UPDATED_DATE_COLUMN_TITLE: string;
+  readonly REGION_TABLE_CREATED_BY_COLUMN_TITLE: string;
+  readonly REGION_TABLE_UPDATED_BY_COLUMN_TITLE: string;
+  readonly REGION_TABLE_REGION_NAME_COLUMN_TITLE: string;
+  readonly REGION_TABLE_REGION_INFO_COLUMN_TITLE: string;
+  readonly REGION_TABLE_REGION_DISTRICTS_COLUMN_TITLE: string;
+
+  readonly REGION_TABLE_DELETE_REGIONS_MODAL_QUESTION: string;
+
+  readonly REGION_TABLE_REGION_DISTRICTS_TITLE: string;
+
+  readonly REGION_FORM_CREATE_REGION_TITLE: string;
+  readonly REGION_FORM_REGION_NAME_FIELD_TITLE: string;
+  readonly REGION_FORM_REGION_INFO_FIELD_TITLE: string;
+
+  // Distrcit title
+
+  readonly DISTRICT_TABLE_ID_COLUMN_TITLE: string;
+  readonly DISTRICT_TABLE_CREATED_DATE_COLUMN_TITLE: string;
+  readonly DISTRICT_TABLE_UPDATED_DATE_COLUMN_TITLE: string;
+  readonly DISTRICT_TABLE_CREATED_BY_COLUMN_TITLE: string;
+  readonly DISTRICT_TABLE_UPDATED_BY_COLUMN_TITLE: string;
+  readonly DISTRICT_TABLE_DISTRICT_NAME_COLUMN_TITLE: string;
+  readonly DISTRICT_TABLE_DISTRICT_INFO_COLUMN_TITLE: string;
+  readonly DISTRICT_TABLE_DISTRICT_ACTIONS_COLUMN_TITLE: string;
+
+  readonly DISTRICT_FORM_CREATE_DISTRICT_TITLE: string;
+  readonly DISTRICT_FORM_DISTRICT_NAME_FIELD_TITLE: string;
+  readonly DISTRICT_FORM_DISTRICT_INFO_FIELD_TITLE: string;
+
+  // Project title
+
+  readonly PROJECT_TABLE_ID_COLUMN_TITLE: string;
+  readonly PROJECT_TABLE_VIEW_NUMBER_OF_ORDER_COLUMN_TITLE: string;
+  readonly PROJECT_TABLE_CREATED_DATE_COLUMN_TITLE: string;
+  readonly PROJECT_TABLE_UPDATED_DATE_COLUMN_TITLE: string;
+  readonly PROJECT_TABLE_CREATED_BY_COLUMN_TITLE: string;
+  readonly PROJECT_TABLE_UPDATED_BY_COLUMN_TITLE: string;
+  readonly PROJECT_TABLE_PROJECT_NAME_COLUMN_TITLE: string;
+  readonly PROJECT_TABLE_PROJECT_INFO_COLUMN_TITLE: string;
+  readonly PROJECT_TABLE_PROJECT_ACTIONS_COLUMN_TITLE: string;
+
+  readonly PROJECT_FORM_CREATE_PROJECT_TITLE: string;
+  readonly PROJECT_FORM_PROJECT_NAME_COLUMN_TITLE: string;
+  readonly PROJECT_FORM_PROJECT_INFO_COLUMN_TITLE: string;
+}

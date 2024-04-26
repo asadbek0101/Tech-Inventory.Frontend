@@ -1,0 +1,73 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { TerminalServerInitialProps } from "../../api/terminal-server/TerminalServerDto";
+import { ObjectFilter } from "../../filters/ObjectFilter";
+import { useTerminalServerApiContext } from "../../api/terminal-server/TerminalServerApiContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { showError } from "../../utils/NotificationUtils";
+
+import TerminalServersForm from "./TerminalServersForm";
+import { useModelsApiContext } from "../../api/models/ModelsApiContext";
+import { ModelTypes } from "../../api/models/ModelsDto";
+import { SelectPickerOptionsProps } from "../../api/AppDto";
+
+interface Props {
+  readonly filter: ObjectFilter;
+}
+
+export default function TerminalServersFormWrapper({ filter }: Props) {
+  const [initialValues, setInitalValues] = useState<TerminalServerInitialProps>({
+    obyektId: 0,
+    modelId: 0,
+    info: "",
+  });
+
+  const [models, setModels] = useState<SelectPickerOptionsProps[]>([]);
+
+  const { TerminalServerApi } = useTerminalServerApiContext();
+  const { ModelsApi } = useModelsApiContext();
+
+  const navigate = useNavigate();
+
+  const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+
+  useEffect(() => {
+    ModelsApi.getModelsList({ type: ModelTypes.TerminalServer })
+      .then((r) => {
+        const _models = r?.data.map((sw: any) => {
+          return {
+            label: sw.name,
+            value: sw.id,
+          };
+        });
+        setModels(_models);
+      })
+      .catch(showError);
+  }, [ModelsApi]);
+
+  const onSubmit = useCallback(
+    (value: any) => {
+      const json = {
+        ...value,
+        obyektId: objectId,
+        modelId: value.modelId.value,
+      };
+      TerminalServerApi.createTerminalServer(json)
+        .then((r) => {
+          toast.success(r?.data?.message);
+          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+        })
+        .catch(showError);
+    },
+    [TerminalServerApi, objectId],
+  );
+
+  return (
+    <TerminalServersForm
+      initialValues={initialValues}
+      setInitialValues={setInitalValues}
+      onSubmit={onSubmit}
+      models={models}
+    />
+  );
+}

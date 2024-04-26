@@ -1,0 +1,26 @@
+.upload-container {
+  width: 140px;
+  .upload-label {
+    width: 100%;
+    background-color: gold;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.upload-file-container {
+  border: 1px solid rgb(168, 166, 166);
+  padding: 10px;
+  border-radius: 2px;
+  text-align: center;
+  background-color: rgb(221, 220, 220);
+  cursor: pointer;
+
+  .upload-label {
+    width: 100%;
+    cursor: pointer;
+  }
+}
