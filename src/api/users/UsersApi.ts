@@ -14,10 +14,8 @@ export class UsersApi extends BaseApi {
     });
   }
 
-  public getAllRoles() {
-    return this.get("Role/GetAllRole/:userId", {
-      params: { userId: this.userId },
-    });
+  public getRolesList() {
+    return this.get("Roles/GetList");
   }
 
   public createUser(json: CreateUserProps) {

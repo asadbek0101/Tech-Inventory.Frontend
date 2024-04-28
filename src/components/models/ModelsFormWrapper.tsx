@@ -33,7 +33,16 @@ export default function ModelsFormWrapper({ filter }: Props) {
   useEffect(() => {
     if (modelId) {
       ModelsApi.getOneModel({ id: Number(modelId) })
-        .then((r) => setInitialValues(r?.data))
+        .then((r) => {
+          const json = {
+            ...r?.data,
+            type: {
+              label: r?.data?.type,
+              value: r?.data?.typeId,
+            },
+          };
+          setInitialValues(json);
+        })
         .catch(showError);
     }
   }, [ModelsApi, modelId]);

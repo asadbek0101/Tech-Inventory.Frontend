@@ -32,14 +32,24 @@ export default function UsersTable({ data, loading, deleteUser, editStatus, edit
       width: 240,
     },
     {
-      header: translate("Phone Number"),
+      header: translate("Viloyat"),
+      access: "region",
+      width: 240,
+    },
+    {
+      header: translate("Tuman"),
+      access: "district",
+      width: 240,
+    },
+    {
+      header: translate("Telefon"),
       access: "phoneNumber",
       width: 240,
     },
     {
       header: "...",
       access: "details",
-      width: 200,
+      width: 100,
       searchHidden: true,
       ceil: (row: any) => {
         return (

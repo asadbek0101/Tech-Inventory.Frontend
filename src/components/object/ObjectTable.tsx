@@ -99,6 +99,11 @@ export default function ObjectTable({
       width: 100,
     },
     {
+      header: translate("Tomonidan yaratilgan"),
+      access: "owner",
+      width: 200,
+    },
+    {
       header: translate("Actions"),
       access: "actions",
       width: 140,

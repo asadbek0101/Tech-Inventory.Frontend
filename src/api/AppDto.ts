@@ -1,3 +1,9 @@
+export enum UserRoles {
+  SuperAdmin = "SuperAdmin",
+  Admin = "Admin",
+  Staff = "Staff",
+}
+
 export enum TabPageType {
   Table = "table",
   Form = "form",

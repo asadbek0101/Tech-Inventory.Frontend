@@ -73,6 +73,10 @@ export class BaseApi {
       headers.set("Authorization", `Bearer ${this.token}`);
     }
 
+    if (this.userId) {
+      headers.set("userId", this.userId);
+    }
+
     return {
       timeout: 120000,
       prefixUrl: this.host,

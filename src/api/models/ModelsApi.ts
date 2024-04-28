@@ -21,4 +21,8 @@ export class ModelsApi extends BaseApi {
   public updateModel(json: any) {
     return this.put("Models/Update", { json });
   }
+
+  public deleteModels(json: any) {
+    return this.post("Models/Delete", { json });
+  }
 }

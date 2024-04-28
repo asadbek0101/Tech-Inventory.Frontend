@@ -9,6 +9,7 @@ import { noop } from "lodash";
 import { GroupBox } from "../ui/GroupBox";
 import { InputField } from "../form/InputField";
 import { SelectPickerField } from "../form/SelectPrickerField";
+import { modelTypesOptions } from "../../constants/AppConstants";
 
 import TabPage from "../tabs/TabPage";
 import ModelsTable from "./ModelsTable";
@@ -18,7 +19,6 @@ import DeleteIcon from "../icons/DeleteIcon";
 import Paginator from "../paginator/Paginator";
 import Modal from "../ui/Modal";
 import YesOrNoModal from "../ui/YesOrNoModal";
-import { modelTypesOptions } from "../../constants/AppConstants";
 
 interface Props {
   readonly filter: ModelFilter;
@@ -104,7 +104,7 @@ export default function ModelsTableWrapper({ filter }: Props) {
         setIds={setDeleteDocuments}
         loading={loading}
         editRegion={(value) => {
-          navigate(`/dashboard/regions/region-form?regionId=${value}`);
+          navigate(`/dashboard/models/form?modelId=${value}`);
         }}
       />
       <Modal
@@ -120,13 +120,13 @@ export default function ModelsTableWrapper({ filter }: Props) {
             setResponse={(value: string) => {
               if (value === "YES") {
                 const json: any = {
-                  regionIds: deleteDocuments,
+                  modelIds: deleteDocuments,
                 };
-                // RegionsApi.deleteRegions(json)
-                //   .then(() => {
-                //     window.location.reload();
-                //   })
-                //   .catch(showError);
+                ModelsApi.deleteModels(json)
+                  .then(() => {
+                    window.location.reload();
+                  })
+                  .catch(showError);
               }
               setDeleteModal(false);
             }}

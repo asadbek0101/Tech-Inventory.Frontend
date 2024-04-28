@@ -12,6 +12,8 @@ import { update } from "immupdate";
 import UsersForm from "./UsersForm";
 import TabPage from "../tabs/TabPage";
 import Button, { BgColors } from "../ui/Button";
+import { useRegionApiContext } from "../../api/regions/RegionsApiContext";
+import { useDistrictsApiContext } from "../../api/districts/DistrictsApiContext";
 
 interface Props {
   readonly filter: UserFilter;
@@ -19,6 +21,8 @@ interface Props {
 
 export default function UsersFormWrapper({ filter }: Props) {
   const { UsersApi } = useUsersContext();
+  const { RegionsApi } = useRegionApiContext();
+  const { DistrictsApi } = useDistrictsApiContext();
 
   const [roles, setRoles] = useState<any>([]);
   const { translate } = useI18n();
@@ -30,17 +34,93 @@ export default function UsersFormWrapper({ filter }: Props) {
     email: "",
     userName: "",
     phoneNumber: "",
+    role: "",
+    regionId: 0,
+    districtId: 0,
   });
+
+  const [regions, setRegions] = useState([]);
+  const [districts, setDistricts] = useState([]);
+
+  useEffect(() => {
+    RegionsApi.getRegionsList()
+      .then((r) => {
+        const _regions = r?.data?.map((region: any) => {
+          return {
+            label: region.name,
+            value: region.id,
+          };
+        });
+        setRegions(_regions);
+      })
+      .catch(showError);
+  }, [RegionsApi]);
 
   useEffect(() => {
     if (userId) {
       UsersApi.getOneUser(Number(userId))
         .then((r: any) => {
-          setIntialValues(r?.data);
+          var json = {
+            ...r?.data,
+            regionId: {
+              label: r?.data?.region,
+              value: r?.data?.regionId,
+            },
+            districtId: {
+              label: r?.data?.district,
+              value: r?.data?.districtId,
+            },
+            role: {
+              label: r?.data?.role[0],
+              value: r?.data?.role[0]?.toUpperCase(),
+            },
+          };
+          setIntialValues(json);
         })
         .catch(showError);
     }
   }, [userId, UsersApi]);
+
+  useEffect(() => {
+    UsersApi.getRolesList()
+      .then((r: any) => {
+        const _roles = r?.data.map((role: any) => {
+          return {
+            label: role.name,
+            value: role.normalizedName,
+          };
+        });
+        setRoles(_roles);
+      })
+      .catch(showError);
+  }, [userId, UsersApi]);
+
+  const onChangeRegion = useCallback(
+    (value: any) => {
+      DistrictsApi.getDistrictsList({ regionId: value.value })
+        .then((r) => {
+          const _districts = r?.data?.map((d: any) => {
+            return {
+              label: d.name,
+              value: d.id,
+            };
+          });
+          setDistricts(_districts);
+        })
+        .catch(showError);
+
+      setIntialValues((prev: any) =>
+        update(prev, {
+          regionId: value,
+          districtId: {
+            label: "",
+            value: "",
+          },
+        }),
+      );
+    },
+    [DistrictsApi],
+  );
 
   const onSubmit = useCallback(
     (value: any) => {
@@ -48,6 +128,9 @@ export default function UsersFormWrapper({ filter }: Props) {
         const json: CreateUserProps = {
           ...value,
           id: userId,
+          regionId: value?.regionId?.value,
+          districtId: value?.districtId?.value,
+          roleName: value?.role?.value,
         };
         UsersApi.updateUser(json)
           .then((r: any) => {
@@ -62,6 +145,9 @@ export default function UsersFormWrapper({ filter }: Props) {
       } else {
         const json: CreateUserProps = {
           ...value,
+          regionId: value?.regionId?.value,
+          districtId: value?.districtId?.value,
+          roleName: value?.role?.value,
         };
         UsersApi.createUser(json)
           .then((r: any) => {
@@ -92,8 +178,11 @@ export default function UsersFormWrapper({ filter }: Props) {
       }
     >
       <UsersForm
+        regions={regions}
+        districts={districts}
         roles={roles}
         initialValues={initialValues}
+        onChangeRegionId={onChangeRegion}
         setInitialValues={setIntialValues}
         onSubmit={onSubmit}
       />

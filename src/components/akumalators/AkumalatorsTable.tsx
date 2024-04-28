@@ -9,18 +9,13 @@ export default function AkumlatorsTable({ data }: Props) {
   const { translate } = useI18n();
   const headers: any = [
     {
-      header: translate("REGION_TABLE_ID_COLUMN_TITLE"),
-      access: "id",
-      width: 100,
-    },
-    {
-      header: translate("Modeli"),
-      access: "model",
+      header: translate("Quvvati"),
+      access: "power",
       width: 200,
     },
     {
-      header: translate("Quvvati"),
-      access: "power",
+      header: translate("Soni"),
+      access: "count",
       width: 200,
     },
     {

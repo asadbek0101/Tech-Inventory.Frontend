@@ -6,10 +6,15 @@ import Button, { BgColors } from "../ui/Button";
 import { useCallback } from "react";
 import { update } from "immupdate";
 import { object, string } from "yup";
+import { SelectPickerField } from "../form/SelectPrickerField";
+import { SelectPickerOptionsProps } from "../../api/AppDto";
 
 interface Props {
   readonly initialValues: any;
-  readonly roles: any;
+  readonly roles: SelectPickerOptionsProps[];
+  readonly regions: SelectPickerOptionsProps[];
+  readonly districts: SelectPickerOptionsProps[];
+  readonly onChangeRegionId: (value: any) => void;
   readonly setInitialValues: (value: any) => void;
   readonly onSubmit: (value: any) => void;
 }
@@ -21,7 +26,15 @@ const validationSchema = object({
   phoneNumber: string().required("Required!"),
 });
 
-export default function UsersForm({ initialValues, setInitialValues, onSubmit, roles }: Props) {
+export default function UsersForm({
+  initialValues,
+  onChangeRegionId,
+  setInitialValues,
+  onSubmit,
+  roles,
+  regions,
+  districts,
+}: Props) {
   const { translate } = useI18n();
 
   const onChangeEmail = useCallback(
@@ -57,6 +70,28 @@ export default function UsersForm({ initialValues, setInitialValues, onSubmit, r
     [setInitialValues],
   );
 
+  const onChangeDistrictId = useCallback(
+    (value: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          districtId: value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
+  const onChangeRole = useCallback(
+    (value: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          role: value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
   const onChangePassword = useCallback(
     (value: any) => {
       setInitialValues((prev: any) =>
@@ -79,37 +114,62 @@ export default function UsersForm({ initialValues, setInitialValues, onSubmit, r
         {() => (
           <Form>
             <div className="row p-4">
-              <div className="col-8">
-                <GroupBox title="USERS_FORM_CRATE_USER_TITLE">
+              <div className="col-12">
+                <GroupBox title="Foydalanuvchi">
                   <div className="row">
-                    <div className="col-6 my-2">
+                    <div className="col-4 my-2">
                       <InputField
-                        label="USERS_FORM_USER_EMAIL_FIELD_TITLE"
+                        label="Elektron pochta"
                         name="email"
                         value={initialValues.email}
                         onChange={onChangeEmail}
                       />
                     </div>
-                    <div className="col-6 my-2">
+                    <div className="col-4 my-2">
                       <InputField
-                        label="USERS_FORM_USER_NAME_FIELD_TITLE"
-                        name="userName"
-                        value={initialValues.userName}
-                        onChange={onChangeUsername}
-                      />
-                    </div>
-                    <div className="col-6 my-2">
-                      <InputField
-                        label="Phone Number"
+                        label="Telefon raqam"
                         name="phoneNumber"
                         value={initialValues.phoneNumber}
                         onChange={onChangePhoneNumber}
                       />
                     </div>
+                    <div className="col-4 my-2">
+                      <InputField
+                        label="Username"
+                        name="userName"
+                        value={initialValues.userName}
+                        onChange={onChangeUsername}
+                      />
+                    </div>
+                    <div className="col-4 my-2">
+                      <SelectPickerField
+                        label="Viloyat"
+                        name="regionId"
+                        options={regions}
+                        onChanges={onChangeRegionId}
+                      />
+                    </div>
+                    <div className="col-4 my-2">
+                      <SelectPickerField
+                        label="Tuman"
+                        name="districtId"
+                        options={districts}
+                        onChanges={onChangeDistrictId}
+                      />
+                    </div>
+                    <div className="col-4 my-2">
+                      <SelectPickerField
+                        label="Role"
+                        name="role"
+                        options={roles}
+                        onChanges={onChangeRole}
+                      />
+                    </div>
+
                     {!initialValues.id && (
-                      <div className="col-6 my-2">
+                      <div className="col-4 my-2">
                         <InputField
-                          label="USERS_FORM_USER_PASSWORD_FIELD_TITLE"
+                          label="Parol"
                           name="password"
                           value={initialValues.password}
                           onChange={onChangePassword}

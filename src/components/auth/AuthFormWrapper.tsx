@@ -4,7 +4,7 @@ import { useAuthContext } from "../../api/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AuthProps } from "../../api/auth/AuthDto";
-import { setToken } from "../../reducers/authReducer";
+import { setToken, setUserId } from "../../reducers/authReducer";
 import { toast } from "react-toastify";
 import { useI18n } from "../../i18n/I18nContext";
 import { showError } from "../../utils/NotificationUtils";
@@ -28,6 +28,7 @@ export default function AuthFormWrapper() {
 
   const onSubmit = useCallback(
     (value: AuthProps) => {
+      console.log(value);
       if (value.username.length === 0) {
         toast.warn(translate("AUTH_REQUIRED_USERNAME_TITLE"));
       } else if (value.password.length === 0) {
@@ -40,6 +41,7 @@ export default function AuthFormWrapper() {
               setLoading(false);
               toast.success(response?.data?.message);
               dispatch(setToken({ token: response?.data?.token }));
+              dispatch(setUserId({ userId: response?.data?.userId }));
               navigate("/dashboard/objects");
             } else {
               toast.error(response?.data?.message);

@@ -20,6 +20,8 @@ import ObjectForm from "./ObjectForm";
 import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { ModelTypes } from "../../api/models/ModelsDto";
+import { useShallowEqualSelector } from "../../hooks/useShallowSelector";
+import { tokenSelector, userIdSelector } from "../../reducers/authReducer";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -68,6 +70,9 @@ export default function ObjectFormWrapper({ filter }: Props) {
 
   const navigate = useNavigate();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+
+  const token = useShallowEqualSelector(tokenSelector);
+  const userId = useShallowEqualSelector(userIdSelector);
 
   useEffect(() => {}, [ModelsApi]);
 
@@ -283,6 +288,8 @@ export default function ObjectFormWrapper({ filter }: Props) {
                   const config = {
                     headers: {
                       "content-type": "multipart/form-data",
+                      Authorization: `Bearer ${token}`,
+                      userId: `${userId}`,
                     },
                   };
                   axios.post(url, formData, config).then((response: any) => {

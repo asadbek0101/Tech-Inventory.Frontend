@@ -1,16 +1,15 @@
-import "./assets/app-auth-container-layout.scss"
-import { ReactNode } from "react"
+import "./assets/app-auth-container-layout.scss";
+import { ReactNode } from "react";
 
-interface Props{
-    readonly children: ReactNode;
+interface Props {
+  readonly children: ReactNode;
 }
 
-export default function AppAuthContainerLayout({
-    children
-}:Props){
-    return (
-        <div className="app-auth-container-layout">
-            {children}
-        </div>
-    )
+export default function AppAuthContainerLayout({ children }: Props) {
+  return (
+    <div className="app-auth-container-layout">
+      {children}
+      <span className="app-auth-container-version">V-0.0.1</span>
+    </div>
+  );
 }
