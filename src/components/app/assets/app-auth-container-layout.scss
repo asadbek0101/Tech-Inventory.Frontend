@@ -8,6 +8,25 @@
   align-items: center;
   position: relative;
 
+  .safe-city-image {
+    width: 70%;
+    height: 100%;
+    // background-color: #ebf0f5;
+    background-image: url(./back1.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+  }
+
+  .app-auth-form {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
   .app-auth-container-version {
     position: absolute;
     bottom: 20px;

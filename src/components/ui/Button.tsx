@@ -36,7 +36,7 @@ export default function Button({
     <button
       type={type}
       disabled={disabled}
-      className={`app-button ${className} ${disabled && "disabled"}`}
+      className={`app-button   ${className} ${disabled && "disabled"}`}
       style={{
         backgroundColor: bgColor,
         height: heigh,

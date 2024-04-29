@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { switchUsername } from "../../reducers/appReducer";
 import { useAuthContext } from "../../api/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -8,6 +7,7 @@ import { setToken, setUserId } from "../../reducers/authReducer";
 import { toast } from "react-toastify";
 import { useI18n } from "../../i18n/I18nContext";
 import { showError } from "../../utils/NotificationUtils";
+
 import AuthForm from "./AuthForm";
 
 export default function AuthFormWrapper() {

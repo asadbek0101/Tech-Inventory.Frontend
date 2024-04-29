@@ -8,8 +8,9 @@ interface Props {
 export default function AppAuthContainerLayout({ children }: Props) {
   return (
     <div className="app-auth-container-layout">
-      {children}
-      <span className="app-auth-container-version">V-0.0.1</span>
+      <div className="safe-city-image" />
+      <div className="app-auth-form">{children}</div>
+      <span className="app-auth-container-version">V-0.0.2</span>
     </div>
   );
 }

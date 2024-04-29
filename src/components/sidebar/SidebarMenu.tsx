@@ -16,6 +16,7 @@ import LocationIcon from "../icons/LocationIcon";
 import FlagIcon from "../icons/FlagIcon";
 import LandMarkIcon from "../icons/LandMarkIcon";
 import FileInvoiceIcon from "../icons/FileInvoiceIcon";
+import { useMemo } from "react";
 
 export default function SidebarMenu() {
   const { translate } = useI18n();
@@ -26,6 +27,8 @@ export default function SidebarMenu() {
 
   const navigate = useNavigate();
 
+  const role = useMemo(() => profile?.role || "", [profile]);
+
   return (
     <div className="sidebar-menu">
       <div className="sidebar-menu-header">
@@ -34,8 +37,10 @@ export default function SidebarMenu() {
             style={{
               cursor: "pointer",
             }}
-            onClick={() => navigate("/dashboard/statistic")}
-          ></span>
+            onClick={() => navigate("/dashboard/objects")}
+          >
+            {role}
+          </span>
         )}
       </div>
       <div className="sidebar-menu-menu">
