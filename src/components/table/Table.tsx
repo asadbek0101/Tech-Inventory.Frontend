@@ -1,6 +1,8 @@
-import Loader from "../ui/Loader";
 import "./assets/table.scss";
-import React, { useCallback, useState, ReactNode, useEffect } from "react";
+
+import { useCallback, useState, ReactNode, useEffect } from "react";
+
+import Loader from "../ui/Loader";
 
 interface HeaderProps {
   readonly width?: number;

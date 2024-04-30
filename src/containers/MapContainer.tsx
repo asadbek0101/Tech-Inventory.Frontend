@@ -1,10 +1,10 @@
 import AppContainerLayout from "../components/app/AppContainerLayout";
-import MapTab from "../components/maps/MapTab";
+import ObjectsMapTab from "../components/maps/ObjectsMapTab";
 
 export default function MapContainer() {
   return (
     <AppContainerLayout>
-      <MapTab />
+      <ObjectsMapTab />
     </AppContainerLayout>
   );
 }

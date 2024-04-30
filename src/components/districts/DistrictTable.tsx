@@ -33,25 +33,25 @@ export default function DistrictTable({ data, loading, seletIds, editDistrict }:
     {
       header: translate("DISTRICT_TABLE_CREATED_DATE_COLUMN_TITLE"),
       access: "createdDate",
-      width: 140,
+      width: 200,
       ceil: (row: any) => {
-        return <div>{moment(row.createdDate).format("DD-MM-YYYY")}</div>;
+        return <div>{moment(row.createdDate).format("HH:mm | DD-MM-YYYY")}</div>;
       },
     },
     {
       header: translate("DISTRICT_TABLE_UPDATED_DATE_COLUMN_TITLE"),
       access: "updatedDate",
-      width: 140,
+      width: 200,
     },
     {
       header: translate("DISTRICT_TABLE_CREATED_BY_COLUMN_TITLE"),
       access: "createdBy",
-      width: 140,
+      width: 200,
     },
     {
       header: translate("DISTRICT_TABLE_UPDATED_BY_COLUMN_TITLE"),
       access: "updatedBy",
-      width: 140,
+      width: 200,
     },
     {
       header: translate("DISTRICT_TABLE_DISTRICT_ACTIONS_COLUMN_TITLE"),

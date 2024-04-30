@@ -34,12 +34,12 @@ export default function ModelsTable({ data, loading, editRegion, setIds }: Props
       width: 200,
     },
     {
-      header: translate("Funksiyalar"),
+      header: translate("..."),
       access: "updatedBy",
-      width: 100,
+      width: 60,
       ceil: (row: any) => {
         return (
-          <div className="d-flex gap-2">
+          <div className="w-100 text-center">
             <Button
               onClick={() => editRegion(row.id)}
               className="py-2 px-2 text-light"

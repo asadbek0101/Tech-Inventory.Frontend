@@ -16,6 +16,13 @@ table {
     th {
       font-weight: bold !important;
       height: 60px;
+      text-align: center;
+    }
+  }
+
+  tbody {
+    td {
+      text-align: center;
     }
   }
 }

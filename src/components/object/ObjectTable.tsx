@@ -1,18 +1,18 @@
 import { useI18n } from "../../i18n/I18nContext";
+
 import Table from "../table/Table";
 import moment from "moment";
 import Button, { BgColors } from "../ui/Button";
 import PencilIcon from "../icons/PencilIcon";
 import EyeIcon from "../icons/EyeIcon";
-import { ShapeIcon } from "../icons/ShapeIcon";
-import SettingsIcon from "../icons/SettingsIcon";
 import DonwloadIcon from "../icons/DowloadIcon";
-import { connectionTypes } from "../../constants/AppConstants";
+import LocationIcon from "../icons/LocationIcon";
 
 interface Props {
   readonly data: any;
   readonly loading: boolean;
   readonly selectIds: (value: any) => void;
+  readonly readOnMap: (value: any) => void;
   readonly editObyekt: (value: any) => void;
   readonly setOjectForView: (value: any) => void;
   readonly setOjectForProducts: (value: any) => void;
@@ -24,6 +24,7 @@ export default function ObjectTable({
   setOjectForView,
   setOjectForProducts,
   selectIds,
+  readOnMap,
   loading,
   editObyekt,
   downloadPdf,
@@ -39,7 +40,7 @@ export default function ObjectTable({
     {
       header: translate("Yaratilgan vaqti"),
       access: "createdDate",
-      width: 140,
+      width: 200,
       ceil: (row: any) => {
         return <div>{moment(row.createdDate).format("HH:mm | DD.MM.YYYY ")}</div>;
       },
@@ -66,22 +67,22 @@ export default function ObjectTable({
     {
       header: translate("Ulanish turi"),
       access: "connectionType",
-      width: 140,
+      width: 200,
     },
     {
       header: translate("OBJECT_TABLE_NAME_COLUMN_TITLE"),
       access: "name",
-      width: 140,
+      width: 200,
     },
     {
       header: translate("OBJECT_TABLE_HOME_COLUMN_TITLE"),
       access: "home",
-      width: 100,
+      width: 200,
     },
     {
       header: translate("OBJECT_TABLE_STREET_COLUMN_TITLE"),
       access: "street",
-      width: 140,
+      width: 200,
     },
     // {
     //   header: translate("OBJECT_TABLE_INFO_COLUMN_TITLE"),
@@ -91,12 +92,12 @@ export default function ObjectTable({
     {
       header: translate("OBJECT_TABLE_LONGITUDE_COLUMN_TITLE"),
       access: "longitude",
-      width: 100,
+      width: 200,
     },
     {
       header: translate("OBJECT_TABLE_LATITUDE_COLUMN_TITLE"),
       access: "latitude",
-      width: 100,
+      width: 200,
     },
     {
       header: translate("Tomonidan yaratilgan"),
@@ -106,7 +107,7 @@ export default function ObjectTable({
     {
       header: translate("Actions"),
       access: "actions",
-      width: 140,
+      width: 180,
       ceil: (row: any) => {
         return (
           <div className="d-flex gap-2">
@@ -130,6 +131,13 @@ export default function ObjectTable({
               bgColor={BgColors.Navy}
             >
               <DonwloadIcon />
+            </Button>
+            <Button
+              onClick={() => readOnMap(row.id)}
+              className="py-2 px-2 text-light"
+              bgColor={BgColors.Navy}
+            >
+              <LocationIcon />
             </Button>
           </div>
         );

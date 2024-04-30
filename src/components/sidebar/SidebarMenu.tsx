@@ -6,6 +6,7 @@ import { AppMenuType, UserRoles } from "../../api/AppDto";
 import { useNavigate } from "react-router-dom";
 import { profileSelector } from "../../reducers/authReducer";
 import { CheckRole } from "../../utils/CheckRole";
+import { useMemo } from "react";
 
 import SettingsIcon from "../icons/SettingsIcon";
 import CustomLine from "../ui/CustomLine";
@@ -16,7 +17,6 @@ import LocationIcon from "../icons/LocationIcon";
 import FlagIcon from "../icons/FlagIcon";
 import LandMarkIcon from "../icons/LandMarkIcon";
 import FileInvoiceIcon from "../icons/FileInvoiceIcon";
-import { useMemo } from "react";
 
 export default function SidebarMenu() {
   const { translate } = useI18n();
@@ -43,6 +43,7 @@ export default function SidebarMenu() {
           </span>
         )}
       </div>
+      <CustomLine />
       <div className="sidebar-menu-menu">
         {(CheckRole(UserRoles.SuperAdmin, profile) ||
           CheckRole(UserRoles.Admin, profile) ||

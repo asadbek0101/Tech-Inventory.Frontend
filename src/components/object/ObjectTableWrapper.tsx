@@ -239,33 +239,39 @@ export default function ObjectTableWrapper({ filter }: Props) {
     );
   }, []);
 
-  const onChangeNumberOfOrders = useCallback((value: any) => {
-    setInitialValues((prev: any) =>
-      update(prev, {
-        numberOfOrderId: value,
-      }),
-    );
+  const onChangeNumberOfOrders = useCallback(
+    (value: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          numberOfOrderId: value,
+        }),
+      );
 
-    setFilterValues((prev: any) =>
-      update(prev, {
-        numberOfOrderId: value.value,
-      }),
-    );
-  }, []);
+      setFilterValues((prev: any) =>
+        update(prev, {
+          numberOfOrderId: value.value,
+        }),
+      );
+    },
+    [setInitialValues, setFilterValues],
+  );
 
-  const onChangeObjectClass = useCallback((value: any) => {
-    setInitialValues((prev: any) =>
-      update(prev, {
-        objectClassificationId: value,
-      }),
-    );
+  const onChangeObjectClass = useCallback(
+    (value: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          objectClassificationId: value,
+        }),
+      );
 
-    setFilterValues((prev: any) =>
-      update(prev, {
-        objectClassificationId: value.value,
-      }),
-    );
-  }, []);
+      setFilterValues((prev: any) =>
+        update(prev, {
+          objectClassificationId: value.value,
+        }),
+      );
+    },
+    [setInitialValues, setFilterValues],
+  );
 
   return (
     <div className="w-100 p-4">
@@ -337,6 +343,7 @@ export default function ObjectTableWrapper({ filter }: Props) {
           loading={loading}
           data={data?.data}
           selectIds={setDeleteDocuments}
+          readOnMap={(value) => navigate(`/dashboard/objects/object-view-on?objectId=${value}`)}
           downloadPdf={(value, fileName) => {
             setLoadingFile(true);
             ObyektApi.getObyektReport(Number(value), fileName).then(() => setLoadingFile(false));

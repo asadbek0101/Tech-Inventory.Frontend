@@ -7,6 +7,7 @@ import ObjectTableWrapper from "./ObjectTableWrapper";
 import ObjectFormWrapper from "./ObjectFormWrapper";
 import ObjectViewWrapper from "./ObjectViewWrapper";
 import ObjectProductsTabWrapper from "./ObjectProductsTabWrapper";
+import ObjectMapWrapper from "./ObjectMapWrapper";
 
 export default function ObjectTab() {
   const { tab = "object-table" } = useParams();
@@ -21,6 +22,7 @@ export default function ObjectTab() {
       {tab === "object-form" && <ObjectFormWrapper filter={filter} />}
       {tab === "object-view" && <ObjectViewWrapper filter={filter} />}
       {tab === "object-products" && <ObjectProductsTabWrapper filter={filter} />}
+      {tab === "object-view-on" && <ObjectMapWrapper filter={filter} />}
     </>
   );
 }

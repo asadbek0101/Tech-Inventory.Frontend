@@ -1,4 +1,5 @@
 import "./assets/app-auth-container-layout.scss";
+
 import { ReactNode } from "react";
 
 interface Props {
@@ -10,7 +11,7 @@ export default function AppAuthContainerLayout({ children }: Props) {
     <div className="app-auth-container-layout">
       <div className="safe-city-image" />
       <div className="app-auth-form">{children}</div>
-      <span className="app-auth-container-version">V-0.0.2</span>
+      <span className="app-auth-container-version">V-0.0.3</span>
     </div>
   );
 }

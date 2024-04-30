@@ -75,7 +75,7 @@ export default function AuthForm({ initialValues, setInitialValues, onSubmit, lo
       >
         {() => (
           <Form>
-            <h1>{translate("Dashboard")}</h1>
+            <h1>{translate("Kirish")}</h1>
             <InputField
               name="username"
               placeholder={translate("AUTH_FORM_USERNAME_FIELD_TITLE")}

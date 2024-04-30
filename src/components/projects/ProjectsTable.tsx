@@ -58,15 +58,15 @@ export default function ProjectsTable({
     {
       header: translate("PROJECT_TABLE_CREATED_DATE_COLUMN_TITLE"),
       access: "createdDate",
-      width: 140,
+      width: 200,
       ceil: (row: any) => {
-        return <div>{moment(row.createdDate).format("DD-MM-YYYY")}</div>;
+        return <div>{moment(row.createdDate).format("HH:mm | DD-MM-YYYY")}</div>;
       },
     },
     {
       header: translate("PROJECT_TABLE_UPDATED_DATE_COLUMN_TITLE"),
       access: "updatedDate",
-      width: 140,
+      width: 200,
       ceil: (row: any) => {
         if (row.updatedDate) return <div>{moment(row.updatedDate).format("DD-MM-YYYY")}</div>;
       },
@@ -74,12 +74,12 @@ export default function ProjectsTable({
     {
       header: translate("PROJECT_TABLE_CREATED_BY_COLUMN_TITLE"),
       access: "createdBy",
-      width: 140,
+      width: 200,
     },
     {
       header: translate("PROJECT_TABLE_UPDATED_BY_COLUMN_TITLE"),
       access: "updatedBy",
-      width: 140,
+      width: 200,
     },
     {
       header: translate("PROJECT_TABLE_PROJECT_ACTIONS_COLUMN_TITLE"),
