@@ -11,10 +11,10 @@ import { TextAreaField } from "../form/TextAreaField";
 import { ObjectFormTypes } from "../../filters/ObjectFilter";
 import { connectionTypes } from "../../constants/AppConstants";
 import { ConnectionTypes } from "../../api/obyekt/ObyektDto";
+import { SelectPickerOptionsProps } from "../../api/AppDto";
 
 import AddIcon from "../icons/AddIcon";
 import DeleteIcon from "../icons/DeleteIcon";
-import { SelectPickerOptionsProps } from "../../api/AppDto";
 
 interface Props {
   readonly initialValues: any;
@@ -41,9 +41,7 @@ const validationSchema = object({
   numberOfOrderId: object().required(),
   objectClassTypeId: object().required(),
   objectClassId: object().required(),
-  name: string().required("Required!"),
-  home: string().required("Required!"),
-  street: string().required("Required!"),
+  nameAndAddress: string().required("Required!"),
   latitude: string().required("Required!"),
   longitude: string().required("Required!"),
 });
@@ -99,33 +97,11 @@ export default function ObjectForm({
     [setInitialValues],
   );
 
-  const onChangeName = useCallback(
+  const onChangeNameAndAddress = useCallback(
     (event: any) => {
       setInitialValues((prev: any) =>
         update(prev, {
-          name: event.target.value,
-        }),
-      );
-    },
-    [setInitialValues],
-  );
-
-  const onChangeHome = useCallback(
-    (event: any) => {
-      setInitialValues((prev: any) =>
-        update(prev, {
-          home: event.target.value,
-        }),
-      );
-    },
-    [setInitialValues],
-  );
-
-  const onChangeStreet = useCallback(
-    (event: any) => {
-      setInitialValues((prev: any) =>
-        update(prev, {
-          street: event.target.value,
+          nameAndAddress: event.target.value,
         }),
       );
     },
@@ -181,6 +157,17 @@ export default function ObjectForm({
       setInitialValues((prev: any) =>
         update(prev, {
           phoneNumber: event.target.value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
+  const onChangeInfo = useCallback(
+    (event: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          info: event.target.value,
         }),
       );
     },
@@ -348,32 +335,15 @@ export default function ObjectForm({
                 </div>
               </GroupBox>
             </div>
-
             <div className="col-12 mt-4">
               <GroupBox>
                 <div className="row">
-                  <div className="col-4">
+                  <div className="col-12">
                     <InputField
-                      name="name"
-                      label="Obyekt nomi"
-                      onChange={onChangeName}
-                      value={initialValues?.name}
-                    />
-                  </div>
-                  <div className="col-4">
-                    <InputField
-                      name="home"
-                      label="OBJECT_FORM_HOME_FIELD_TITLE"
-                      onChange={onChangeHome}
-                      value={initialValues.home}
-                    />
-                  </div>
-                  <div className="col-4">
-                    <InputField
-                      name="street"
-                      label="OBJECT_FORM_STREET_FIELD_TITLE"
-                      onChange={onChangeStreet}
-                      value={initialValues.street}
+                      name="nameAndAddress"
+                      label="Obyekt nomi va manzili"
+                      onChange={onChangeNameAndAddress}
+                      value={initialValues?.nameAndAddress}
                     />
                   </div>
                   <div className="col-4 mt-3">

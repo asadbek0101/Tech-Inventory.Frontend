@@ -12,16 +12,16 @@ import { toast } from "react-toastify";
 import { showError } from "../../utils/NotificationUtils";
 import { ObjectFilter, ObjectFormTypes } from "../../filters/ObjectFilter";
 import { useOjbectClassApiContext } from "../../api/object-class/ObjectClassApiContext";
-import { ConnectionTypes } from "../../api/obyekt/ObyektDto";
-
-import axios from "axios";
-import TabPage from "../tabs/TabPage";
-import ObjectForm from "./ObjectForm";
 import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { ModelTypes } from "../../api/models/ModelsDto";
 import { useShallowEqualSelector } from "../../hooks/useShallowSelector";
 import { tokenSelector, userIdSelector } from "../../reducers/authReducer";
+
+import axios from "axios";
+import TabPage from "../tabs/TabPage";
+import ObjectForm from "./ObjectForm";
+import { API_HOST } from "../../constants/AppConstants";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -197,7 +197,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
         .then((r) => {
           const _numberOfOrders = r?.data?.map((d: any) => {
             return {
-              label: d.name,
+              label: d.number,
               value: d.id,
             };
           });
@@ -248,6 +248,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
   const onSubmit = useCallback(
     (value: any) => {
       if (objectId) {
+        // Update METHOD
         const json = {
           ...value,
           id: objectId,
@@ -261,11 +262,26 @@ export default function ObjectFormWrapper({ filter }: Props) {
         };
         ObyektApi.updateObyekt(json)
           .then((r) => {
+            if (r?.data?.id) {
+              const connectionTypeJson = {
+                obyektId: r?.data?.id,
+                modelId: value.modelId.value,
+                numberOfPort: value.numberOfPort,
+                serialNumber: value.serialNumber,
+                phoneNumber: value.phoneNumber,
+                type: value.connectionType.value,
+              };
+
+              ObyektApi.updateConnectionType(connectionTypeJson)
+                .then((r: any) => console.log(r))
+                .catch(showError);
+            }
             toast.success(r?.data?.message);
             navigate(`/dashboard/objects/object-table`);
           })
           .catch(showError);
       } else {
+        // Create METHOD
         const json = {
           ...value,
           regionId: value?.regionId?.value,
@@ -282,7 +298,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
               const files = initialValues?.files;
               files.map((file: any) => {
                 if (file.file) {
-                  const url = `https://localhost:44368/api/Files/UploadFile?id=${r?.data?.id}&fileName=${file.fileName}&type=1`;
+                  const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}&fileName=${file.fileName}&type=1`;
                   const formData = new FormData();
                   formData.append("file", file.file);
                   const config = {

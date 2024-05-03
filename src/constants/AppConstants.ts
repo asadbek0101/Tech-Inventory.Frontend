@@ -1,7 +1,7 @@
 export const IS_DEV = process.env.NODE_ENV !== "production";
 
-// export const API_HOST = "https://localhost:44368/api/" as string;
-export const API_HOST = "http://172.24.201.4:8080/api/" as string;
+export const API_HOST = "https://localhost:44368/api/" as string;
+// export const API_HOST = "http://172.24.201.4:8080/api/" as string;
 
 export const objectProductTypesOptions = [
   {
@@ -92,6 +92,66 @@ export const objectProductTypesOptions = [
     label: "Telekomunikatsion javon",
     value: 22,
   },
+  {
+    label: "Korob",
+    value: 23,
+  },
+  {
+    label: "Devorga aylanma kamerani o'rnatish uchun kronshteyn",
+    value: 24,
+  },
+  {
+    label: "Tirgagichga aylanma kamerani o'rnatish uchun kronshteyn",
+    value: 25,
+  },
+  {
+    label: "Konnektor",
+    value: 26,
+  },
+  {
+    label: "Elektr energiyasini hisobga olish uskunasini",
+    value: 27,
+  },
+  {
+    label: "Qotirgich",
+    value: 28,
+  },
+  {
+    label: "Burama mix uchun yelim pona",
+    value: 29,
+  },
+  {
+    label: "Sip.Xomut",
+    value: 30,
+  },
+  {
+    label: "Kabel.Xomut",
+    value: 31,
+  },
+  {
+    label: "Burama mix",
+    value: 32,
+  },
+  {
+    label: "Sip.Lenta",
+    value: 33,
+  },
+  {
+    label: "Server",
+    value: 34,
+  },
+  {
+    label: "Gofra qobiq",
+    value: 35,
+  },
+  {
+    label: "Plastik qobiq",
+    value: 36,
+  },
+  {
+    label: "Video registrator",
+    value: 37,
+  },
 ];
 
 export const modelTypesOptions = [
@@ -154,6 +214,22 @@ export const modelTypesOptions = [
   {
     label: "GPON",
     value: 15,
+  },
+  {
+    label: "Korob",
+    value: 16,
+  },
+  {
+    label: "Kranshteyn",
+    value: 17,
+  },
+  {
+    label: "Elektr energiyasini hisobga olish uskunasini",
+    value: 18,
+  },
+  {
+    label: "Videoregistrator",
+    value: 19,
   },
 ];
 

@@ -16,9 +16,12 @@ export default function DistrictTable({ data, loading, seletIds, editDistrict }:
   const { translate } = useI18n();
   const headers: any = [
     {
-      header: translate("DISTRICT_TABLE_ID_COLUMN_TITLE"),
-      access: "id",
-      width: 100,
+      header: translate("T/r"),
+      access: "index",
+      width: 50,
+      ceil: (_: any, index: number) => {
+        return <span>{index + 1}</span>;
+      },
     },
     {
       header: translate("DISTRICT_TABLE_DISTRICT_NAME_COLUMN_TITLE"),

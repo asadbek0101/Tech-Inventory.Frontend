@@ -81,15 +81,10 @@ export default function ObjectView({ initialValues, attachments, setPath }: Prop
             <div className="col-12 mt-4">
               <GroupBox>
                 <div className="row">
-                  <div className="col-4">
-                    <InputField name="name" label="OBJECT_FORM_NAME_FIELD_TITLE" disabled />
+                  <div className="col-12">
+                    <InputField name="nameAndAddress" label="Obyekt nomi va manzili" disabled />
                   </div>
-                  <div className="col-4">
-                    <InputField name="home" label="OBJECT_FORM_HOME_FIELD_TITLE" disabled />
-                  </div>
-                  <div className="col-4">
-                    <InputField name="street" label="OBJECT_FORM_STREET_FIELD_TITLE" disabled />
-                  </div>
+
                   <div className="col-4 mt-3">
                     <InputField name="latitude" label="OBJECT_FORM_LATITUDE_FIELD_TITLE" disabled />
                   </div>

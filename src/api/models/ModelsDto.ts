@@ -35,5 +35,8 @@ export enum ModelTypes {
   Ups = 13,
   FTTX = 14,
   GPON = 15,
-  GSM = 16,
+  Box = 16,
+  Bracket = 17,
+  Counter = 18,
+  VideoRecorder = 19,
 }

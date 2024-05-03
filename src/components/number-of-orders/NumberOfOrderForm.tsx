@@ -7,35 +7,62 @@ import { useCallback } from "react";
 import { update } from "immupdate";
 import { useI18n } from "../../i18n/I18nContext";
 import { object, string } from "yup";
+import { InitialNumberOfOrderProps } from "../../api/number-of-orders/NumberOfOrderDto";
+import { SelectPickerOptionsProps } from "../../api/AppDto";
+import { SelectPickerField } from "../form/SelectPrickerField";
 
 interface Props {
-  readonly initialValues: any;
+  readonly initialValues: InitialNumberOfOrderProps;
+  readonly regions: SelectPickerOptionsProps[];
   readonly setInitialValues: (value: any) => void;
   readonly onSubmit: (value: any) => void;
 }
 
 const validationSchema = object({
-  name: string().required("Reqired!"),
+  number: string().required("Reqired!"),
   info: string(),
 });
 
-export default function NumberOfOrderForm({ initialValues, setInitialValues, onSubmit }: Props) {
+export default function NumberOfOrderForm({
+  initialValues,
+  setInitialValues,
+  onSubmit,
+  regions,
+}: Props) {
   const { translate } = useI18n();
-  const onChangeName = useCallback((event: any) => {
-    setInitialValues((prev: any) =>
-      update(prev, {
-        name: event?.target.value,
-      }),
-    );
-  }, []);
 
-  const onChangeNumber = useCallback((event: any) => {
-    setInitialValues((prev: any) =>
-      update(prev, {
-        number: event?.target.value,
-      }),
-    );
-  }, []);
+  const onChangeNumber = useCallback(
+    (event: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          number: event?.target.value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
+  const onChangeRegionId = useCallback(
+    (event: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          regionId: event,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
+  const onChangeInfo = useCallback(
+    (event: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          info: event?.target.value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
 
   return (
     <Formik
@@ -48,12 +75,30 @@ export default function NumberOfOrderForm({ initialValues, setInitialValues, onS
         <Form>
           <div className="row p-4">
             <div className="col-6">
-              <GroupBox title="Create Number Of Order">
+              <GroupBox title="Buyurtma raqam yaratish">
                 <div className="col-12">
-                  <InputField name="name" label="Name" onChange={onChangeName} />
+                  <InputField
+                    name="number"
+                    label="Buyurtma raqam"
+                    onChange={onChangeNumber}
+                    value={initialValues.number}
+                  />
                 </div>
-                <div className="col-12 my-3">
-                  <TextAreaField name="number" label="Number" onChange={onChangeNumber} />
+                <div className="col-12 mt-3">
+                  <SelectPickerField
+                    name="regionId"
+                    label="Viloyat"
+                    onChanges={onChangeRegionId}
+                    options={regions}
+                  />
+                </div>
+                <div className="col-12 mt-3">
+                  <TextAreaField
+                    name="_info"
+                    label="Qo'shimcha ma'lumot"
+                    onChange={onChangeInfo}
+                    defaultValue={initialValues.info}
+                  />
                 </div>
                 <div className="col-12 d-flex justify-content-end mt-3">
                   <Button type="submit" className="px-3 py-2 text-light" bgColor={BgColors.Green}>

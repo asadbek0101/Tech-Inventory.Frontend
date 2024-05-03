@@ -1,0 +1,72 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ObjectFilter } from "../../filters/ObjectFilter";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { showError } from "../../utils/NotificationUtils";
+import { useModelsApiContext } from "../../api/models/ModelsApiContext";
+import { SelectPickerOptionsProps } from "../../api/AppDto";
+import { ModelTypes } from "../../api/models/ModelsDto";
+import { useVideoRecorderApiContext } from "../../api/video-recorder/VideoRecorderApiContext";
+import { VideoRecorderInitialProps } from "../../api/video-recorder/VideoRecorderDto";
+import VideoRecordersForm from "./VideoRecorderForm";
+
+interface Props {
+  readonly filter: ObjectFilter;
+}
+
+export default function VideoRecordersFormWrapper({ filter }: Props) {
+  const [initialValues, setInitalValues] = useState<VideoRecorderInitialProps>({
+    obyektId: 0,
+    modelId: 0,
+    info: "",
+  });
+
+  const [models, setModels] = useState<SelectPickerOptionsProps[]>([]);
+
+  const { VideoRecorderApi } = useVideoRecorderApiContext();
+  const { ModelsApi } = useModelsApiContext();
+
+  const navigate = useNavigate();
+
+  const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+
+  useEffect(() => {
+    ModelsApi.getModelsList({ type: ModelTypes.VideoRecorder })
+      .then((r) => {
+        const _models = r?.data.map((sw: any) => {
+          return {
+            label: sw.name,
+            value: sw.id,
+          };
+        });
+        setModels(_models);
+      })
+      .catch(showError);
+  }, [ModelsApi]);
+
+  const onSubmit = useCallback(
+    (value: any) => {
+      const json = {
+        ...value,
+        obyektId: objectId,
+        modelId: value.modelId.value,
+      };
+      VideoRecorderApi.createVideoRecorder(json)
+        .then((r) => {
+          toast.success(r?.data?.message);
+          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+        })
+        .catch(showError);
+    },
+    [VideoRecorderApi, objectId],
+  );
+
+  return (
+    <VideoRecordersForm
+      initialValues={initialValues}
+      setInitialValues={setInitalValues}
+      onSubmit={onSubmit}
+      models={models}
+    />
+  );
+}

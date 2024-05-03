@@ -137,7 +137,11 @@ export default function Table({
                   {headers.map((head: any, i: number) => {
                     return (
                       <td key={i} width={`${head.width}px`}>
-                        {head.ceil ? <div>{head.ceil(row)}</div> : <span>{row[head.access]}</span>}
+                        {head.ceil ? (
+                          <div>{head.ceil(row, index)}</div>
+                        ) : (
+                          <span>{row[head.access]}</span>
+                        )}
                       </td>
                     );
                   })}

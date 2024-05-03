@@ -1,14 +1,23 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { ObjectFilter, ObjectProductsPageTypes } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
+import { CabelTypes } from "../../api/cabels/CabelDto";
+import { RackTypes } from "../../api/rackes/RackesDto";
+import { ShelfTypes } from "../../api/shelf/ShelfDto";
+import { SwitchTypes } from "../../api/switches/SwitchesDto";
+import { SvetaforTypes } from "../../api/svetafor/SvetaforDto";
 import { useI18n } from "../../i18n/I18nContext";
 import { objectProductTypesOptions } from "../../constants/AppConstants";
 import { Form, Formik } from "formik";
 import { ProductTypes } from "../../api/AppDto";
 import { SelectPickerField } from "../form/SelectPrickerField";
 import { noop } from "lodash";
+import { BracketTypes } from "../../api/brackets/BracketsDto";
+import { HookTypes } from "../../api/hooks/HooksDto";
+import { ShellTypes } from "../../api/shells/ShellsDto";
 
 import TabPage from "../tabs/TabPage";
+import UpsTableWrapper from "../ups/UpsTableWrapper";
 import Button, { BgColors } from "../ui/Button";
 import CameraTableWrapper from "../cameras/CameraTableWrapper";
 import CabelTableWrapper from "../cabels/CabelTableWrapper";
@@ -23,14 +32,19 @@ import AddIcon from "../icons/AddIcon";
 import ShelvesTableWrapper from "../shelves/ShelvesTableWrapper";
 import TerminalServerTableWrapper from "../terminal-servers/TerminalServersTableWrapper";
 import SocketTableWrapper from "../sockets/SocketTableWrapper";
-import { CabelTypes } from "../../api/cabels/CabelDto";
-import { RackTypes } from "../../api/rackes/RackesDto";
-import { ShelfTypes } from "../../api/shelf/ShelfDto";
-import { SwitchTypes } from "../../api/switches/SwitchesDto";
-import { SvetaforTypes } from "../../api/svetafor/SvetaforDto";
-import UpsTableWrapper from "../ups/UpsTableWrapper";
 import SpeedCheckingTableWrapper from "../speed-checking/SpeedCheckingTableWrapper";
 import StanchionsTableWrapper from "../stanchions/StanchionsTableWrapper";
+import BoxesTableWrapper from "../boxes/BoxesTableWrapper";
+import BracketsTableWrapper from "../brackets/BracketsTableWrapper";
+import ConnectorsTableWrapper from "../connectors/ConnectorsTableWrapper";
+import CountersTableWrapper from "../counters/CountersTableWrapper";
+import HooksTableWrapper from "../hooks/HooksTableWrapper";
+import NailsTableWrapper from "../nails/NailsTableWrapper";
+import RibbonsTableWrapper from "../ribbons/RibbonsTableWrapper";
+import ServersTableWrapper from "../servers/ServersTableWrapper";
+import ShellsTableWrapper from "../shells/ShellsTableWrapper";
+import VideoRecordersTableWrapper from "../video-recorders/VideoRecorderTableWrapper";
+import FreezersTableWrapper from "../freezers/FreezersTableWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -74,6 +88,7 @@ export default function ObjectProductsTableWrapper({ filter }: Props) {
               {() => (
                 <Form>
                   <SelectPickerField
+                    isSearchable
                     width={400}
                     name="type"
                     onChanges={(value) =>
@@ -139,14 +154,40 @@ export default function ObjectProductsTableWrapper({ filter }: Props) {
       {product === ProductTypes.Ups && <UpsTableWrapper filter={filter} />}
       {product === ProductTypes.Stanchion && <StanchionsTableWrapper filter={filter} />}
       {product === ProductTypes.SpeedCheckingRadar && <SpeedCheckingTableWrapper filter={filter} />}
+      {product === ProductTypes.PillarBracket && (
+        <BracketsTableWrapper filter={filter} bracketType={BracketTypes.PillarBracket} />
+      )}
+      {product === ProductTypes.WallBracket && (
+        <BracketsTableWrapper filter={filter} bracketType={BracketTypes.WallBracket} />
+      )}
+      {product === ProductTypes.Corob && <BoxesTableWrapper filter={filter} />}
+      {product === ProductTypes.Connector && <ConnectorsTableWrapper filter={filter} />}
+      {product === ProductTypes.Counter && <CountersTableWrapper filter={filter} />}
+      {product === ProductTypes.Nail && <NailsTableWrapper filter={filter} />}
+      {product === ProductTypes.Ribbon && <RibbonsTableWrapper filter={filter} />}
+      {product === ProductTypes.Server && <ServersTableWrapper filter={filter} />}
+      {product === ProductTypes.VideoRecorder && <VideoRecordersTableWrapper filter={filter} />}
+      {product === ProductTypes.Freezer && <FreezersTableWrapper filter={filter} />}
       {product === ProductTypes.TelecomunicationShelf && (
         <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.TelecommunicationShelf} />
       )}
       {product === ProductTypes.MainTelecomunicationShelf && (
         <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.MainElectronicShelf} />
       )}
+      {product === ProductTypes.SipHook && (
+        <HooksTableWrapper filter={filter} hookType={HookTypes.SipHook} />
+      )}
+      {product === ProductTypes.CabelHook && (
+        <HooksTableWrapper filter={filter} hookType={HookTypes.CabelHook} />
+      )}
       {product === ProductTypes.CentralTelecomunicationShelf && (
         <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.CentralTelecommunicationShelf} />
+      )}
+      {product === ProductTypes.GofraShell && (
+        <ShellsTableWrapper filter={filter} shellType={ShellTypes.GofraShell} />
+      )}
+      {product === ProductTypes.PlasticShell && (
+        <ShellsTableWrapper filter={filter} shellType={ShellTypes.PlasticShell} />
       )}
     </TabPage>
   );

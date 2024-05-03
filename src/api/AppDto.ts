@@ -46,6 +46,21 @@ export enum ProductTypes {
   Ups = 20,
   SpeedCheckingRadar = 21,
   TelecomunicationShelf = 22,
+  Corob = 23,
+  WallBracket = 24,
+  PillarBracket = 25,
+  Connector = 26,
+  Counter = 27,
+  Freezer = 28,
+  GlueForNail = 29,
+  SipHook = 30,
+  CabelHook = 31,
+  Nail = 32,
+  Ribbon = 33,
+  Server = 34,
+  GofraShell = 35,
+  PlasticShell = 36,
+  VideoRecorder = 37,
 }
 
 export interface SelectPickerOptionsProps {

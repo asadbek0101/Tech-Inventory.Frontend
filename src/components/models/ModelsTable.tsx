@@ -14,9 +14,12 @@ export default function ModelsTable({ data, loading, editRegion, setIds }: Props
   const { translate } = useI18n();
   const headers: any = [
     {
-      header: translate("REGION_TABLE_ID_COLUMN_TITLE"),
-      access: "id",
-      width: 100,
+      header: translate("T/r"),
+      access: "index",
+      width: 50,
+      ceil: (_: any, index: number) => {
+        return <span>{index + 1}</span>;
+      },
     },
     {
       header: translate("Model nomi"),

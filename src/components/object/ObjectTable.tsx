@@ -7,6 +7,7 @@ import PencilIcon from "../icons/PencilIcon";
 import EyeIcon from "../icons/EyeIcon";
 import DonwloadIcon from "../icons/DowloadIcon";
 import LocationIcon from "../icons/LocationIcon";
+import ProductsIcon from "../icons/ProductsIcon";
 
 interface Props {
   readonly data: any;
@@ -32,11 +33,42 @@ export default function ObjectTable({
   const { translate } = useI18n();
 
   const headers: any = [
-    // {
-    //   header: translate("OBJECT_TABLE_ID_COLUMN_TITLE"),
-    //   access: "id",
-    //   width: 100,
-    // },
+    {
+      header: translate("T/r"),
+      access: "index",
+      width: 50,
+      ceil: (_: any, index: number) => {
+        return <span>{index + 1}</span>;
+      },
+    },
+    {
+      header: translate("Loyiha nomi"),
+      access: "project",
+      width: 200,
+    },
+    {
+      header: translate("Hududi"),
+      access: "region",
+      width: 200,
+    },
+    {
+      header: translate("Obyekt nomi va manzili"),
+      access: "nameAndAddress",
+      width: 200,
+    },
+    {
+      header: translate("Ulanish turi"),
+      access: "connectionType",
+      width: 200,
+    },
+    {
+      header: translate("Joylashuv"),
+      access: "longitude",
+      width: 200,
+      ceil: (row: any) => {
+        return <span>{row.latitude + ", " + row.longitude}</span>;
+      },
+    },
     {
       header: translate("Yaratilgan vaqti"),
       access: "createdDate",
@@ -46,60 +78,6 @@ export default function ObjectTable({
       },
     },
     {
-      header: translate("OBJECT_TABLE_PRODUCTS_COLUMN_TITLE"),
-      access: "products",
-      width: 100,
-      ceil: (row: any) => {
-        return (
-          <span
-            className="fw-bold text-success"
-            style={{
-              cursor: "pointer",
-            }}
-            onClick={() => setOjectForProducts(row.id)}
-          >
-            {translate("OBJECT_TABLE_PRODUCTS_VIEW_COLUMN_TITLE")}
-          </span>
-        );
-      },
-    },
-
-    {
-      header: translate("Ulanish turi"),
-      access: "connectionType",
-      width: 200,
-    },
-    {
-      header: translate("OBJECT_TABLE_NAME_COLUMN_TITLE"),
-      access: "name",
-      width: 200,
-    },
-    {
-      header: translate("OBJECT_TABLE_HOME_COLUMN_TITLE"),
-      access: "home",
-      width: 200,
-    },
-    {
-      header: translate("OBJECT_TABLE_STREET_COLUMN_TITLE"),
-      access: "street",
-      width: 200,
-    },
-    // {
-    //   header: translate("OBJECT_TABLE_INFO_COLUMN_TITLE"),
-    //   access: "info",
-    //   width: 200,
-    // },
-    {
-      header: translate("OBJECT_TABLE_LONGITUDE_COLUMN_TITLE"),
-      access: "longitude",
-      width: 200,
-    },
-    {
-      header: translate("OBJECT_TABLE_LATITUDE_COLUMN_TITLE"),
-      access: "latitude",
-      width: 200,
-    },
-    {
       header: translate("Tomonidan yaratilgan"),
       access: "owner",
       width: 200,
@@ -107,7 +85,7 @@ export default function ObjectTable({
     {
       header: translate("Actions"),
       access: "actions",
-      width: 180,
+      width: 220,
       ceil: (row: any) => {
         return (
           <div className="d-flex gap-2">
@@ -117,6 +95,13 @@ export default function ObjectTable({
               bgColor={BgColors.Green}
             >
               <EyeIcon />
+            </Button>
+            <Button
+              onClick={() => setOjectForProducts(row.id)}
+              className="py-2 px-2 text-light"
+              bgColor={BgColors.Green}
+            >
+              <ProductsIcon />
             </Button>
             <Button
               onClick={() => editObyekt(row.id)}

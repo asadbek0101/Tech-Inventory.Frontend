@@ -23,9 +23,12 @@ export default function ProjectsTable({
   const { translate } = useI18n();
   const headers: any = [
     {
-      header: translate("PROJECT_TABLE_ID_COLUMN_TITLE"),
-      access: "id",
-      width: 100,
+      header: translate("T/r"),
+      access: "index",
+      width: 50,
+      ceil: (_: any, index: number) => {
+        return <div>{index + 1}</div>;
+      },
     },
     {
       header: translate("PROJECT_TABLE_VIEW_NUMBER_OF_ORDER_COLUMN_TITLE"),

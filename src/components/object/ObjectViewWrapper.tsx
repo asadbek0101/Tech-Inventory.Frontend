@@ -28,6 +28,20 @@ import TerminalServerTableWrapper from "../terminal-servers/TerminalServersTable
 import StanchionsTableWrapper from "../stanchions/StanchionsTableWrapper";
 import SpeedCheckingTableWrapper from "../speed-checking/SpeedCheckingTableWrapper";
 import UpsTableWrapper from "../ups/UpsTableWrapper";
+import BoxesTableWrapper from "../boxes/BoxesTableWrapper";
+import BracketsTableWrapper from "../brackets/BracketsTableWrapper";
+import { BracketTypes } from "../../api/brackets/BracketsDto";
+import ConnectorsTableWrapper from "../connectors/ConnectorsTableWrapper";
+import CountersTableWrapper from "../counters/CountersTableWrapper";
+import HooksTableWrapper from "../hooks/HooksTableWrapper";
+import { HookTypes } from "../../api/hooks/HooksDto";
+import NailsTableWrapper from "../nails/NailsTableWrapper";
+import RibbonsTableWrapper from "../ribbons/RibbonsTableWrapper";
+import ServersTableWrapper from "../servers/ServersTableWrapper";
+import ShellsTableWrapper from "../shells/ShellsTableWrapper";
+import { ShellTypes } from "../../api/shells/ShellsDto";
+import VideoRecordersTableWrapper from "../video-recorders/VideoRecorderTableWrapper";
+import FreezersTableWrapper from "../freezers/FreezersTableWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -42,9 +56,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
     numberOfOrder: "",
     objectClass: "",
     objectClassType: "",
-    name: "",
-    home: "",
-    street: "",
+    nameAndAddress: "",
     latitude: "",
     longitude: "",
     info: "",
@@ -64,16 +76,31 @@ export default function ObjectViewWrapper({ filter }: Props) {
     distributionShelfCount: 0,
     mainElectronicShelfCount: 0,
     telecommunicationShelfCount: 0,
-    centralTelecommunicationShelfCount: 1,
+    centralTelecommunicationShelfCount: 0,
     boksCount: 0,
     svetaforDetectorCount: 0,
     svetaforDetectorForCameraCount: 0,
     electrCabelCount: 0,
-    utpCabelCount: 1,
+    utpCabelCount: 0,
     switchComboCount: 0,
     switchPoeCount: 0,
     stabilizerCount: 0,
     terminalServerCount: 0,
+    boxCount: 0,
+    wallBracketCount: 0,
+    pillarBracketCount: 0,
+    connectorCount: 0,
+    counterCount: 0,
+    sipHookCount: 0,
+    cabelHookCount: 0,
+    gofraShellCount: 0,
+    plasticShellCount: 0,
+    videoRecorderCount: 0,
+    ribbonCount: 0,
+    serverCount: 0,
+    freezerCount: 0,
+    nailCount: 0,
+    glueForNailCount: 0,
   });
 
   const { ObyektApi } = useObyektApiContext();
@@ -323,6 +350,141 @@ export default function ObjectViewWrapper({ filter }: Props) {
             <h5>UPS</h5>
           </div>
           <UpsTableWrapper filter={filter} />
+        </CustomCard>
+      )}
+
+      {productsCounts.boxCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Korob</h5>
+          </div>
+          <BoxesTableWrapper filter={filter} />
+        </CustomCard>
+      )}
+
+      {productsCounts.wallBracketCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Devorga aylanma kamerani o'rnatish uchun kronshteyn</h5>
+          </div>
+          <BracketsTableWrapper filter={filter} bracketType={BracketTypes.WallBracket} />
+        </CustomCard>
+      )}
+
+      {productsCounts.pillarBracketCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Tirgagichga aylanma kamerani o'rnatish uchun kronshteyn</h5>
+          </div>
+          <BracketsTableWrapper filter={filter} bracketType={BracketTypes.PillarBracket} />
+        </CustomCard>
+      )}
+
+      {productsCounts.connectorCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Konnektor</h5>
+          </div>
+          <ConnectorsTableWrapper filter={filter} />
+        </CustomCard>
+      )}
+
+      {productsCounts.counterCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Elektr energiyasini hisobga olish uskunasini</h5>
+          </div>
+          <CountersTableWrapper filter={filter} />
+        </CustomCard>
+      )}
+
+      {productsCounts.sipHookCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Sip.Xomut</h5>
+          </div>
+          <HooksTableWrapper filter={filter} hookType={HookTypes.SipHook} />
+        </CustomCard>
+      )}
+
+      {productsCounts.cabelHookCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Kabel.Xomut</h5>
+          </div>
+          <HooksTableWrapper filter={filter} hookType={HookTypes.CabelHook} />
+        </CustomCard>
+      )}
+
+      {productsCounts.glueForNailCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Burama mix uchun yelim pona</h5>
+          </div>
+          <HooksTableWrapper filter={filter} hookType={HookTypes.CabelHook} />
+        </CustomCard>
+      )}
+
+      {productsCounts.nailCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Burama mix</h5>
+          </div>
+          <NailsTableWrapper filter={filter} />
+        </CustomCard>
+      )}
+
+      {productsCounts.ribbonCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Sip.Lenta</h5>
+          </div>
+          <RibbonsTableWrapper filter={filter} />
+        </CustomCard>
+      )}
+
+      {productsCounts.serverCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Server</h5>
+          </div>
+          <ServersTableWrapper filter={filter} />
+        </CustomCard>
+      )}
+
+      {productsCounts.gofraShellCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Gofra qobiq</h5>
+          </div>
+          <ShellsTableWrapper filter={filter} shellType={ShellTypes.GofraShell} />
+        </CustomCard>
+      )}
+
+      {productsCounts.plasticShellCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Plastik qobiq</h5>
+          </div>
+          <ShellsTableWrapper filter={filter} shellType={ShellTypes.PlasticShell} />
+        </CustomCard>
+      )}
+
+      {productsCounts.videoRecorderCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Video registrator</h5>
+          </div>
+          <VideoRecordersTableWrapper filter={filter} />
+        </CustomCard>
+      )}
+
+      {productsCounts.freezerCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Qotirgich</h5>
+          </div>
+          <FreezersTableWrapper filter={filter} />
         </CustomCard>
       )}
 

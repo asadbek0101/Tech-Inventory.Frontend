@@ -1,13 +1,17 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { ObjectFilter, ObjectProductsPageTypes } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { CabelTypes } from "../../api/cabels/CabelDto";
 import { ShelfTypes } from "../../api/shelf/ShelfDto";
 import { RackTypes } from "../../api/rackes/RackesDto";
+import { ShellTypes } from "../../api/shells/ShellsDto";
+import { HookTypes } from "../../api/hooks/HooksDto";
 import { SwitchTypes } from "../../api/switches/SwitchesDto";
 import { SvetaforTypes } from "../../api/svetafor/SvetaforDto";
 import { ProductTypes } from "../../api/AppDto";
 import { useI18n } from "../../i18n/I18nContext";
+import { objectProductTypesOptions } from "../../constants/AppConstants";
+import { BracketTypes } from "../../api/brackets/BracketsDto";
 
 import TabPage from "../tabs/TabPage";
 import Button, { BgColors } from "../ui/Button";
@@ -23,10 +27,20 @@ import AvtomatsFormWrapper from "../avtomats/AvtomatsFormWrapper";
 import AkumalatorsFormWrapper from "../akumalators/AkumalatorsFormWrapper";
 import SocketFormWrapper from "../sockets/SocketFormWrapper";
 import StabilizersFormWrapper from "../stabilizers/StabilizersFormWrapper";
-import { objectProductTypesOptions } from "../../constants/AppConstants";
 import UpsFormWrapper from "../ups/UpsFormWrapper";
 import SpeedCheckingFormWrapper from "../speed-checking/SpeedCheckingFormWrapper";
 import StanchionsFormWrapper from "../stanchions/StanchionsFormWrapper";
+import BoxesFormWrapper from "../boxes/BoxesFormWrapper";
+import BracketsFormWrapper from "../brackets/BracketsFormWrapper";
+import ConnectorsFormWrapper from "../connectors/ConnectorsFormWrapper";
+import CountersFormWrapper from "../counters/CountersFormWrapper";
+import HooksFormWrapper from "../hooks/HooksFormWrapper";
+import NailsFormWrapper from "../nails/NailsFormWrapper";
+import RibbonsFormWrapper from "../ribbons/RibbonsFormWrapper";
+import ServersFormWrapper from "../servers/ServersFormWrapper";
+import ShellsFormWrapper from "../shells/ShellsFormWrapper";
+import VideoRecordersFormWrapper from "../video-recorders/VideoRecorderFormWrapper";
+import FreezersFormWrapper from "../freezers/FreezersFormWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -119,8 +133,34 @@ export default function ObjectProductsFormWrapper({ filter }: Props) {
       {product === ProductTypes.Ups && <UpsFormWrapper filter={filter} />}
       {product === ProductTypes.Stanchion && <StanchionsFormWrapper filter={filter} />}
       {product === ProductTypes.SpeedCheckingRadar && <SpeedCheckingFormWrapper filter={filter} />}
+      {product === ProductTypes.PillarBracket && (
+        <BracketsFormWrapper filter={filter} bracketType={BracketTypes.PillarBracket} />
+      )}
+      {product === ProductTypes.WallBracket && (
+        <BracketsFormWrapper filter={filter} bracketType={BracketTypes.WallBracket} />
+      )}
+      {product === ProductTypes.Corob && <BoxesFormWrapper filter={filter} />}
+      {product === ProductTypes.Connector && <ConnectorsFormWrapper filter={filter} />}
+      {product === ProductTypes.Nail && <NailsFormWrapper filter={filter} />}
+      {product === ProductTypes.Counter && <CountersFormWrapper filter={filter} />}
+      {product === ProductTypes.Ribbon && <RibbonsFormWrapper filter={filter} />}
+      {product === ProductTypes.Server && <ServersFormWrapper filter={filter} />}
+      {product === ProductTypes.VideoRecorder && <VideoRecordersFormWrapper filter={filter} />}
+      {product === ProductTypes.Freezer && <FreezersFormWrapper filter={filter} />}
       {product === ProductTypes.TelecomunicationShelf && (
         <ShelvesFormWrapper filter={filter} shelfType={ShelfTypes.TelecommunicationShelf} />
+      )}
+      {product === ProductTypes.SipHook && (
+        <HooksFormWrapper filter={filter} hookType={HookTypes.SipHook} />
+      )}
+      {product === ProductTypes.CabelHook && (
+        <HooksFormWrapper filter={filter} hookType={HookTypes.CabelHook} />
+      )}
+      {product === ProductTypes.GofraShell && (
+        <ShellsFormWrapper filter={filter} shellType={ShellTypes.GofraShell} />
+      )}
+      {product === ProductTypes.PlasticShell && (
+        <ShellsFormWrapper filter={filter} shellType={ShellTypes.PlasticShell} />
       )}
     </TabPage>
   );

@@ -35,6 +35,12 @@ export class ObyektApi extends BaseApi {
     });
   }
 
+  public updateConnectionType(json: any) {
+    return this.put("ConnectionTypes/Update", {
+      json,
+    });
+  }
+
   public updateObyekt(json: any) {
     return this.put("Obyekts/Update", {
       json,

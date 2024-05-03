@@ -4,18 +4,26 @@ import { ProjectFilter } from "../../filters/ProjectFilter";
 import { useEffect, useMemo, useState } from "react";
 import { useNumberOfOrdersApiContext } from "../../api/number-of-orders/NumberOfOrderApiContext";
 import Button, { BgColors } from "../ui/Button";
+import { showError } from "../../utils/NotificationUtils";
 
 import AddIcon from "../icons/AddIcon";
 import TabPage from "../tabs/TabPage";
 import NumberOfOrderTable from "./NumberOfOrderTable";
-import { showError } from "../../utils/NotificationUtils";
+import DeleteIcon from "../icons/DeleteIcon";
+import Paginator from "../paginator/Paginator";
+import Modal from "../ui/Modal";
+import { GroupBox } from "../ui/GroupBox";
+import YesOrNoModal from "../ui/YesOrNoModal";
 
 interface Props {
   readonly filter: ProjectFilter;
 }
 
 export default function NumberOfOrdersTableWrapper({ filter }: Props) {
-  const [numberOfOrders, setNumberOfOrders] = useState<any[]>([]);
+  const [deleteDocuments, setDeleteDocuments] = useState<number[]>();
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [data, setData] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const { translate } = useI18n();
@@ -24,8 +32,12 @@ export default function NumberOfOrdersTableWrapper({ filter }: Props) {
   const projectId = useMemo(() => filter.getProjectId() || 0, [filter]);
 
   useEffect(() => {
+    setLoading(true);
     NumberOfOrdersApi.getNumberOfOrders({ projectId })
-      .then((r) => setNumberOfOrders(r?.data?.data))
+      .then((r) => {
+        setData(r?.data);
+        setLoading(false);
+      })
       .catch(showError);
   }, [projectId, NumberOfOrdersApi]);
 
@@ -54,8 +66,60 @@ export default function NumberOfOrdersTableWrapper({ filter }: Props) {
           </Button>
         </div>
       }
+      footerComponent={
+        <div className="d-flex justify-content-between align-items-center h-100">
+          <Button
+            disabled={!(deleteDocuments && deleteDocuments?.length > 0)}
+            onClick={() => setDeleteModal(true)}
+            className="py-2 px-2 text-light"
+            bgColor={deleteDocuments && deleteDocuments?.length > 0 ? BgColors.Red : BgColors.White}
+          >
+            <DeleteIcon color={deleteDocuments && deleteDocuments?.length > 0 ? "#fff" : "#000"} />
+          </Button>
+          <Paginator
+            filter={filter}
+            totalPageCount={data?.totalPageCount}
+            totalRowCount={data?.totalRowCount}
+          />
+        </div>
+      }
     >
-      <NumberOfOrderTable data={numberOfOrders} loading={false} />
+      <NumberOfOrderTable
+        data={data?.data}
+        loading={loading}
+        selectIds={setDeleteDocuments}
+        editNumberOfOrder={(value) =>
+          navigate(
+            `/dashboard/projects/number-of-order-form?projectId=${projectId}&numberOfOrderId=${value}`,
+          )
+        }
+      />
+      <Modal
+        show={deleteModal}
+        closeHandler={() => setDeleteModal(false)}
+        className="d-flex justify-content-center align-items-center"
+        contentClassName="rounded p-4"
+        width="500px"
+      >
+        <GroupBox>
+          <YesOrNoModal
+            title="REGION_TABLE_DELETE_REGIONS_MODAL_QUESTION"
+            setResponse={(value: string) => {
+              if (value === "YES") {
+                const json: any = {
+                  numberOfOrderIds: deleteDocuments,
+                };
+                NumberOfOrdersApi.deleteNumberOfOrders(json)
+                  .then(() => {
+                    window.location.reload();
+                  })
+                  .catch(showError);
+              }
+              setDeleteModal(false);
+            }}
+          />
+        </GroupBox>
+      </Modal>
     </TabPage>
   );
 }
