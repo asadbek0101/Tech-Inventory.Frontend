@@ -2,6 +2,8 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { profileSelector, tokenSelector } from "../reducers/authReducer";
 import { useShallowEqualSelector } from "../hooks/useShallowSelector";
+import { CheckRole } from "../utils/CheckRole";
+import { UserRoles } from "../api/AppDto";
 
 import AppContainer from "./AppContainer";
 import UsersContainer from "./UsersContainer";
@@ -12,8 +14,6 @@ import RegionsContainer from "./RegionsContainer";
 import ProjectsContainer from "./ProjectsContainer";
 import MapContainer from "./MapContainer";
 import ModelsContainer from "./ModelsContainer";
-import { CheckRole } from "../utils/CheckRole";
-import { UserRoles } from "../api/AppDto";
 import PageNotFoundContainer from "./PageNotFoundContainer";
 
 export default function RootContainer() {
@@ -39,27 +39,46 @@ export default function RootContainer() {
     <Routes>
       {isAuthorized && (
         <Route path="dashboard" element={<AppContainer />}>
-          {(CheckRole(UserRoles.SuperAdmin, profile) || CheckRole(UserRoles.Admin, profile)) && (
-            <Route path="regions/:tab?" element={<RegionsContainer />} />
-          )}
-          {(CheckRole(UserRoles.SuperAdmin, profile) ||
-            CheckRole(UserRoles.Admin, profile) ||
-            CheckRole(UserRoles.Staff, profile)) && (
+          {(CheckRole(UserRoles.Programmer, profile) ||
+            CheckRole(UserRoles.DepartmentHead, profile) ||
+            CheckRole(UserRoles.ChiefSpecialist, profile) ||
+            CheckRole(UserRoles.SeniorSpecialist, profile)) && (
             <Route path="objects/:tab?" element={<ObjectContainer />} />
           )}
-          {(CheckRole(UserRoles.SuperAdmin, profile) || CheckRole(UserRoles.Admin, profile)) && (
+          {(CheckRole(UserRoles.Programmer, profile) ||
+            CheckRole(UserRoles.DepartmentHead, profile) ||
+            CheckRole(UserRoles.ChiefSpecialist, profile) ||
+            CheckRole(UserRoles.LeadingExpert, profile)) && (
+            <Route path="regions/:tab?" element={<RegionsContainer />} />
+          )}
+          {(CheckRole(UserRoles.Programmer, profile) ||
+            CheckRole(UserRoles.DepartmentHead, profile) ||
+            CheckRole(UserRoles.ChiefSpecialist, profile)) && (
             <Route path="projects/:tab?" element={<ProjectsContainer />} />
           )}
-          {(CheckRole(UserRoles.SuperAdmin, profile) || CheckRole(UserRoles.Admin, profile)) && (
+          {(CheckRole(UserRoles.Programmer, profile) ||
+            CheckRole(UserRoles.DepartmentHead, profile) ||
+            CheckRole(UserRoles.ChiefSpecialist, profile)) && (
             <Route path="models/:tab?" element={<ModelsContainer />} />
           )}
-          {(CheckRole(UserRoles.SuperAdmin, profile) ||
-            CheckRole(UserRoles.Admin, profile) ||
-            CheckRole(UserRoles.Staff, profile)) && (
+          {CheckRole(UserRoles.Programmer, profile) && (
             <Route path="users/:tab?" element={<UsersContainer />} />
           )}
-          <Route path="settings/:tab?" element={<SettingsContainer />} />
-          <Route path="map/:tab?" element={<MapContainer />} />
+          {(CheckRole(UserRoles.Programmer, profile) ||
+            CheckRole(UserRoles.DepartmentHead, profile) ||
+            CheckRole(UserRoles.ChiefSpecialist, profile) ||
+            CheckRole(UserRoles.LeadingExpert, profile) ||
+            CheckRole(UserRoles.SeniorSpecialist, profile)) && (
+            <Route path="settings/:tab?" element={<SettingsContainer />} />
+          )}
+          {(CheckRole(UserRoles.Programmer, profile) ||
+            CheckRole(UserRoles.DepartmentHead, profile) ||
+            CheckRole(UserRoles.ChiefSpecialist, profile) ||
+            CheckRole(UserRoles.LeadingExpert, profile) ||
+            CheckRole(UserRoles.SeniorSpecialist, profile)) && (
+            <Route path="map/:tab?" element={<MapContainer />} />
+          )}
+
           <Route path="*" element={<PageNotFoundContainer />} />
         </Route>
       )}

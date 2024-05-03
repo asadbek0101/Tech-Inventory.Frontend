@@ -8,12 +8,12 @@ import { update } from "immupdate";
 import { object, string } from "yup";
 import { SelectPickerField } from "../form/SelectPrickerField";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
+import { UserIntialProps } from "../../api/users/UsersDto";
 
 interface Props {
-  readonly initialValues: any;
+  readonly initialValues: UserIntialProps;
   readonly roles: SelectPickerOptionsProps[];
   readonly regions: SelectPickerOptionsProps[];
-  readonly districts: SelectPickerOptionsProps[];
   readonly onChangeRegionId: (value: any) => void;
   readonly setInitialValues: (value: any) => void;
   readonly onSubmit: (value: any) => void;
@@ -33,9 +33,41 @@ export default function UsersForm({
   onSubmit,
   roles,
   regions,
-  districts,
 }: Props) {
   const { translate } = useI18n();
+
+  const onChangeFirstName = useCallback(
+    (value: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          firstName: value.target.value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
+  const onChangeLastName = useCallback(
+    (value: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          lastName: value.target.value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
+  const onChangeMiddleName = useCallback(
+    (value: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          middleName: value.target.value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
 
   const onChangeEmail = useCallback(
     (value: any) => {
@@ -64,17 +96,6 @@ export default function UsersForm({
       setInitialValues((prev: any) =>
         update(prev, {
           userName: value.target.value,
-        }),
-      );
-    },
-    [setInitialValues],
-  );
-
-  const onChangeDistrictId = useCallback(
-    (value: any) => {
-      setInitialValues((prev: any) =>
-        update(prev, {
-          districtId: value,
         }),
       );
     },
@@ -119,6 +140,30 @@ export default function UsersForm({
                   <div className="row">
                     <div className="col-4 my-2">
                       <InputField
+                        label="Ism"
+                        name="firstName"
+                        value={initialValues.firstName}
+                        onChange={onChangeFirstName}
+                      />
+                    </div>
+                    <div className="col-4 my-2">
+                      <InputField
+                        label="Familiya"
+                        name="lastName"
+                        value={initialValues.lastName}
+                        onChange={onChangeLastName}
+                      />
+                    </div>
+                    <div className="col-4 my-2">
+                      <InputField
+                        label="Otasining ismi"
+                        name="middleName"
+                        value={initialValues.middleName}
+                        onChange={onChangeMiddleName}
+                      />
+                    </div>
+                    <div className="col-4 my-2">
+                      <InputField
                         label="Elektron pochta"
                         name="email"
                         value={initialValues.email}
@@ -151,14 +196,6 @@ export default function UsersForm({
                     </div>
                     <div className="col-4 my-2">
                       <SelectPickerField
-                        label="Tuman"
-                        name="districtId"
-                        options={districts}
-                        onChanges={onChangeDistrictId}
-                      />
-                    </div>
-                    <div className="col-4 my-2">
-                      <SelectPickerField
                         label="Role"
                         name="role"
                         options={roles}
@@ -173,7 +210,7 @@ export default function UsersForm({
                           name="password"
                           value={initialValues.password}
                           onChange={onChangePassword}
-                          disabled={initialValues.id}
+                          disabled={initialValues?.id ? true : false}
                         />
                       </div>
                     )}

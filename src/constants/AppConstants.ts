@@ -109,7 +109,7 @@ export const objectProductTypesOptions = [
     value: 26,
   },
   {
-    label: "Elektr energiyasini hisobga olish uskunasini",
+    label: "Elektr energiya hisoblagichi",
     value: 27,
   },
   {
@@ -224,7 +224,7 @@ export const modelTypesOptions = [
     value: 17,
   },
   {
-    label: "Elektr energiyasini hisobga olish uskunasini",
+    label: "Elektr energiya hisoblagichi",
     value: 18,
   },
   {

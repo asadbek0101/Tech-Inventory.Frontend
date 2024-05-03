@@ -27,7 +27,7 @@ export default function SidebarMenu() {
 
   const navigate = useNavigate();
 
-  const role = useMemo(() => profile?.role || "", [profile]);
+  const role = useMemo(() => profile?.RoleName || "", [profile]);
 
   return (
     <div className="sidebar-menu">
@@ -45,44 +45,60 @@ export default function SidebarMenu() {
       </div>
       <CustomLine />
       <div className="sidebar-menu-menu">
-        {(CheckRole(UserRoles.SuperAdmin, profile) ||
-          CheckRole(UserRoles.Admin, profile) ||
-          CheckRole(UserRoles.Staff, profile)) && (
+        {(CheckRole(UserRoles.Programmer, profile) ||
+          CheckRole(UserRoles.DepartmentHead, profile) ||
+          CheckRole(UserRoles.ChiefSpecialist, profile) ||
+          CheckRole(UserRoles.LeadingExpert, profile) ||
+          CheckRole(UserRoles.SeniorSpecialist, profile)) && (
           <SidebarItem link="objects" icon={<LandMarkIcon />}>
             {translate("SIDE_MENU_OBJECTS_TITLE")}
           </SidebarItem>
         )}
-        {(CheckRole(UserRoles.SuperAdmin, profile) || CheckRole(UserRoles.Admin, profile)) && (
+        {(CheckRole(UserRoles.Programmer, profile) ||
+          CheckRole(UserRoles.DepartmentHead, profile) ||
+          CheckRole(UserRoles.ChiefSpecialist, profile)) && (
           <SidebarItem link="regions" icon={<FlagIcon />}>
             {translate("SIDE_MENU_REGIONS_TITLE")}
           </SidebarItem>
         )}
-        {(CheckRole(UserRoles.SuperAdmin, profile) || CheckRole(UserRoles.Admin, profile)) && (
+        {(CheckRole(UserRoles.Programmer, profile) ||
+          CheckRole(UserRoles.DepartmentHead, profile) ||
+          CheckRole(UserRoles.ChiefSpecialist, profile)) && (
           <SidebarItem link="projects" icon={<FileInvoiceIcon />}>
             {translate("SIDE_MENU_PROJECTS_TITLE")}
           </SidebarItem>
         )}
-        {(CheckRole(UserRoles.SuperAdmin, profile) || CheckRole(UserRoles.Admin, profile)) && (
+        {(CheckRole(UserRoles.Programmer, profile) ||
+          CheckRole(UserRoles.DepartmentHead, profile) ||
+          CheckRole(UserRoles.ChiefSpecialist, profile)) && (
           <SidebarItem link="models" icon={<CameraIcon />}>
             {translate("Modellar")}
           </SidebarItem>
         )}
-        {CheckRole(UserRoles.SuperAdmin, profile) && (
+        {CheckRole(UserRoles.Programmer, profile) && (
           <SidebarItem link="users" icon={<UsersIcon />}>
             {translate("SIDE_MENU_USERS_TITLE")}
           </SidebarItem>
         )}
-        {(CheckRole(UserRoles.SuperAdmin, profile) ||
-          CheckRole(UserRoles.Admin, profile) ||
-          CheckRole(UserRoles.Staff, profile)) && (
+        {(CheckRole(UserRoles.Programmer, profile) ||
+          CheckRole(UserRoles.DepartmentHead, profile) ||
+          CheckRole(UserRoles.ChiefSpecialist, profile) ||
+          CheckRole(UserRoles.LeadingExpert, profile) ||
+          CheckRole(UserRoles.SeniorSpecialist, profile)) && (
           <SidebarItem link="map" icon={<LocationIcon />}>
             {translate("SIDE_MENU_MAP_TITLE")}
           </SidebarItem>
         )}
         <CustomLine />
-        <SidebarItem link="settings" icon={<SettingsIcon />}>
-          {translate("SIDE_MENU_SETTINGS_TITLE")}
-        </SidebarItem>
+        {(CheckRole(UserRoles.Programmer, profile) ||
+          CheckRole(UserRoles.DepartmentHead, profile) ||
+          CheckRole(UserRoles.ChiefSpecialist, profile) ||
+          CheckRole(UserRoles.LeadingExpert, profile) ||
+          CheckRole(UserRoles.SeniorSpecialist, profile)) && (
+          <SidebarItem link="settings" icon={<SettingsIcon />}>
+            {translate("SIDE_MENU_SETTINGS_TITLE")}
+          </SidebarItem>
+        )}
       </div>
     </div>
   );

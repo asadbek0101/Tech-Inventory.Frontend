@@ -3,7 +3,6 @@ import Button, { BgColors } from "../ui/Button";
 
 import Table from "../table/Table";
 import PencilIcon from "../icons/PencilIcon";
-import StatusPicker from "../ui/StatusPecker";
 
 interface Props {
   readonly data: any;
@@ -32,13 +31,21 @@ export default function UsersTable({ data, loading, deleteUser, editStatus, edit
       width: 240,
     },
     {
-      header: translate("Viloyat"),
-      access: "region",
+      header: translate("To'liq nomi"),
+      access: "fullName",
+      width: 300,
+      ceil: (row: any) => {
+        return <span>{row.firstName + " " + row.lastName + " " + row.middleName}</span>;
+      },
+    },
+    {
+      header: translate("Lavozim"),
+      access: "roleName",
       width: 240,
     },
     {
-      header: translate("Tuman"),
-      access: "district",
+      header: translate("Hudud"),
+      access: "region",
       width: 240,
     },
     {

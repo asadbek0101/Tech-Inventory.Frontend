@@ -1,7 +1,18 @@
 export enum UserRoles {
-  SuperAdmin = "SuperAdmin",
-  Admin = "Admin",
-  Staff = "Staff",
+  // dasturchi
+  Programmer = "Programmer",
+
+  // bo'lim bo'shlig'i
+  DepartmentHead = "DepartmentHead",
+
+  // bosh mutaxassis
+  ChiefSpecialist = "ChiefSpecialist",
+
+  // yetakchi mutaxassis
+  LeadingExpert = "LeadingExpert",
+
+  // katta mutaxassis
+  SeniorSpecialist = "SeniorSpecialist",
 }
 
 export enum TabPageType {

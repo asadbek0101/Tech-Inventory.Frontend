@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useUsersContext } from "../../api/users/UsersContext";
-import { CreateUserProps } from "../../api/users/UsersDto";
+import { CreateUserProps, UserIntialProps } from "../../api/users/UsersDto";
 import { useI18n } from "../../i18n/I18nContext";
 import { useNavigate } from "react-router-dom";
 import { TabPageType } from "../../api/AppDto";
@@ -30,17 +30,21 @@ export default function UsersFormWrapper({ filter }: Props) {
 
   const userId = useMemo(() => filter.getUserId(), [filter]);
 
-  const [initialValues, setIntialValues] = useState({
+  const [initialValues, setIntialValues] = useState<UserIntialProps>({
     email: "",
     userName: "",
     phoneNumber: "",
+    firstName: "",
+    lastName: "",
+    middleName: "",
+    roleName: "",
     role: "",
     regionId: 0,
-    districtId: 0,
+    image: "",
+    password: "",
   });
 
   const [regions, setRegions] = useState([]);
-  const [districts, setDistricts] = useState([]);
 
   useEffect(() => {
     RegionsApi.getRegionsList()
@@ -65,10 +69,6 @@ export default function UsersFormWrapper({ filter }: Props) {
             regionId: {
               label: r?.data?.region,
               value: r?.data?.regionId,
-            },
-            districtId: {
-              label: r?.data?.district,
-              value: r?.data?.districtId,
             },
             role: {
               label: r?.data?.role[0],
@@ -97,29 +97,13 @@ export default function UsersFormWrapper({ filter }: Props) {
 
   const onChangeRegion = useCallback(
     (value: any) => {
-      DistrictsApi.getDistrictsList({ regionId: value.value })
-        .then((r) => {
-          const _districts = r?.data?.map((d: any) => {
-            return {
-              label: d.name,
-              value: d.id,
-            };
-          });
-          setDistricts(_districts);
-        })
-        .catch(showError);
-
       setIntialValues((prev: any) =>
         update(prev, {
           regionId: value,
-          districtId: {
-            label: "",
-            value: "",
-          },
         }),
       );
     },
-    [DistrictsApi],
+    [setIntialValues],
   );
 
   const onSubmit = useCallback(
@@ -129,8 +113,8 @@ export default function UsersFormWrapper({ filter }: Props) {
           ...value,
           id: userId,
           regionId: value?.regionId?.value,
-          districtId: value?.districtId?.value,
-          roleName: value?.role?.value,
+          roleName: value?.role?.label,
+          roleValue: value?.role?.value,
         };
         UsersApi.updateUser(json)
           .then((r: any) => {
@@ -146,8 +130,8 @@ export default function UsersFormWrapper({ filter }: Props) {
         const json: CreateUserProps = {
           ...value,
           regionId: value?.regionId?.value,
-          districtId: value?.districtId?.value,
-          roleName: value?.role?.value,
+          roleName: value?.role?.label,
+          roleValue: value?.role?.value,
         };
         UsersApi.createUser(json)
           .then((r: any) => {
@@ -178,9 +162,8 @@ export default function UsersFormWrapper({ filter }: Props) {
       }
     >
       <UsersForm
-        regions={regions}
-        districts={districts}
         roles={roles}
+        regions={regions}
         initialValues={initialValues}
         onChangeRegionId={onChangeRegion}
         setInitialValues={setIntialValues}

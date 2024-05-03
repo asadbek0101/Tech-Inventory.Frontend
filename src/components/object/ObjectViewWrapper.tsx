@@ -392,7 +392,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
       {productsCounts.counterCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Elektr energiyasini hisobga olish uskunasini</h5>
+            <h5>Elektr energiya hisoblagichi</h5>
           </div>
           <CountersTableWrapper filter={filter} />
         </CustomCard>
