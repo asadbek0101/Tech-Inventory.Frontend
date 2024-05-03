@@ -42,13 +42,13 @@ export default function RootContainer() {
           {(CheckRole(UserRoles.Programmer, profile) ||
             CheckRole(UserRoles.DepartmentHead, profile) ||
             CheckRole(UserRoles.ChiefSpecialist, profile) ||
-            CheckRole(UserRoles.SeniorSpecialist, profile)) && (
+            CheckRole(UserRoles.SeniorSpecialist, profile) ||
+            CheckRole(UserRoles.LeadingExpert, profile)) && (
             <Route path="objects/:tab?" element={<ObjectContainer />} />
           )}
           {(CheckRole(UserRoles.Programmer, profile) ||
             CheckRole(UserRoles.DepartmentHead, profile) ||
-            CheckRole(UserRoles.ChiefSpecialist, profile) ||
-            CheckRole(UserRoles.LeadingExpert, profile)) && (
+            CheckRole(UserRoles.ChiefSpecialist, profile)) && (
             <Route path="regions/:tab?" element={<RegionsContainer />} />
           )}
           {(CheckRole(UserRoles.Programmer, profile) ||
