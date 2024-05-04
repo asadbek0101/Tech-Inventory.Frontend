@@ -119,6 +119,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
               label: r?.data?.model,
               value: r?.data?.modelId,
             },
+            files: [],
           };
           setInitalValues(ob);
         })
@@ -262,6 +263,25 @@ export default function ObjectFormWrapper({ filter }: Props) {
         };
         ObyektApi.updateObyekt(json)
           .then((r) => {
+            const files = initialValues?.files;
+            files.map((file: any) => {
+              if (file.file) {
+                const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}&fileName=${file.fileName}&type=1`;
+                const formData = new FormData();
+                formData.append("file", file.file);
+                const config = {
+                  headers: {
+                    "content-type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`,
+                    userId: `${userId}`,
+                  },
+                };
+                axios.post(url, formData, config).then((response: any) => {
+                  toast.success(response?.data);
+                });
+              }
+            });
+
             if (r?.data?.id) {
               const connectionTypeJson = {
                 obyektId: r?.data?.id,

@@ -4,10 +4,10 @@ import Table from "../table/Table";
 import moment from "moment";
 import Button, { BgColors } from "../ui/Button";
 import PencilIcon from "../icons/PencilIcon";
-import EyeIcon from "../icons/EyeIcon";
 import DonwloadIcon from "../icons/DowloadIcon";
 import LocationIcon from "../icons/LocationIcon";
 import ProductsIcon from "../icons/ProductsIcon";
+import EyeIcon from "../icons/EyeIcon";
 
 interface Props {
   readonly data: any;
@@ -93,6 +93,7 @@ export default function ObjectTable({
               onClick={() => setOjectForView(row.id)}
               className="py-2 px-2 text-light"
               bgColor={BgColors.Green}
+              hoverLabel="Jiholarni ko'rish"
             >
               <EyeIcon />
             </Button>
@@ -100,6 +101,7 @@ export default function ObjectTable({
               onClick={() => setOjectForProducts(row.id)}
               className="py-2 px-2 text-light"
               bgColor={BgColors.Green}
+              hoverLabel="Jiholarni qo'shish"
             >
               <ProductsIcon />
             </Button>
@@ -107,6 +109,7 @@ export default function ObjectTable({
               onClick={() => editObyekt(row.id)}
               className="py-2 px-2 text-light"
               bgColor={BgColors.Yellow}
+              hoverLabel="Obyektni yangilash"
             >
               <PencilIcon />
             </Button>
@@ -114,6 +117,7 @@ export default function ObjectTable({
               onClick={() => downloadPdf(row.id, row.name)}
               className="py-2 px-2 text-light"
               bgColor={BgColors.Navy}
+              hoverLabel="PDFda yuklash"
             >
               <DonwloadIcon />
             </Button>
@@ -121,6 +125,7 @@ export default function ObjectTable({
               onClick={() => readOnMap(row.id)}
               className="py-2 px-2 text-light"
               bgColor={BgColors.Navy}
+              hoverLabel="Xaritada ko'rish"
             >
               <LocationIcon />
             </Button>

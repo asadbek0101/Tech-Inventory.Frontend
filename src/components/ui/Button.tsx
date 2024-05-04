@@ -14,6 +14,7 @@ interface Props {
   readonly className?: string;
   readonly icon?: ReactNode;
   readonly bgColor?: string;
+  readonly hoverLabel?: string;
   readonly onClick?: () => void;
   readonly heigh?: string;
   readonly disabled?: boolean;
@@ -27,6 +28,7 @@ export default function Button({
   heigh,
   icon,
   bgColor,
+  hoverLabel,
   onClick,
   disabled = false,
   type = "button",
@@ -48,6 +50,7 @@ export default function Button({
           {" "}
           {icon}
           {children}
+          {Boolean(hoverLabel) && <span className="hover-label">{hoverLabel}</span>}
         </>
       ) : (
         <span>Loading...</span>

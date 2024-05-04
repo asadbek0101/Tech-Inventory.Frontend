@@ -42,6 +42,7 @@ import ShellsTableWrapper from "../shells/ShellsTableWrapper";
 import { ShellTypes } from "../../api/shells/ShellsDto";
 import VideoRecordersTableWrapper from "../video-recorders/VideoRecorderTableWrapper";
 import FreezersTableWrapper from "../freezers/FreezersTableWrapper";
+import AddIcon from "../icons/AddIcon";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -148,6 +149,17 @@ export default function ObjectViewWrapper({ filter }: Props) {
           setPath={downloadFile}
         />
       </CustomCard>
+      <div className="mt-3">
+        <Button
+          className="py-1 px-3 text-light"
+          bgColor={BgColors.Green}
+          heigh="34px"
+          icon={<AddIcon />}
+          onClick={() => navigate(`/dashboard/objects/object-products?objectId=${objectId}`)}
+        >
+          Jihozlar qo'shish
+        </Button>
+      </div>
 
       {productsCounts.cameraCount > 0 && (
         <CustomCard className="mt-4 p-3">
@@ -326,7 +338,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
         </CustomCard>
       )}
 
-      {productsCounts.socketCount > 0 && (
+      {productsCounts.stanchionCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
             <h5>Ustun</h5>
