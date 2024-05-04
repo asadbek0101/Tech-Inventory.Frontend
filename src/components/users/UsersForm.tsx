@@ -9,6 +9,7 @@ import { object, string } from "yup";
 import { SelectPickerField } from "../form/SelectPrickerField";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { UserIntialProps } from "../../api/users/UsersDto";
+import ImageUploadField from "../form/ImageUploadField";
 
 interface Props {
   readonly initialValues: UserIntialProps;
@@ -113,6 +114,17 @@ export default function UsersForm({
     [setInitialValues],
   );
 
+  const onChangeImage = useCallback(
+    (value: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          image: value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
   const onChangePassword = useCallback(
     (value: any) => {
       setInitialValues((prev: any) =>
@@ -138,82 +150,94 @@ export default function UsersForm({
               <div className="col-12">
                 <GroupBox title="Foydalanuvchi">
                   <div className="row">
-                    <div className="col-4 my-2">
-                      <InputField
-                        label="Ism"
-                        name="firstName"
-                        value={initialValues.firstName}
-                        onChange={onChangeFirstName}
+                    <div className="col-2">
+                      <ImageUploadField
+                        label="Rasm yuklash"
+                        onChange={onChangeImage}
+                        value={initialValues.image || ""}
                       />
                     </div>
-                    <div className="col-4 my-2">
-                      <InputField
-                        label="Familiya"
-                        name="lastName"
-                        value={initialValues.lastName}
-                        onChange={onChangeLastName}
-                      />
-                    </div>
-                    <div className="col-4 my-2">
-                      <InputField
-                        label="Otasining ismi"
-                        name="middleName"
-                        value={initialValues.middleName}
-                        onChange={onChangeMiddleName}
-                      />
-                    </div>
-                    <div className="col-4 my-2">
-                      <InputField
-                        label="Elektron pochta"
-                        name="email"
-                        value={initialValues.email}
-                        onChange={onChangeEmail}
-                      />
-                    </div>
-                    <div className="col-4 my-2">
-                      <InputField
-                        label="Telefon raqam"
-                        name="phoneNumber"
-                        value={initialValues.phoneNumber}
-                        onChange={onChangePhoneNumber}
-                      />
-                    </div>
-                    <div className="col-4 my-2">
-                      <InputField
-                        label="Username"
-                        name="userName"
-                        value={initialValues.userName}
-                        onChange={onChangeUsername}
-                      />
-                    </div>
-                    <div className="col-4 my-2">
-                      <SelectPickerField
-                        label="Viloyat"
-                        name="regionId"
-                        options={regions}
-                        onChanges={onChangeRegionId}
-                      />
-                    </div>
-                    <div className="col-4 my-2">
-                      <SelectPickerField
-                        label="Role"
-                        name="role"
-                        options={roles}
-                        onChanges={onChangeRole}
-                      />
+                    <div className="col-10">
+                      <div className="row">
+                        <div className="col-4 my-2">
+                          <InputField
+                            label="Ism"
+                            name="firstName"
+                            value={initialValues.firstName}
+                            onChange={onChangeFirstName}
+                          />
+                        </div>
+                        <div className="col-4 my-2">
+                          <InputField
+                            label="Familiya"
+                            name="lastName"
+                            value={initialValues.lastName}
+                            onChange={onChangeLastName}
+                          />
+                        </div>
+                        <div className="col-4 my-2">
+                          <InputField
+                            label="Otasining ismi"
+                            name="middleName"
+                            value={initialValues.middleName}
+                            onChange={onChangeMiddleName}
+                          />
+                        </div>
+                        <div className="col-4 my-2">
+                          <InputField
+                            label="Elektron pochta"
+                            name="email"
+                            value={initialValues.email}
+                            onChange={onChangeEmail}
+                          />
+                        </div>
+                        <div className="col-4 my-2">
+                          <InputField
+                            label="Telefon raqam"
+                            name="phoneNumber"
+                            value={initialValues.phoneNumber}
+                            onChange={onChangePhoneNumber}
+                          />
+                        </div>
+                        <div className="col-4 my-2">
+                          <InputField
+                            label="Username"
+                            name="userName"
+                            value={initialValues.userName}
+                            onChange={onChangeUsername}
+                          />
+                        </div>
+                        <div className="col-4 my-2">
+                          <SelectPickerField
+                            label="Viloyat"
+                            name="regionId"
+                            options={regions}
+                            onChanges={onChangeRegionId}
+                          />
+                        </div>
+                        <div className="col-4 my-2">
+                          <SelectPickerField
+                            label="Role"
+                            name="role"
+                            options={roles}
+                            onChanges={onChangeRole}
+                          />
+                        </div>
+
+                        {!initialValues.id && (
+                          <div className="col-4 my-2">
+                            <InputField
+                              label="Parol"
+                              name="password"
+                              value={initialValues.password}
+                              onChange={onChangePassword}
+                              disabled={initialValues?.id ? true : false}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    {!initialValues.id && (
-                      <div className="col-4 my-2">
-                        <InputField
-                          label="Parol"
-                          name="password"
-                          value={initialValues.password}
-                          onChange={onChangePassword}
-                          disabled={initialValues?.id ? true : false}
-                        />
-                      </div>
-                    )}
                     <div className="col-12 d-flex justify-content-end mt-3">
                       <Button
                         type="submit"

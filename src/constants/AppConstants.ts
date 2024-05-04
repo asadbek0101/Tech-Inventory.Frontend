@@ -1,6 +1,6 @@
 export const IS_DEV = process.env.NODE_ENV !== "production";
 
-// export const API_HOST = "https://localhost:44368/api/" as string;
+//export const API_HOST = "https://localhost:44368/api/" as string;
 export const API_HOST = "http://172.24.201.4:8080/api/" as string;
 
 export const objectProductTypesOptions = [
@@ -97,11 +97,7 @@ export const objectProductTypesOptions = [
     value: 23,
   },
   {
-    label: "Devorga aylanma kamerani o'rnatish uchun kronshteyn",
-    value: 24,
-  },
-  {
-    label: "Tirgagichga aylanma kamerani o'rnatish uchun kronshteyn",
+    label: "Kronshteyn",
     value: 25,
   },
   {

@@ -157,9 +157,6 @@ export default function ObjectProductsTableWrapper({ filter }: Props) {
       {product === ProductTypes.PillarBracket && (
         <BracketsTableWrapper filter={filter} bracketType={BracketTypes.PillarBracket} />
       )}
-      {product === ProductTypes.WallBracket && (
-        <BracketsTableWrapper filter={filter} bracketType={BracketTypes.WallBracket} />
-      )}
       {product === ProductTypes.Corob && <BoxesTableWrapper filter={filter} />}
       {product === ProductTypes.Connector && <ConnectorsTableWrapper filter={filter} />}
       {product === ProductTypes.Counter && <CountersTableWrapper filter={filter} />}

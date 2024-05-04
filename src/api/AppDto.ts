@@ -8,7 +8,7 @@ export enum UserRoles {
   // bosh mutaxassis
   ChiefSpecialist = "ChiefSpecialist",
 
-  // yetakchi mutaxassis
+  // yetakchi mutaxassis[]
   LeadingExpert = "LeadingExpert",
 
   // katta mutaxassis

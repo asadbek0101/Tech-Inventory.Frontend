@@ -374,7 +374,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
       {productsCounts.pillarBracketCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Tirgagichga aylanma kamerani o'rnatish uchun kronshteyn</h5>
+            <h5>Kronshteyn</h5>
           </div>
           <BracketsTableWrapper filter={filter} bracketType={BracketTypes.PillarBracket} />
         </CustomCard>

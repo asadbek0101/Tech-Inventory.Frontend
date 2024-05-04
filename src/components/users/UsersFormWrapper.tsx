@@ -71,7 +71,7 @@ export default function UsersFormWrapper({ filter }: Props) {
               value: r?.data?.regionId,
             },
             role: {
-              label: r?.data?.role[0],
+              label: r?.data?.roleName,
               value: r?.data?.role[0]?.toUpperCase(),
             },
           };

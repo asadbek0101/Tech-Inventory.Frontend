@@ -136,9 +136,6 @@ export default function ObjectProductsFormWrapper({ filter }: Props) {
       {product === ProductTypes.PillarBracket && (
         <BracketsFormWrapper filter={filter} bracketType={BracketTypes.PillarBracket} />
       )}
-      {product === ProductTypes.WallBracket && (
-        <BracketsFormWrapper filter={filter} bracketType={BracketTypes.WallBracket} />
-      )}
       {product === ProductTypes.Corob && <BoxesFormWrapper filter={filter} />}
       {product === ProductTypes.Connector && <ConnectorsFormWrapper filter={filter} />}
       {product === ProductTypes.Nail && <NailsFormWrapper filter={filter} />}
