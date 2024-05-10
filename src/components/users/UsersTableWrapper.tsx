@@ -27,7 +27,6 @@ interface Props {
 export default function UsersTableWrapper({ filter }: Props) {
   const [deleteDocuments, setDeleteDocuments] = useState<number[]>();
   const [deleteModal, setDeleteModal] = useState(false);
-  const [statusModal, setStatusModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [document, setDocument] = useState<any>({});
   const [search, setSearch] = useState("");
@@ -143,10 +142,9 @@ export default function UsersTableWrapper({ filter }: Props) {
         editStatus={(row, value) => {
           row.status = value;
           setDocument(row);
-          setStatusModal(true);
         }}
         editDocument={(value) =>
-          navigate(`/dashboard/users/${TabPageType.Form}?userId=${value.id}`)
+          navigate(`/dashboard/users/${TabPageType.Form}?userId=${value}`)
         }
         deleteUser={setDeleteDocuments}
       />

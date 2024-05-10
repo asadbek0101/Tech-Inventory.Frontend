@@ -38,7 +38,7 @@ export function SelectPicker({
   hasError,
   disabled,
   className,
-  isSearchable = false,
+  isSearchable = true,
   inputClassName,
   labelPosition = PositionType.Top,
   placeholderSelect = "SELECT_PICKER_PLACEHOLDER_TITLE",

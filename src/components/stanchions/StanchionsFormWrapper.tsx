@@ -29,6 +29,22 @@ export default function StanchionsFormWrapper({ filter }: Props) {
 
   const navigate = useNavigate();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      StanchionsApi.getOneStanchion({ id: productId }).then((r) => {
+        const json = {
+          ...r?.data,
+          stanchionTypeId: {
+            label: r?.data?.stanchionType,
+            value: r?.data?.stanchionTypeId,
+          },
+        };
+        setInitalValues(json);
+      });
+    }
+  }, [StanchionsApi, productId]);
 
   useEffect(() => {
     ModelsApi.getModelsList({ type: ModelTypes.Stanchion })
@@ -46,19 +62,34 @@ export default function StanchionsFormWrapper({ filter }: Props) {
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-        stanchionTypeId: value.stanchionTypeId.value,
-      };
-      StanchionsApi.createStanchion(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+          stanchionTypeId: value.stanchionTypeId.value,
+        };
+        StanchionsApi.updateStanchion(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+          stanchionTypeId: value.stanchionTypeId.value,
+        };
+        StanchionsApi.createStanchion(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [StanchionsApi, objectId],
+    [StanchionsApi, objectId, productId],
   );
 
   return (

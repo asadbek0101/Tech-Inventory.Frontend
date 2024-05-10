@@ -7,9 +7,27 @@ export class ConnectorsApi extends BaseApi {
     });
   }
 
+  public getOneConnector(query: any) {
+    return this.get("Connectors/GetOne", {
+      query,
+    });
+  }
+
   public createConnector(json: any) {
     return this.post("Connectors/Create", {
       json,
+    });
+  }
+
+  public updateConnector(json: any) {
+    return this.put("Connectors/Update", {
+      json,
+    });
+  }
+
+  public deleteConnector(query: any) {
+    return this.delete("Connectors/Delete", {
+      query,
     });
   }
 }

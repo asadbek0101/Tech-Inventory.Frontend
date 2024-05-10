@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AkumalatorInitialProps } from "../../api/akumalator/AkumalatorDto";
 import { ObjectFilter } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
@@ -25,21 +25,44 @@ export default function AkumalatorsFormWrapper({ filter }: Props) {
   const navigate = useNavigate();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      AkumalatorApi.getOneAkumalator({ id: productId })
+        .then((r) => setInitalValues(r?.data))
+        .catch(showError);
+    }
+  }, [AkumalatorApi, productId]);
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-      };
-      AkumalatorApi.createAkumalator(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+        };
+        AkumalatorApi.updateAkumalator(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+        };
+        AkumalatorApi.createAkumalator(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [AkumalatorApi, objectId],
+    [AkumalatorApi, objectId, productId],
   );
 
   return (

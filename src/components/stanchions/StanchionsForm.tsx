@@ -82,8 +82,8 @@ export default function StanchionsForm({
                 <div className="row">
                   <div className="col-12">
                     <SelectPickerField
-                      name="modelId"
-                      label="Modeli"
+                      name="stanchionTypeId"
+                      label="Turi"
                       onChanges={onChangeModelId}
                       options={models}
                     />
@@ -91,7 +91,7 @@ export default function StanchionsForm({
                   <div className="col-12 mt-3">
                     <InputField
                       name="count"
-                      label="Rozetka soni"
+                      label="Soni"
                       value={initialValues.count}
                       onChange={onChangeCount}
                     />

@@ -30,6 +30,24 @@ export default function CountersFormWrapper({ filter }: Props) {
   const navigate = useNavigate();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      CountersApi.getOneCounter({ id: productId })
+        .then((r) => {
+          const json = {
+            ...r?.data,
+            modelId: {
+              label: r?.data?.model,
+              value: r?.data?.modelId,
+            },
+          };
+          setInitalValues(json);
+        })
+        .catch(showError);
+    }
+  }, [CountersApi, productId]);
 
   useEffect(() => {
     ModelsApi.getModelsList({ type: ModelTypes.Counter })
@@ -47,19 +65,34 @@ export default function CountersFormWrapper({ filter }: Props) {
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-        modelId: value.modelId.value,
-      };
-      CountersApi.createCounter(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        CountersApi.updateCounter(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        CountersApi.createCounter(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [CountersApi, objectId],
+    [CountersApi, objectId, productId],
   );
 
   return (

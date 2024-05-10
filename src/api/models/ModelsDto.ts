@@ -39,4 +39,5 @@ export enum ModelTypes {
   Bracket = 17,
   Counter = 18,
   VideoRecorder = 19,
+  MountingBox = 20,
 }

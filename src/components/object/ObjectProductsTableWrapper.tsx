@@ -12,7 +12,6 @@ import { Form, Formik } from "formik";
 import { ProductTypes } from "../../api/AppDto";
 import { SelectPickerField } from "../form/SelectPrickerField";
 import { noop } from "lodash";
-import { BracketTypes } from "../../api/brackets/BracketsDto";
 import { HookTypes } from "../../api/hooks/HooksDto";
 import { ShellTypes } from "../../api/shells/ShellsDto";
 
@@ -45,6 +44,8 @@ import ServersTableWrapper from "../servers/ServersTableWrapper";
 import ShellsTableWrapper from "../shells/ShellsTableWrapper";
 import VideoRecordersTableWrapper from "../video-recorders/VideoRecorderTableWrapper";
 import FreezersTableWrapper from "../freezers/FreezersTableWrapper";
+import { CameraTypes } from "../../api/cameras/CameraDto";
+import MountingBoxTableWrapper from "../mounting-box/MountingBoxTableWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -55,7 +56,7 @@ export default function ObjectProductsTableWrapper({ filter }: Props) {
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const navigate = useNavigate();
-  const product: number = useMemo(() => Number(filter.getProduct()) || 0, [filter]);
+  const product: number = useMemo(() => Number(filter.getProduct()) || 1, [filter]);
 
   const getProductType = useCallback(
     (value: any) => {
@@ -113,78 +114,220 @@ export default function ObjectProductsTableWrapper({ filter }: Props) {
         </div>
       }
     >
-      {product === ProductTypes.Camera && <CameraTableWrapper filter={filter} />}
+      {product === ProductTypes.Camera && (
+        <CameraTableWrapper
+          filter={filter}
+          cameraType={CameraTypes.Camera}
+          productForForm={ProductTypes.Camera}
+        />
+      )}
+      {product === ProductTypes.SpeedCheckingCamera && (
+        <CameraTableWrapper
+          filter={filter}
+          cameraType={CameraTypes.Radar}
+          productForForm={ProductTypes.SpeedCheckingCamera}
+        />
+      )}
+      {product === ProductTypes.ANPRCamera && (
+        <CameraTableWrapper
+          filter={filter}
+          cameraType={CameraTypes.ANPR}
+          productForForm={ProductTypes.ANPRCamera}
+        />
+      )}
+      {product === ProductTypes.PTZCamera && (
+        <CameraTableWrapper
+          filter={filter}
+          cameraType={CameraTypes.PTZ}
+          productForForm={ProductTypes.PTZCamera}
+        />
+      )}
+      {product === ProductTypes.C327Camera && (
+        <CameraTableWrapper
+          filter={filter}
+          cameraType={CameraTypes.C327}
+          productForForm={ProductTypes.C327Camera}
+        />
+      )}
+      {product === ProductTypes.CHQBACamera && (
+        <CameraTableWrapper
+          filter={filter}
+          cameraType={CameraTypes.CHQBA}
+          productForForm={ProductTypes.CHQBACamera}
+        />
+      )}
+      {product === ProductTypes.C733Camera && (
+        <CameraTableWrapper
+          filter={filter}
+          cameraType={CameraTypes.C733}
+          productForForm={ProductTypes.C733Camera}
+        />
+      )}
       {product === ProductTypes.ElectrCabel && (
-        <CabelTableWrapper filter={filter} cabelType={CabelTypes.ElectricCable} />
+        <CabelTableWrapper
+          filter={filter}
+          cabelType={CabelTypes.ElectricCable}
+          productForForm={ProductTypes.ElectrCabel}
+        />
       )}
       {product === ProductTypes.UtpCabel && (
-        <CabelTableWrapper filter={filter} cabelType={CabelTypes.UTPable} />
+        <CabelTableWrapper
+          filter={filter}
+          cabelType={CabelTypes.UTPable}
+          productForForm={ProductTypes.UtpCabel}
+        />
       )}
-      {product === ProductTypes.Projector && <ProjectorTableWrapper filter={filter} />}
+      {product === ProductTypes.Projector && (
+        <ProjectorTableWrapper filter={filter} productForForm={ProductTypes.Projector} />
+      )}
       {product === ProductTypes.DistributionShelf && (
-        <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.DistributionShelf} />
+        <ShelvesTableWrapper
+          filter={filter}
+          shelfType={ShelfTypes.DistributionShelf}
+          productForForm={ProductTypes.DistributionShelf}
+        />
       )}
       {product === ProductTypes.ODFOpticRack && (
-        <RackesTableWrapper filter={filter} rackType={RackTypes.ODFOpticRack} />
+        <RackesTableWrapper
+          filter={filter}
+          rackType={RackTypes.ODFOpticRack}
+          productForForm={ProductTypes.ODFOpticRack}
+        />
       )}
       {product === ProductTypes.MiniOptikRack && (
-        <RackesTableWrapper filter={filter} rackType={RackTypes.MiniOpticRack} />
+        <RackesTableWrapper
+          filter={filter}
+          rackType={RackTypes.MiniOpticRack}
+          productForForm={ProductTypes.MiniOptikRack}
+        />
       )}
       {product === ProductTypes.SwitchKombo && (
-        <SwitchesTableWrapper filter={filter} switchType={SwitchTypes.SwitchCombo} />
+        <SwitchesTableWrapper
+          filter={filter}
+          switchType={SwitchTypes.SwitchCombo}
+          productForForm={ProductTypes.SwitchKombo}
+        />
       )}
       {product === ProductTypes.SwitchPoe && (
-        <SwitchesTableWrapper filter={filter} switchType={SwitchTypes.SwitchPoE} />
+        <SwitchesTableWrapper
+          filter={filter}
+          switchType={SwitchTypes.SwitchPoE}
+          productForForm={ProductTypes.SwitchPoe}
+        />
       )}
-      {product === ProductTypes.Akumalator && <AkumalatorsTableWrapper filter={filter} />}
-      {product === ProductTypes.Avtomat && <AvtomatsTableWrapper filter={filter} />}
-      {/* {product === "Sockets" && <SocketTableWrapper filter={filter} />} */}
-      {product === ProductTypes.Stabilizer && <StabilizersTableWrapper filter={filter} />}
+      {product === ProductTypes.Akumalator && (
+        <AkumalatorsTableWrapper filter={filter} productForForm={ProductTypes.Akumalator} />
+      )}
+      {product === ProductTypes.Avtomat && (
+        <AvtomatsTableWrapper filter={filter} productForForm={ProductTypes.Avtomat} />
+      )}
+      {product === ProductTypes.Stabilizer && (
+        <StabilizersTableWrapper filter={filter} productForForm={ProductTypes.Stabilizer} />
+      )}
       {product === ProductTypes.SvetaforDetektorForCamera && (
         <SvetaforTableWrapper
           filter={filter}
           svetaforType={SvetaforTypes.SvetaforDetectorForCamera}
+          productForForm={ProductTypes.SvetaforDetektorForCamera}
         />
       )}
       {product === ProductTypes.SvetaforDetektor && (
-        <SvetaforTableWrapper filter={filter} svetaforType={SvetaforTypes.SvetaforDetector} />
+        <SvetaforTableWrapper
+          filter={filter}
+          svetaforType={SvetaforTypes.SvetaforDetector}
+          productForForm={ProductTypes.SvetaforDetektor}
+        />
       )}
-      {product === ProductTypes.Socket && <SocketTableWrapper filter={filter} />}
-      {product === ProductTypes.TerminalServer && <TerminalServerTableWrapper filter={filter} />}
-      {product === ProductTypes.Ups && <UpsTableWrapper filter={filter} />}
-      {product === ProductTypes.Stanchion && <StanchionsTableWrapper filter={filter} />}
-      {product === ProductTypes.SpeedCheckingRadar && <SpeedCheckingTableWrapper filter={filter} />}
-      {product === ProductTypes.PillarBracket && (
-        <BracketsTableWrapper filter={filter} bracketType={BracketTypes.PillarBracket} />
+      {product === ProductTypes.Socket && (
+        <SocketTableWrapper filter={filter} productForForm={ProductTypes.Socket} />
       )}
-      {product === ProductTypes.Corob && <BoxesTableWrapper filter={filter} />}
-      {product === ProductTypes.Connector && <ConnectorsTableWrapper filter={filter} />}
-      {product === ProductTypes.Counter && <CountersTableWrapper filter={filter} />}
-      {product === ProductTypes.Nail && <NailsTableWrapper filter={filter} />}
-      {product === ProductTypes.Ribbon && <RibbonsTableWrapper filter={filter} />}
-      {product === ProductTypes.Server && <ServersTableWrapper filter={filter} />}
-      {product === ProductTypes.VideoRecorder && <VideoRecordersTableWrapper filter={filter} />}
-      {product === ProductTypes.Freezer && <FreezersTableWrapper filter={filter} />}
+      {product === ProductTypes.TerminalServer && (
+        <TerminalServerTableWrapper filter={filter} productForForm={ProductTypes.TerminalServer} />
+      )}
+      {product === ProductTypes.UPS && (
+        <UpsTableWrapper filter={filter} productForForm={ProductTypes.UPS} />
+      )}
+      {product === ProductTypes.Stanchion && (
+        <StanchionsTableWrapper filter={filter} productForForm={ProductTypes.Stanchion} />
+      )}
+      {product === ProductTypes.Bracket && (
+        <BracketsTableWrapper filter={filter} productForForm={ProductTypes.Bracket} />
+      )}
+      {product === ProductTypes.Corob && (
+        <BoxesTableWrapper filter={filter} productForForm={ProductTypes.Corob} />
+      )}
+      {product === ProductTypes.MountingBox && (
+        <MountingBoxTableWrapper filter={filter} productForForm={ProductTypes.MountingBox} />
+      )}
+      {product === ProductTypes.Connector && (
+        <ConnectorsTableWrapper filter={filter} productForForm={ProductTypes.Connector} />
+      )}
+      {product === ProductTypes.Counter && (
+        <CountersTableWrapper filter={filter} productForForm={ProductTypes.Counter} />
+      )}
+      {product === ProductTypes.Nail && (
+        <NailsTableWrapper filter={filter} productForForm={ProductTypes.Nail} />
+      )}
+      {product === ProductTypes.Ribbon && (
+        <RibbonsTableWrapper filter={filter} productForForm={ProductTypes.Ribbon} />
+      )}
+      {product === ProductTypes.Server && (
+        <ServersTableWrapper filter={filter} productForForm={ProductTypes.Server} />
+      )}
+      {product === ProductTypes.VideoRecorder && (
+        <VideoRecordersTableWrapper filter={filter} productForForm={ProductTypes.VideoRecorder} />
+      )}
+      {product === ProductTypes.Freezer && (
+        <FreezersTableWrapper filter={filter} productForForm={ProductTypes.Freezer} />
+      )}
       {product === ProductTypes.TelecomunicationShelf && (
-        <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.TelecommunicationShelf} />
+        <ShelvesTableWrapper
+          filter={filter}
+          shelfType={ShelfTypes.TelecommunicationShelf}
+          productForForm={ProductTypes.TelecomunicationShelf}
+        />
       )}
       {product === ProductTypes.MainTelecomunicationShelf && (
-        <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.MainElectronicShelf} />
+        <ShelvesTableWrapper
+          filter={filter}
+          shelfType={ShelfTypes.MainElectronicShelf}
+          productForForm={ProductTypes.MainTelecomunicationShelf}
+        />
       )}
       {product === ProductTypes.SipHook && (
-        <HooksTableWrapper filter={filter} hookType={HookTypes.SipHook} />
+        <HooksTableWrapper
+          filter={filter}
+          hookType={HookTypes.SipHook}
+          productForForm={ProductTypes.SipHook}
+        />
       )}
       {product === ProductTypes.CabelHook && (
-        <HooksTableWrapper filter={filter} hookType={HookTypes.CabelHook} />
+        <HooksTableWrapper
+          filter={filter}
+          hookType={HookTypes.CabelHook}
+          productForForm={ProductTypes.CabelHook}
+        />
       )}
       {product === ProductTypes.CentralTelecomunicationShelf && (
-        <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.CentralTelecommunicationShelf} />
+        <ShelvesTableWrapper
+          filter={filter}
+          shelfType={ShelfTypes.CentralTelecommunicationShelf}
+          productForForm={ProductTypes.CentralTelecomunicationShelf}
+        />
       )}
       {product === ProductTypes.GofraShell && (
-        <ShellsTableWrapper filter={filter} shellType={ShellTypes.GofraShell} />
+        <ShellsTableWrapper
+          filter={filter}
+          shellType={ShellTypes.GofraShell}
+          productForForm={ProductTypes.GofraShell}
+        />
       )}
       {product === ProductTypes.PlasticShell && (
-        <ShellsTableWrapper filter={filter} shellType={ShellTypes.PlasticShell} />
+        <ShellsTableWrapper
+          filter={filter}
+          shellType={ShellTypes.PlasticShell}
+          productForForm={ProductTypes.PlasticShell}
+        />
       )}
     </TabPage>
   );

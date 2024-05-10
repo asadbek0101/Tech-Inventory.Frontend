@@ -20,6 +20,7 @@ export enum ObjectProductsPageTypes {
 interface ObjectFilterProps extends AppFilterProps<ObjectFilterTabs> {
   readonly objectId?: string;
   readonly product?: string;
+  readonly productId?: string;
   readonly formType?: string;
   readonly productFormType?: ProductFormTypes;
   readonly objectFormType?: ObjectFormTypes;
@@ -29,6 +30,7 @@ interface ObjectFilterProps extends AppFilterProps<ObjectFilterTabs> {
 export class ObjectFilter extends AppFilter<ObjectFilterTabs> {
   private readonly objectId: string;
   private readonly product: string;
+  private readonly productId: string;
   private readonly formType: string;
   private readonly productFormType: ProductFormTypes;
   private readonly objectFormType: ObjectFormTypes;
@@ -38,6 +40,7 @@ export class ObjectFilter extends AppFilter<ObjectFilterTabs> {
     {
       objectId,
       product,
+      productId,
       formType,
       productFormType,
       productPageType,
@@ -47,7 +50,8 @@ export class ObjectFilter extends AppFilter<ObjectFilterTabs> {
   ) {
     super({ ...props });
     this.objectId = objectId || "";
-    this.product = product || "1";
+    this.product = product || "";
+    this.productId = productId || "";
     this.formType = formType || "";
     this.productFormType = productFormType || ProductFormTypes.WithOutObjectForm;
     this.productPageType = productPageType || ObjectProductsPageTypes.Table;
@@ -60,6 +64,10 @@ export class ObjectFilter extends AppFilter<ObjectFilterTabs> {
 
   public getProduct() {
     return this.product;
+  }
+
+  public getProductId() {
+    return this.productId;
   }
 
   public getFormType() {

@@ -7,9 +7,27 @@ export class ProjectorApi extends BaseApi {
     });
   }
 
+  public getOneProjector(query: any) {
+    return this.get("Projectors/GetOne", {
+      query,
+    });
+  }
+
   public createProjector(json: any) {
     return this.post("Projectors/Create", {
       json,
+    });
+  }
+
+  public updateProjector(json: any) {
+    return this.put("Projectors/Update", {
+      json,
+    });
+  }
+
+  public deleteProjector(query: any) {
+    return this.delete("Projectors/Delete", {
+      query,
     });
   }
 }

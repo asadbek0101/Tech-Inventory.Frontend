@@ -26,6 +26,7 @@ import Modal from "../ui/Modal";
 import YesOrNoModal from "../ui/YesOrNoModal";
 import Loader from "../ui/Loader";
 import { useOjbectClassApiContext } from "../../api/object-class/ObjectClassApiContext";
+import { useOjbectClassTypeApiContext } from "../../api/object-class-type/ObjectClassTypeApiContext";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -73,6 +74,7 @@ export default function ObjectTableWrapper({ filter }: Props) {
   const { DistrictsApi } = useDistrictsApiContext();
   const { ProjectsApi } = useProjectApiContext();
   const { NumberOfOrdersApi } = useNumberOfOrdersApiContext();
+  const { ObjectClassTypeApi } = useOjbectClassTypeApiContext();
   const { ObjectClassApi } = useOjbectClassApiContext();
 
   useEffect(() => {
@@ -110,7 +112,7 @@ export default function ObjectTableWrapper({ filter }: Props) {
       })
       .catch(showError);
 
-    ObjectClassApi.getObjectClassTypes()
+    ObjectClassTypeApi.getObjectClassTypesList()
       .then((r) => {
         const _objectClassicationTypes = r?.data?.map((region: any) => {
           return {

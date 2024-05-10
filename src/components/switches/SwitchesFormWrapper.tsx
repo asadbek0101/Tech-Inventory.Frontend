@@ -6,10 +6,10 @@ import { toast } from "react-toastify";
 import { useSwitchesApiContext } from "../../api/switches/SwitchesApiContext";
 import { SwitchInitialProps, SwitchTypes } from "../../api/switches/SwitchesDto";
 import { useModelsApiContext } from "../../api/models/ModelsApiContext";
+import { ModelTypes } from "../../api/models/ModelsDto";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
 
 import SwitchesForm from "./SwitchesForm";
-import { ModelTypes } from "../../api/models/ModelsDto";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -32,6 +32,24 @@ export default function SwitchesFormWrapper({ filter, switchType }: Props) {
 
   const navigate = useNavigate();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      SwitchesApi.getOneSwitch({ id: productId })
+        .then((r) => {
+          const json = {
+            ...r?.data,
+            modelId: {
+              label: r?.data?.model,
+              value: r?.data?.modelId,
+            },
+          };
+          setInitialValues(json);
+        })
+        .catch(showError);
+    }
+  }, [SwitchesApi, productId]);
 
   useEffect(() => {
     ModelsApi.getModelsList({ type: ModelTypes.Switch })
@@ -49,19 +67,34 @@ export default function SwitchesFormWrapper({ filter, switchType }: Props) {
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-        modelId: value.modelId.value,
-      };
-      SwitchesApi.createSwitch(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        SwitchesApi.updateSwitch(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        SwitchesApi.createSwitch(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [SwitchesApi, objectId],
+    [SwitchesApi, objectId, productId],
   );
 
   return (

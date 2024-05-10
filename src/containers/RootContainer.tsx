@@ -15,6 +15,7 @@ import ProjectsContainer from "./ProjectsContainer";
 import MapContainer from "./MapContainer";
 import ModelsContainer from "./ModelsContainer";
 import PageNotFoundContainer from "./PageNotFoundContainer";
+import ObjectClassContainer from "./ObjectClassContainer";
 
 export default function RootContainer() {
   const token = useShallowEqualSelector(tokenSelector);
@@ -55,6 +56,11 @@ export default function RootContainer() {
             CheckRole(UserRoles.DepartmentHead, profile) ||
             CheckRole(UserRoles.ChiefSpecialist, profile)) && (
             <Route path="projects/:tab?" element={<ProjectsContainer />} />
+          )}
+          {(CheckRole(UserRoles.Programmer, profile) ||
+            CheckRole(UserRoles.DepartmentHead, profile) ||
+            CheckRole(UserRoles.ChiefSpecialist, profile)) && (
+            <Route path="object-classes/:tab?" element={<ObjectClassContainer />} />
           )}
           {(CheckRole(UserRoles.Programmer, profile) ||
             CheckRole(UserRoles.DepartmentHead, profile) ||

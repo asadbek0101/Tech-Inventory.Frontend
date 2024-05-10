@@ -25,7 +25,7 @@ export class AppFilter<TTab> {
     this.tab = initial.tab;
     this.page = toFinite(initial.page) || 1;
     this.totalCount = toFinite(initial.totalCount) || 0;
-    this.perPage = toFinite(initial.perPage) || 20;
+    this.perPage = toFinite(initial.perPage) || 100;
     this.pageCount = toFinite(initial.pageCount) || 1;
     this.perPageStatement = toFinite(initial.perPageStatement) || 20;
     this.status = initial.status || "";

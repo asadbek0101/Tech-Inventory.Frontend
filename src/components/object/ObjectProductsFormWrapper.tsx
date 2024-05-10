@@ -5,13 +5,13 @@ import { CabelTypes } from "../../api/cabels/CabelDto";
 import { ShelfTypes } from "../../api/shelf/ShelfDto";
 import { RackTypes } from "../../api/rackes/RackesDto";
 import { ShellTypes } from "../../api/shells/ShellsDto";
+import { CameraTypes } from "../../api/cameras/CameraDto";
 import { HookTypes } from "../../api/hooks/HooksDto";
 import { SwitchTypes } from "../../api/switches/SwitchesDto";
 import { SvetaforTypes } from "../../api/svetafor/SvetaforDto";
 import { ProductTypes } from "../../api/AppDto";
 import { useI18n } from "../../i18n/I18nContext";
 import { objectProductTypesOptions } from "../../constants/AppConstants";
-import { BracketTypes } from "../../api/brackets/BracketsDto";
 
 import TabPage from "../tabs/TabPage";
 import Button, { BgColors } from "../ui/Button";
@@ -41,6 +41,7 @@ import ServersFormWrapper from "../servers/ServersFormWrapper";
 import ShellsFormWrapper from "../shells/ShellsFormWrapper";
 import VideoRecordersFormWrapper from "../video-recorders/VideoRecorderFormWrapper";
 import FreezersFormWrapper from "../freezers/FreezersFormWrapper";
+import MountingBoxFormWrapper from "../mounting-box/MountingBoxFormWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -87,7 +88,27 @@ export default function ObjectProductsFormWrapper({ filter }: Props) {
         </div>
       }
     >
-      {product === ProductTypes.Camera && <CameraFormWrapper filter={filter} />}
+      {product === ProductTypes.Camera && (
+        <CameraFormWrapper filter={filter} cameraType={CameraTypes.Camera} />
+      )}
+      {product === ProductTypes.SpeedCheckingCamera && (
+        <CameraFormWrapper filter={filter} cameraType={CameraTypes.Radar} />
+      )}
+      {product === ProductTypes.ANPRCamera && (
+        <CameraFormWrapper filter={filter} cameraType={CameraTypes.ANPR} />
+      )}
+      {product === ProductTypes.PTZCamera && (
+        <CameraFormWrapper filter={filter} cameraType={CameraTypes.PTZ} />
+      )}
+      {product === ProductTypes.C327Camera && (
+        <CameraFormWrapper filter={filter} cameraType={CameraTypes.C327} />
+      )}
+      {product === ProductTypes.CHQBACamera && (
+        <CameraFormWrapper filter={filter} cameraType={CameraTypes.CHQBA} />
+      )}
+      {product === ProductTypes.C733Camera && (
+        <CameraFormWrapper filter={filter} cameraType={CameraTypes.C733} />
+      )}
       {product === ProductTypes.UtpCabel && (
         <CabelFormWrapper filter={filter} cabelType={CabelTypes.UTPable} />
       )}
@@ -130,13 +151,11 @@ export default function ObjectProductsFormWrapper({ filter }: Props) {
       {product === ProductTypes.Akumalator && <AkumalatorsFormWrapper filter={filter} />}
       {product === ProductTypes.Socket && <SocketFormWrapper filter={filter} />}
       {product === ProductTypes.Stabilizer && <StabilizersFormWrapper filter={filter} />}
-      {product === ProductTypes.Ups && <UpsFormWrapper filter={filter} />}
+      {product === ProductTypes.UPS && <UpsFormWrapper filter={filter} />}
       {product === ProductTypes.Stanchion && <StanchionsFormWrapper filter={filter} />}
-      {product === ProductTypes.SpeedCheckingRadar && <SpeedCheckingFormWrapper filter={filter} />}
-      {product === ProductTypes.PillarBracket && (
-        <BracketsFormWrapper filter={filter} bracketType={BracketTypes.PillarBracket} />
-      )}
+      {product === ProductTypes.Bracket && <BracketsFormWrapper filter={filter} />}
       {product === ProductTypes.Corob && <BoxesFormWrapper filter={filter} />}
+      {product === ProductTypes.MountingBox && <MountingBoxFormWrapper filter={filter} />}
       {product === ProductTypes.Connector && <ConnectorsFormWrapper filter={filter} />}
       {product === ProductTypes.Nail && <NailsFormWrapper filter={filter} />}
       {product === ProductTypes.Counter && <CountersFormWrapper filter={filter} />}

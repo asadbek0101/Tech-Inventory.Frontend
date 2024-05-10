@@ -5,11 +5,11 @@ import { useCabelApiContext } from "../../api/cabels/CabelApiContext";
 import { showError } from "../../utils/NotificationUtils";
 import { toast } from "react-toastify";
 import { CabelInitialProps, CabelTypes } from "../../api/cabels/CabelDto";
-
-import CabelForm from "./CabelForm";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { ModelTypes } from "../../api/models/ModelsDto";
+
+import CabelForm from "./CabelForm";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -33,6 +33,22 @@ export default function CabelFormWrapper({ filter, cabelType }: Props) {
 
   const navigate = useNavigate();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      CabelApi.getOneCabel({ id: productId }).then((r) => {
+        const json = {
+          ...r?.data,
+          modelId: {
+            label: r?.data?.model,
+            value: r?.data?.modelId,
+          },
+        };
+        setInitialValues(json);
+      });
+    }
+  }, [CabelApi, productId]);
 
   useEffect(() => {
     ModelsApi.getModelsList({ type: ModelTypes.Cabel })
@@ -50,19 +66,34 @@ export default function CabelFormWrapper({ filter, cabelType }: Props) {
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-        modelId: value.modelId.value,
-      };
-      CabelApi.createCabel(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        CabelApi.updateCabel(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        CabelApi.createCabel(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [CabelApi],
+    [CabelApi, productId],
   );
 
   return (

@@ -66,41 +66,9 @@ export default function SettingsForm({
       onSubmit={() => console.log("")}
     >
       {() => (
-        <Form className="p-4">
+        <Form className="px-4">
           <div className="row mt-4">
-            <div className="col-4">
-              <GroupBox title={translate("SETTINGS_FORM_USER_INFO_TITLE")}>
-                <div className="row">
-                  <div className="col-12 my-2">
-                    <InputField
-                      disabled
-                      name="userEmail"
-                      label="SETTINGS_FORM_USER_EMAIL_FIELD_TITLE"
-                      value={initialValues.userEmail}
-                    />
-                  </div>
-                  <div className="col-12 my-3">
-                    <InputField
-                      disabled
-                      name="userName"
-                      label="SETTINGS_FORM_USER_NAME_FIELD_TITLE"
-                      value={initialValues.userName}
-                    />
-                  </div>
-                  <div className="col-12 my-3">
-                    <InputField
-                      disabled
-                      name="confirm-password"
-                      label="SETTINGS_FORM_USER_PASSWORD_FIELD_TITLE"
-                      type="password"
-                      value="************"
-                      passwordIcon="hidden"
-                    />
-                  </div>
-                </div>
-              </GroupBox>
-            </div>
-            <div className="col-4">
+            {/* <div className="col-4">
               <GroupBox title="SETTINGS_FORM_USER_LANGUAGE_TITLE">
                 <RadioGroupField
                   name="language"
@@ -131,9 +99,9 @@ export default function SettingsForm({
                   onChanges={(value) => saveLanguage(value)}
                 />
               </GroupBox>
-            </div>
+            </div> */}
             <div className="col-4">
-              <GroupBox title="SETTINGS_FORM_RESET_PASSWORD_TITLE">
+              <GroupBox title="Parolni yangilash">
                 <div className="row">
                   <div className="col-12 my-2">
                     <InputField
@@ -151,26 +119,26 @@ export default function SettingsForm({
                       value={initialValues.newPassword}
                     />
                   </div>
-                  <div className="col-12 my-3">
+                  <div className="col-12 pt-3 d-flex justify-content-end">
+                    <Button
+                      bgColor={BgColors.Green}
+                      className="text-light px-4 py-1"
+                      onClick={() => savePassword(initialValues)}
+                      heigh="34px"
+                    >
+                      {translate("SAVE_BUTTON_TITLE")}
+                    </Button>
+                  </div>
+                  {/* <div className="col-12 my-3">
                     <InputField
                       name="confirm-password"
                       label="SETTINGS_FORM_USER_CONFIRM_PASSWORD_FIELD_TITLE"
                       onChange={onChangeConfirmPassword}
                       value={initialValues.confirmPassword}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </GroupBox>
-            </div>
-            <div className="col-12 pt-3 d-flex justify-content-end">
-              <Button
-                bgColor={BgColors.Green}
-                className="text-light px-4 py-1"
-                onClick={() => savePassword(initialValues)}
-                heigh="34px"
-              >
-                {translate("SAVE_BUTTON_TITLE")}
-              </Button>
             </div>
           </div>
         </Form>

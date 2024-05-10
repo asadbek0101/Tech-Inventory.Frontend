@@ -82,7 +82,7 @@ export default function ProjectorForm({
                 <div className="row">
                   <div className="col-12">
                     <SelectPickerField
-                      name="model"
+                      name="modelId"
                       label="Modeli"
                       options={models}
                       onChanges={onChangeModelId}

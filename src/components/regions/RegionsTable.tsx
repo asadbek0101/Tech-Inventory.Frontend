@@ -3,6 +3,7 @@ import Button, { BgColors } from "../ui/Button";
 import moment from "moment";
 import Table from "../table/Table";
 import PencilIcon from "../icons/PencilIcon";
+import { useMemo } from "react";
 
 interface Props {
   readonly data: any[];
@@ -12,98 +13,99 @@ interface Props {
   readonly setIds: (value: any) => void;
 }
 
-export default function RegionsTable({ data, loading, setDistrict, editRegion, setIds }: Props) {
+export default function RegionsTable({
+  data = [],
+  loading,
+  setDistrict,
+  editRegion,
+  setIds,
+}: Props) {
   const { translate } = useI18n();
-  const headers: any = [
-    {
-      header: translate("T/r"),
-      access: "index",
-      width: 50,
-      ceil: (_: any, index: number) => {
-        return <div>{index + 1}</div>;
+  const columns = useMemo(
+    () => [
+      {
+        Header: translate("T/r"),
+        accessor: "id",
+        width: 100,
+        Cell: (row: any) => {
+          return <span>{Number(row?.row?.id) + 1}</span>;
+        },
       },
-    },
-    {
-      header: translate("REGION_TABLE_REGION_DISTRICTS_COLUMN_TITLE"),
-      access: "districts",
-      width: 200,
-      ceil: (row: any) => {
-        return (
-          <div
-            className="fw-bold text-success"
-            style={{
-              cursor: "pointer",
-            }}
-            onClick={() => setDistrict(row.id)}
-          >
-            {translate("REGION_TABLE_REGION_DISTRICTS_TITLE")}
-          </div>
-        );
-      },
-    },
-    {
-      header: translate("REGION_TABLE_REGION_NAME_COLUMN_TITLE"),
-      access: "name",
-      width: 200,
-    },
-    {
-      header: translate("REGION_TABLE_REGION_INFO_COLUMN_TITLE"),
-      access: "info",
-      width: 200,
-    },
-    {
-      header: translate("REGION_TABLE_CREATED_DATE_COLUMN_TITLE"),
-      access: "createdDate",
-      width: 200,
-      ceil: (row: any) => {
-        return <div>{moment(row.createdDate).format("HH:mm | DD-MM-YYYY")}</div>;
-      },
-    },
-    {
-      header: translate("REGION_TABLE_UPDATED_DATE_COLUMN_TITLE"),
-      access: "updatedDate",
-      width: 200,
-      ceil: (row: any) => {
-        if (row.updatedDate) return <div>{moment(row.updatedDate).format("DD-MM-YYYY")}</div>;
-      },
-    },
-    {
-      header: translate("REGION_TABLE_CREATED_BY_COLUMN_TITLE"),
-      access: "createdBy",
-      width: 200,
-    },
-    {
-      header: translate("REGION_TABLE_UPDATED_BY_COLUMN_TITLE"),
-      access: "updatedBy",
-      width: 200,
-    },
-    {
-      header: translate("Actions"),
-      access: "updatedBy",
-      width: 100,
-      ceil: (row: any) => {
-        return (
-          <div className="d-flex gap-2">
-            <Button
-              onClick={() => editRegion(row.id)}
-              className="py-2 px-2 text-light"
-              bgColor={BgColors.Yellow}
+      {
+        Header: translate("REGION_TABLE_REGION_DISTRICTS_COLUMN_TITLE"),
+        accessor: "districts",
+        width: 200,
+        Cell: (row: any) => {
+          return (
+            <div
+              className="fw-bold text-success"
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => setDistrict(row?.row?.original?.id)}
             >
-              <PencilIcon />
-            </Button>
-          </div>
-        );
+              {translate("REGION_TABLE_REGION_DISTRICTS_TITLE")}
+            </div>
+          );
+        },
       },
-    },
-  ];
-
-  return (
-    <Table
-      loading={loading}
-      headers={headers}
-      data={data}
-      selectRowCheckbox={setIds}
-      withCheckbox
-    />
+      {
+        Header: translate("REGION_TABLE_REGION_NAME_COLUMN_TITLE"),
+        accessor: "name",
+        width: 300,
+      },
+      {
+        Header: translate("REGION_TABLE_REGION_INFO_COLUMN_TITLE"),
+        accessor: "info",
+        width: 200,
+      },
+      {
+        Header: translate("Yaratilgan vaqti"),
+        accessor: "createdDate",
+        width: 200,
+        Cell: (row: any) => {
+          return <div>{row?.value && moment(row?.value).format("DD-MM-YYYY | HH:mm")}</div>;
+        },
+      },
+      {
+        Header: translate("Yangilangan vaqti"),
+        accessor: "updatedDate",
+        width: 200,
+        Cell: (row: any) => {
+          return <div>{row?.value && moment(row?.value).format("DD-MM-YYYY | HH:mm")}</div>;
+        },
+      },
+      {
+        Header: translate("REGION_TABLE_CREATED_BY_COLUMN_TITLE"),
+        accessor: "creator",
+        width: 200,
+      },
+      {
+        Header: translate("REGION_TABLE_UPDATED_BY_COLUMN_TITLE"),
+        accessor: "updator",
+        width: 200,
+      },
+      {
+        Header: translate("Actions"),
+        accessor: "actions",
+        width: 200,
+        Cell: (row: any) => {
+          return (
+            <div className="d-flex justify-content-center">
+              <Button
+                onClick={() => editRegion(row?.row?.original?.id)}
+                className="py-2 px-2 text-light"
+                bgColor={BgColors.Yellow}
+              >
+                <PencilIcon />
+              </Button>
+            </div>
+          );
+        },
+      },
+    ],
+    [],
   );
+
+  return <Table loading={loading} columns={columns} data={data} selectRowCheckbox={setIds} />;
 }

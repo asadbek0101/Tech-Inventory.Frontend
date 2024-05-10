@@ -7,9 +7,27 @@ export class TerminalServerApi extends BaseApi {
     });
   }
 
+  public getOneTerminalServer(query: any) {
+    return this.get("TerminalServers/GetOne", {
+      query,
+    });
+  }
+
   public createTerminalServer(json: any) {
     return this.post("TerminalServers/Create", {
       json,
+    });
+  }
+
+  public updateTerminalServer(json: any) {
+    return this.put("TerminalServers/Update", {
+      json,
+    });
+  }
+
+  public deleteTerminalServer(query: any) {
+    return this.delete("TerminalServers/Delete", {
+      query,
     });
   }
 }

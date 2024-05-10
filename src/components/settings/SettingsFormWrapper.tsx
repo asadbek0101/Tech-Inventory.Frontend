@@ -1,7 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import Modal from "../ui/Modal";
-import SettingsForm from "./SettingsForm";
-import YesOrNoModal from "../ui/YesOrNoModal";
 import { useDispatch } from "react-redux";
 import { switchLanguage } from "../../reducers/appReducer";
 import { AppLanguage } from "../../i18n/I18nContext";
@@ -12,6 +9,12 @@ import { update } from "immupdate";
 import { useAuthContext } from "../../api/auth/AuthContext";
 import { toast } from "react-toastify";
 import { showError } from "../../utils/NotificationUtils";
+
+import Modal from "../ui/Modal";
+import SettingsForm from "./SettingsForm";
+import YesOrNoModal from "../ui/YesOrNoModal";
+import { useUsersContext } from "../../api/users/UsersContext";
+import SettingsUsersForm from "./SettingsUserForm";
 
 export default function SettingsFormWrapper() {
   const dispatch = useDispatch();
@@ -24,6 +27,8 @@ export default function SettingsFormWrapper() {
     confirmPassword: "",
   });
 
+  const [userInfo, setUserInfo] = useState({});
+
   const [languageModal, setLanguageModal] = useState(false);
   const [language, setLanguage] = useState<AppLanguage>(AppLanguage.English);
 
@@ -31,6 +36,13 @@ export default function SettingsFormWrapper() {
   const userId = useShallowEqualSelector(userIdSelector);
 
   const { AuthApi } = useAuthContext();
+  const { UsersApi } = useUsersContext();
+
+  useEffect(() => {
+    UsersApi.getOneUser(Number(userId))
+      .then((r) => setUserInfo(r?.data))
+      .catch(showError);
+  }, [UsersApi, userId]);
 
   useEffect(() => {
     setInitialValues((prev: any) =>
@@ -43,32 +55,33 @@ export default function SettingsFormWrapper() {
 
   const savePassword = useCallback(
     (value: any) => {
-      if (value.newPassword === value.confirmPassword) {
-        const json = {
-          ...value,
-          userId,
-        };
-        AuthApi.ResetPassword(json)
-          .then((r) => {
+      const json = {
+        ...value,
+        userId,
+      };
+      AuthApi.ResetPassword(json)
+        .then((r) => {
+          if (r?.isSuccess && !r?.isError) {
             toast.success(r?.data?.message);
             setInitialValues((prev: any) =>
               update(prev, {
                 oldPassword: "",
                 newPassword: "",
-                confirmPassword: "",
               }),
             );
-          })
-          .catch(showError);
-      } else {
-        toast.error("New password and Confirm password not matches");
-      }
+          } else {
+            toast.error(r?.data?.message);
+          }
+        })
+        .catch(showError);
     },
     [userId, AuthApi],
   );
 
   return (
     <>
+      <SettingsUsersForm initialValues={userInfo} />
+
       <SettingsForm
         initialValues={initialValues}
         setInitialValues={setInitialValues}

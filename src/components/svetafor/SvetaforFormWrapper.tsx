@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { showError } from "../../utils/NotificationUtils";
 import { useSvetaforApiContext } from "../../api/svetafor/SvetaforApiContext";
-
-import SvetaforForm from "./SvetaforForm";
 import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { ModelTypes } from "../../api/models/ModelsDto";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
+
+import SvetaforForm from "./SvetaforForm";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -33,6 +33,22 @@ export default function SvetaforFormWrapper({ filter, svetaforType }: Props) {
 
   const navigate = useNavigate();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      SvetaforApi.getOneSvetafor({ id: productId }).then((r) => {
+        const json = {
+          ...r?.data,
+          modelId: {
+            label: r?.data?.model,
+            value: r?.data?.modelId,
+          },
+        };
+        setInitialValues(json);
+      });
+    }
+  }, [productId, SvetaforApi]);
 
   useEffect(() => {
     ModelsApi.getModelsList({ type: ModelTypes.Svetafor })
@@ -50,17 +66,32 @@ export default function SvetaforFormWrapper({ filter, svetaforType }: Props) {
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-        modelId: value.modelId.value,
-      };
-      SvetaforApi.createSvetafor(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        SvetaforApi.updateSvetafor(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        SvetaforApi.createSvetafor(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
     [SvetaforApi, objectId],
   );

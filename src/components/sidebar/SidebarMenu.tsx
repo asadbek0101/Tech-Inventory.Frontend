@@ -17,6 +17,7 @@ import LocationIcon from "../icons/LocationIcon";
 import FlagIcon from "../icons/FlagIcon";
 import LandMarkIcon from "../icons/LandMarkIcon";
 import FileInvoiceIcon from "../icons/FileInvoiceIcon";
+import MapLocationIcon from "../icons/MapLocationIcon";
 
 export default function SidebarMenu() {
   const { translate } = useI18n();
@@ -66,6 +67,13 @@ export default function SidebarMenu() {
           CheckRole(UserRoles.ChiefSpecialist, profile)) && (
           <SidebarItem link="projects" icon={<FileInvoiceIcon />}>
             {translate("SIDE_MENU_PROJECTS_TITLE")}
+          </SidebarItem>
+        )}
+        {(CheckRole(UserRoles.Programmer, profile) ||
+          CheckRole(UserRoles.DepartmentHead, profile) ||
+          CheckRole(UserRoles.ChiefSpecialist, profile)) && (
+          <SidebarItem link="object-classes" icon={<MapLocationIcon />}>
+            {translate("Tasniflar")}
           </SidebarItem>
         )}
         {(CheckRole(UserRoles.Programmer, profile) ||

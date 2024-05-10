@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ObjectFilter } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -25,19 +25,42 @@ export default function HooksFormWrapper({ filter, hookType }: Props) {
   const navigate = useNavigate();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      HooksApi.getOneHook({ id: productId })
+        .then((r) => setInitalValues(r?.data))
+        .catch(showError);
+    }
+  }, [HooksApi, productId]);
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json: HooksInitialProps = {
-        ...value,
-        obyektId: objectId,
-      };
-      HooksApi.createHook(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json: HooksInitialProps = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+        };
+        HooksApi.updateHook(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json: HooksInitialProps = {
+          ...value,
+          obyektId: objectId,
+        };
+        HooksApi.createHook(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
     [HooksApi, objectId],
   );

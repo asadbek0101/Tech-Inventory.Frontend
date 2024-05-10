@@ -1,44 +1,47 @@
 import "./assets/table.scss";
-
-import { useCallback, useState, ReactNode, useEffect } from "react";
-
-import Loader from "../ui/Loader";
-
-interface HeaderProps {
-  readonly width?: number;
-  readonly access: string;
-  readonly header: string;
-  readonly ceil?: ReactNode;
-  readonly searchHidden?: boolean;
-}
+import { useMemo, useCallback, useState, useEffect } from "react";
+import { useTable, useBlockLayout, useResizeColumns, useSortBy } from "react-table";
 
 interface TableProps {
-  readonly headers: HeaderProps[];
   readonly data: any[];
-  readonly selectRowCheckbox?: (select: any[]) => void;
-  readonly searchHeader?: (value: string, type: string) => void;
-  readonly withCheckbox?: boolean;
+  readonly columns: any;
   readonly loading?: boolean;
+  readonly selectRowCheckbox?: (select: any[]) => void;
 }
 
-export default function Table({
-  data,
-  headers,
-  selectRowCheckbox,
-  withCheckbox = false,
-  searchHeader,
-  loading = false,
-}: TableProps) {
+export default function Table({ columns, data = [], loading, selectRowCheckbox }: TableProps) {
+  const defaultColumn = useMemo(
+    () => ({
+      minWidth: 10,
+      width: 150,
+      maxWidth: 1000,
+    }),
+    [],
+  );
+
   const [dataTable, setDataTable] = useState<any[]>([]);
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    {
+      columns,
+      data,
+      defaultColumn,
+    },
+    useBlockLayout,
+    useResizeColumns,
+    useSortBy,
+  );
+
   useEffect(() => {
-    setDataTable(data);
-  }, [setDataTable, data]);
+    setDataTable(rows);
+  }, [rows]);
 
   const setIds = useCallback(
     (value: any) => {
       let arr = value.map((item: any) => {
         if (item.isChecked) {
-          return item.id;
+          console.log(item?.values);
+          return item?.values?.id;
         }
       });
       let arrr = arr.filter((item: any) => item);
@@ -51,104 +54,102 @@ export default function Table({
     (value: any) => {
       const { name, checked } = value.target;
       if (name === "allSelect") {
-        let ar = dataTable?.map((item: any) => {
+        var newData = [...dataTable];
+        newData = newData?.map((item: any) => {
           return { ...item, isChecked: checked };
         });
-        setDataTable(ar);
-        setIds(ar);
+        setIds(newData);
+        setDataTable(newData);
       } else {
-        let ar = dataTable?.map((item: any, index: any) =>
+        var newData = [...dataTable];
+        newData = newData?.map((item: any, index: any) =>
           index.toString() === name ? { ...item, isChecked: checked } : item,
         );
-        setDataTable(ar);
-        setIds(ar);
+        setIds(newData);
+        setDataTable(newData);
       }
     },
-    [setDataTable, dataTable, setIds],
+    [setIds, dataTable],
   );
-
-  if (!loading && (!data || data.length === 0)) {
-    return (
-      <div className="w-100 h-100 d-flex justify-content-center align-items-center">
-        <span className="fs-5 fw-bold">Empty</span>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <div className="table-wrapper">
-      <table className="table table-striped table-bordered px-2" style={{ position: "relative" }}>
-        <thead className="px-2">
-          <tr>
-            <th style={{ width: "40px" }}>
-              {withCheckbox ? (
-                <input
-                  type="checkbox"
-                  name="allSelect"
-                  checked={
-                    dataTable?.length > 0
-                      ? !dataTable?.some((user: any) => user?.isChecked !== true)
-                      : false
-                  }
-                  onChange={handleChange}
-                />
+      <table {...getTableProps()} className="table table-bordered table-striped">
+        <thead>
+          {headerGroups.map((headerGroup: any, i: any) => (
+            <tr key={i} {...headerGroup.getHeaderGroupProps()}>
+              {selectRowCheckbox ? (
+                <th>
+                  <input
+                    type="checkbox"
+                    name="allSelect"
+                    width={100}
+                    checked={
+                      dataTable?.length > 0
+                        ? !dataTable?.some((user: any) => user?.isChecked !== true)
+                        : false
+                    }
+                    onChange={handleChange}
+                  />
+                </th>
               ) : (
                 <span>#</span>
               )}
-            </th>
-            {headers.map((head: any, index: any) => {
-              return (
-                <th key={index} style={{ width: `${head.width}px` }}>
-                  {searchHeader && !head.searchHidden && (
-                    <input
-                      type="text"
-                      className="search-input"
-                      placeholder={head.header}
-                      onChange={(event) => searchHeader(event.target.value, head.access)}
-                    />
-                  )}
-                  {(!searchHeader || head.searchHidden) && head.header}
+              {headerGroup.headers.map((column: any, index: any) => (
+                <th
+                  key={index}
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  className="d-flex align-items-center justify-content-center"
+                >
+                  {column.render("Header")}
+
+                  <div
+                    style={{
+                      width: column.width,
+                    }}
+                    {...column.getResizerProps()}
+                    className={`resizer`}
+                  />
                 </th>
-              );
-            })}
-          </tr>
+              ))}
+            </tr>
+          ))}
         </thead>
-        <tbody>
-          {dataTable &&
-            dataTable?.map((row: any, index: number) => {
+
+        {data.length > 0 && !loading ? (
+          <tbody {...getTableBodyProps()}>
+            {dataTable.map((row: any, index: any) => {
+              prepareRow(row);
               return (
-                <tr key={index}>
-                  <td style={{ width: "40px" }}>
-                    {withCheckbox ? (
+                <tr key={index} {...row.getRowProps()} className="tr">
+                  {selectRowCheckbox ? (
+                    <td>
                       <input
                         type="checkbox"
                         name={index.toString()}
                         checked={row.isChecked || false}
                         onChange={handleChange}
                       />
-                    ) : (
-                      <span>{index + 1}.</span>
-                    )}{" "}
-                  </td>
-                  {headers.map((head: any, i: number) => {
-                    return (
-                      <td key={i} width={`${head.width}px`}>
-                        {head.ceil ? (
-                          <div>{head.ceil(row, index)}</div>
-                        ) : (
-                          <span>{row[head.access]}</span>
-                        )}
-                      </td>
-                    );
+                    </td>
+                  ) : (
+                    <span>{index + 1}.</span>
+                  )}{" "}
+                  {row.cells.map((cell: any) => {
+                    return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
                   })}
                 </tr>
               );
             })}
-        </tbody>
+          </tbody>
+        ) : data.length === 0 && loading ? (
+          <div className="d-flex justify-content-center mt-4">
+            <h5 className="fw-bold">Yuklanmoqda...</h5>
+          </div>
+        ) : (
+          <div className="d-flex justify-content-center mt-4">
+            <h5 className="fw-bold">Hech nars yo'q</h5>
+          </div>
+        )}
       </table>
     </div>
   );

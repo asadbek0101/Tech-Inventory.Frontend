@@ -31,6 +31,22 @@ export default function BoxesFormWrapper({ filter }: Props) {
   const navigate = useNavigate();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      BoxesApi.getOneBoxe({ id: productId }).then((r) => {
+        const json = {
+          ...r?.data,
+          typeId: {
+            label: r?.data?.type,
+            value: r?.data?.typeId,
+          },
+        };
+        setInitalValues(json);
+      });
+    }
+  }, [BoxesApi, productId]);
 
   useEffect(() => {
     ModelsApi.getModelsList({ type: ModelTypes.Box })
@@ -48,19 +64,34 @@ export default function BoxesFormWrapper({ filter }: Props) {
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-        typeId: value.typeId.value,
-      };
-      BoxesApi.createBox(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+          typeId: value.typeId.value,
+        };
+        BoxesApi.updateBox(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+          typeId: value.typeId.value,
+        };
+        BoxesApi.createBox(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [BoxesApi, objectId],
+    [BoxesApi, objectId, productId],
   );
 
   return (

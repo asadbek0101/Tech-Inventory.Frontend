@@ -1,158 +1,182 @@
 export const IS_DEV = process.env.NODE_ENV !== "production";
 
-//export const API_HOST = "https://localhost:44368/api/" as string;
+// export const API_HOST = "https://localhost:44368/api/" as string;
 export const API_HOST = "http://172.24.201.4:8080/api/" as string;
 
 export const objectProductTypesOptions = [
   {
-    label: "Markaziy telekommunikatsion javon",
+    label: "Kamera",
     value: 1,
   },
   {
-    label: "Asosisy elektr javoni",
+    label: "Avtomabil tezligini o'lchovchi kamera(radar)",
     value: 2,
   },
   {
-    label: "ODF optik boks",
+    label: "Davlat raqami belgisini aniqlovchi kamera(ANPR)",
     value: 3,
   },
   {
-    label: "Switch kombo",
+    label: "Aylanma kamera(PTZ)",
     value: 4,
   },
   {
-    label: "Svetafor detektori",
+    label: "To'xtash va to'xtab turish qoidabuzarligini aniqlovchi kamera(3.27)",
     value: 5,
   },
   {
-    label: "Svetafor detektori kamera uchun",
+    label: "Chorrahadagi qoidabuzarlikni aniqlovchi kamera",
     value: 6,
   },
   {
-    label: "Terminal Serveri",
+    label: "Yuz yoki avtotransport vositasi davlat raqamini aniqlovchi kamera(733)",
     value: 7,
   },
   {
-    label: "Stabilizator",
+    label: "Videoregistrator",
     value: 8,
   },
   {
-    label: "Akumlator",
+    label: "Server",
     value: 9,
   },
   {
-    label: "Tarqatish javoni",
+    label: "Switch PoE",
     value: 10,
   },
   {
-    label: "Kamera",
+    label: "Switch kombo",
     value: 11,
   },
   {
-    label: "Projektor",
+    label: "Svetafor detektori",
     value: 12,
   },
   {
-    label: "Switch Poe",
+    label: "Svetafor detektori kamera uchun",
     value: 13,
   },
   {
-    label: "Mini optik boks",
+    label: "Terminal serveri",
     value: 14,
   },
   {
-    label: "Avtomat",
+    label: "Stabilizator",
     value: 15,
   },
   {
-    label: "Elektr kabel",
+    label: "Projektor",
     value: 16,
   },
   {
-    label: "UTP kabel",
+    label: "Akkumulyator",
     value: 17,
   },
   {
-    label: "Ustun",
+    label: "Markaziy telekommunikatsion javon",
     value: 18,
   },
   {
-    label: "Rozetka",
+    label: "Asosiy elektr javon",
     value: 19,
   },
   {
-    label: "UPS",
+    label: "Tarqatish javoni",
     value: 20,
   },
   {
-    label: "Tezlinki o'lchovchi radar",
+    label: "Telekomunikatsion javon",
     value: 21,
   },
   {
-    label: "Telekomunikatsion javon",
+    label: "UPS",
     value: 22,
   },
   {
-    label: "Korob",
+    label: "Elektr energiya hisoblagichi",
     value: 23,
   },
   {
-    label: "Kronshteyn",
+    label: "UTP kabel",
+    value: 24,
+  },
+  {
+    label: "Elektr kabel",
     value: 25,
   },
   {
-    label: "Konnektor",
+    label: "Rozetka",
     value: 26,
   },
   {
-    label: "Elektr energiya hisoblagichi",
+    label: "ODF optik boks",
     value: 27,
   },
   {
-    label: "Qotirgich",
+    label: "Mini optik boks",
     value: 28,
   },
   {
-    label: "Burama mix uchun yelim pona",
+    label: "Avtomat",
     value: 29,
   },
   {
-    label: "Sip.Xomut",
+    label: "Ustun",
     value: 30,
   },
   {
-    label: "Kabel.Xomut",
+    label: "Kronshteyn",
     value: 31,
   },
   {
-    label: "Burama mix",
+    label: "Konnektor",
     value: 32,
   },
   {
-    label: "Sip.Lenta",
+    label: "Gofra qobiq",
     value: 33,
   },
   {
-    label: "Server",
+    label: "Korob",
     value: 34,
   },
   {
-    label: "Gofra qobiq",
+    label: "Montaj qutisi",
     value: 35,
   },
   {
-    label: "Plastik qobiq",
+    label: "Qotirgich",
     value: 36,
   },
   {
-    label: "Video registrator",
+    label: "SIP lenta",
     value: 37,
+  },
+  {
+    label: "SIP xomut",
+    value: 38,
+  },
+  {
+    label: "Burama mix",
+    value: 39,
+  },
+  {
+    label: "Burama mix uchun yelim pona",
+    value: 40,
+  },
+  {
+    label: "Kabel xomut",
+    value: 41,
+  },
+  {
+    label: "Plastik qobiq",
+    value: 42,
   },
 ];
 
 export const modelTypesOptions = [
   {
-    label: "All",
+    label: "Hammasi",
     value: 1,
   },
   {
@@ -196,11 +220,7 @@ export const modelTypesOptions = [
     value: 11,
   },
   {
-    label: "Tezlikni o'lchovchi radar",
-    value: 12,
-  },
-  {
-    label: "Ups",
+    label: "UPS",
     value: 13,
   },
   {
@@ -216,7 +236,7 @@ export const modelTypesOptions = [
     value: 16,
   },
   {
-    label: "Kranshteyn",
+    label: "Kronshteyn",
     value: 17,
   },
   {
@@ -226,6 +246,10 @@ export const modelTypesOptions = [
   {
     label: "Videoregistrator",
     value: 19,
+  },
+  {
+    label: "Montaj qutisi",
+    value: 20,
   },
 ];
 

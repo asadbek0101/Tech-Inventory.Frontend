@@ -15,6 +15,8 @@ import { SelectPickerOptionsProps } from "../../api/AppDto";
 
 import AddIcon from "../icons/AddIcon";
 import DeleteIcon from "../icons/DeleteIcon";
+import { formatLocationNumber, formatPhoneNumber } from "../../utils/FormatUtils";
+import { toast } from "react-toastify";
 
 interface Props {
   readonly initialValues: any;
@@ -163,6 +165,18 @@ export default function ObjectForm({
     [setInitialValues],
   );
 
+  const onBlurPhoneNumber = useCallback(
+    (event: any) => {
+      const str = formatPhoneNumber(event?.target?.value);
+      setInitialValues((prev: any) =>
+        update(prev, {
+          phoneNumber: str,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
   const onChangeInfo = useCallback(
     (event: any) => {
       setInitialValues((prev: any) =>
@@ -259,6 +273,30 @@ export default function ObjectForm({
     [setInitialValues, initialValues],
   );
 
+  const onBlurLong = useCallback(
+    (event: any) => {
+      const str = formatLocationNumber(event?.target?.value);
+      setInitialValues((prev: any) =>
+        update(prev, {
+          longitude: str,
+        }),
+      );
+    },
+    [initialValues?.longitude],
+  );
+
+  const onBlurLat = useCallback(
+    (event: any) => {
+      const str = formatLocationNumber(event?.target?.value);
+      setInitialValues((prev: any) =>
+        update(prev, {
+          latitude: str,
+        }),
+      );
+    },
+    [initialValues?.latitude],
+  );
+
   return (
     <Formik
       initialValues={initialValues}
@@ -352,6 +390,7 @@ export default function ObjectForm({
                       label="OBJECT_FORM_LATITUDE_FIELD_TITLE"
                       onChange={onChangeLatitude}
                       value={initialValues.latitude}
+                      onBlur={onBlurLat}
                     />
                   </div>
                   <div className="col-4 mt-3">
@@ -360,6 +399,7 @@ export default function ObjectForm({
                       label="OBJECT_FORM_LONGITUDE_FIELD_TITLE"
                       onChange={onChangeLongitude}
                       value={initialValues.longitude}
+                      onBlur={onBlurLong}
                     />
                   </div>
                   <div className="col-4 mt-3">
@@ -417,6 +457,7 @@ export default function ObjectForm({
                           label="Telefon raqami"
                           onChange={onChangePhoneNumber}
                           value={initialValues.phoneNumber}
+                          onBlur={onBlurPhoneNumber}
                         />
                       </div>
                     )}

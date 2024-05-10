@@ -7,17 +7,15 @@ import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { ModelTypes } from "../../api/models/ModelsDto";
 import { useBracketsApiContext } from "../../api/brackets/BracketsApiContext";
-import { BracketTypes, BracketsInitialProps } from "../../api/brackets/BracketsDto";
+import { BracketsInitialProps } from "../../api/brackets/BracketsDto";
 import BracketsForm from "./BracketsForm";
 
 interface Props {
   readonly filter: ObjectFilter;
-  readonly bracketType: BracketTypes;
 }
 
-export default function BracketsFormWrapper({ filter, bracketType }: Props) {
+export default function BracketsFormWrapper({ filter }: Props) {
   const [initialValues, setInitalValues] = useState<BracketsInitialProps>({
-    bracketType: bracketType,
     obyektId: 0,
     modelId: 0,
     info: "",
@@ -31,6 +29,24 @@ export default function BracketsFormWrapper({ filter, bracketType }: Props) {
   const navigate = useNavigate();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      BracketsApi.getOneBracket({ id: productId })
+        .then((r) => {
+          const json = {
+            ...r?.data,
+            modelId: {
+              label: r?.data?.model,
+              value: r?.data?.modelId,
+            },
+          };
+          setInitalValues(json);
+        })
+        .catch(showError);
+    }
+  }, [BracketsApi, productId]);
 
   useEffect(() => {
     ModelsApi.getModelsList({ type: ModelTypes.Bracket })
@@ -48,19 +64,34 @@ export default function BracketsFormWrapper({ filter, bracketType }: Props) {
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-        modelId: value.modelId.value,
-      };
-      BracketsApi.createBracket(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        BracketsApi.updateBracket(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        BracketsApi.createBracket(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [BracketsApi, objectId],
+    [BracketsApi, objectId, productId],
   );
 
   return (

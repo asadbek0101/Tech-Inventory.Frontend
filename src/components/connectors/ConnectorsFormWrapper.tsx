@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ObjectFilter } from "../../filters/ObjectFilter";
 import { AvtomatInitialProps } from "../../api/avtomat/AvtomatDto";
 import { useNavigate } from "react-router-dom";
@@ -24,21 +24,43 @@ export default function ConnectorsFormWrapper({ filter }: Props) {
   const navigate = useNavigate();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      ConnectorsApi.getOneConnector({ id: productId })
+        .then((r) => setInitalValues(r?.data))
+        .catch(showError);
+    }
+  }, [ConnectorsApi, productId]);
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-      };
-      ConnectorsApi.createConnector(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          obyektId: objectId,
+        };
+        ConnectorsApi.updateConnector(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+        };
+        ConnectorsApi.createConnector(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [ConnectorsApi, objectId],
+    [ConnectorsApi, objectId, productId],
   );
 
   return (

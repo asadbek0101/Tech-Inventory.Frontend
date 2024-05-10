@@ -5,24 +5,26 @@ import { useObyektApiContext } from "../../api/obyekt/ObyektApiContext";
 import { showError } from "../../utils/NotificationUtils";
 import { useAttachmentsApiContext } from "../../api/attachments/AttachmentsApiContext";
 import { useNavigate } from "react-router-dom";
+import { ShelfTypes } from "../../api/shelf/ShelfDto";
+import { CabelTypes } from "../../api/cabels/CabelDto";
+import { RackTypes } from "../../api/rackes/RackesDto";
+import { SvetaforTypes } from "../../api/svetafor/SvetaforDto";
+import { SwitchTypes } from "../../api/switches/SwitchesDto";
+import { ShellTypes } from "../../api/shells/ShellsDto";
+import { HookTypes } from "../../api/hooks/HooksDto";
 
 import CustomCard from "../ui/CustomCard";
 import ObjectView from "./ObjectView";
 import CameraTableWrapper from "../cameras/CameraTableWrapper";
 import CabelTableWrapper from "../cabels/CabelTableWrapper";
-import { CabelTypes } from "../../api/cabels/CabelDto";
 import ProjectorTableWrapper from "../projectors/ProjectorTableWrapper";
 import ShelvesTableWrapper from "../shelves/ShelvesTableWrapper";
-import { ShelfTypes } from "../../api/shelf/ShelfDto";
-import { RackTypes } from "../../api/rackes/RackesDto";
 import RackesTableWrapper from "../rackes/RackesTableWrapper";
-import { SwitchTypes } from "../../api/switches/SwitchesDto";
 import SwitchesTableWrapper from "../switches/SwitchesTableWrapper";
 import AkumalatorsTableWrapper from "../akumalators/AkumalatorsTableWrapper";
 import AvtomatsTableWrapper from "../avtomats/AvtomatsTableWrapper";
 import StabilizersTableWrapper from "../stabilizers/StabilizersTableWrapper";
 import SvetaforTableWrapper from "../svetafor/SvetaforTableWrapper";
-import { SvetaforTypes } from "../../api/svetafor/SvetaforDto";
 import SocketTableWrapper from "../sockets/SocketTableWrapper";
 import TerminalServerTableWrapper from "../terminal-servers/TerminalServersTableWrapper";
 import StanchionsTableWrapper from "../stanchions/StanchionsTableWrapper";
@@ -30,19 +32,19 @@ import SpeedCheckingTableWrapper from "../speed-checking/SpeedCheckingTableWrapp
 import UpsTableWrapper from "../ups/UpsTableWrapper";
 import BoxesTableWrapper from "../boxes/BoxesTableWrapper";
 import BracketsTableWrapper from "../brackets/BracketsTableWrapper";
-import { BracketTypes } from "../../api/brackets/BracketsDto";
 import ConnectorsTableWrapper from "../connectors/ConnectorsTableWrapper";
 import CountersTableWrapper from "../counters/CountersTableWrapper";
 import HooksTableWrapper from "../hooks/HooksTableWrapper";
-import { HookTypes } from "../../api/hooks/HooksDto";
 import NailsTableWrapper from "../nails/NailsTableWrapper";
 import RibbonsTableWrapper from "../ribbons/RibbonsTableWrapper";
 import ServersTableWrapper from "../servers/ServersTableWrapper";
 import ShellsTableWrapper from "../shells/ShellsTableWrapper";
-import { ShellTypes } from "../../api/shells/ShellsDto";
 import VideoRecordersTableWrapper from "../video-recorders/VideoRecorderTableWrapper";
 import FreezersTableWrapper from "../freezers/FreezersTableWrapper";
 import AddIcon from "../icons/AddIcon";
+import { ProductTypes } from "../../api/AppDto";
+import { CameraTypes } from "../../api/cameras/CameraDto";
+import MountingBoxTableWrapper from "../mounting-box/MountingBoxTableWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -65,6 +67,12 @@ export default function ObjectViewWrapper({ filter }: Props) {
 
   const [productsCounts, setProductsCounts] = useState({
     cameraCount: 0,
+    speedCheckingCameraCount: 0,
+    anprCameraCount: 0,
+    ptzCameraCount: 0,
+    c327CameraCount: 0,
+    chqbaCameraCount: 0,
+    c733CameraCount: 0,
     upsCount: 0,
     speedCheckingCount: 0,
     socketCount: 0,
@@ -88,8 +96,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
     stabilizerCount: 0,
     terminalServerCount: 0,
     boxCount: 0,
-    wallBracketCount: 0,
-    pillarBracketCount: 0,
+    bracketCount: 0,
     connectorCount: 0,
     counterCount: 0,
     sipHookCount: 0,
@@ -102,6 +109,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
     freezerCount: 0,
     nailCount: 0,
     glueForNailCount: 0,
+    mountingBoxCount: 0,
   });
 
   const { ObyektApi } = useObyektApiContext();
@@ -166,70 +174,107 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <div className="my-2">
             <h5>Kamera</h5>
           </div>
-          <CameraTableWrapper filter={filter} />
+          <CameraTableWrapper
+            filter={filter}
+            cameraType={CameraTypes.Camera}
+            productForForm={ProductTypes.Camera}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.electrCabelCount > 0 && (
+      {productsCounts.speedCheckingCameraCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Elektr kabel</h5>
+            <h5>Avtomabil tezligini aniqlovchi kamera(radar)</h5>
           </div>
-          <CabelTableWrapper filter={filter} cabelType={CabelTypes.ElectricCable} />
+          <CameraTableWrapper
+            filter={filter}
+            cameraType={CameraTypes.Radar}
+            productForForm={ProductTypes.SpeedCheckingCamera}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.utpCabelCount > 0 && (
+      {productsCounts.anprCameraCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>UTP kabel</h5>
+            <h5>Davlat raqamini aniqlovchi kamera(ANPR)</h5>
           </div>
-          <CabelTableWrapper filter={filter} cabelType={CabelTypes.UTPable} />
+          <CameraTableWrapper
+            filter={filter}
+            cameraType={CameraTypes.ANPR}
+            productForForm={ProductTypes.ANPRCamera}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.projectorCount > 0 && (
+      {productsCounts.ptzCameraCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Projektor</h5>
+            <h5>Aynalma kamera(PTZ)</h5>
           </div>
-          <ProjectorTableWrapper filter={filter} />
+          <CameraTableWrapper
+            filter={filter}
+            cameraType={CameraTypes.PTZ}
+            productForForm={ProductTypes.PTZCamera}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.distributionShelfCount > 0 && (
+      {productsCounts.c327CameraCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Tarqatuvchi javon</h5>
+            <h5>To'xtash va to'xtab turish qoidabuzarligini aniqlovchi kamera(3.27)</h5>
           </div>
-          <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.DistributionShelf} />
+          <CameraTableWrapper
+            filter={filter}
+            cameraType={CameraTypes.C327}
+            productForForm={ProductTypes.C327Camera}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.odfOpticRackCount > 0 && (
+      {productsCounts.chqbaCameraCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>ODF optik boks</h5>
+            <h5>Chorrahadagi qoidabuzarligini aniqlovchi kamera</h5>
           </div>
-          <RackesTableWrapper filter={filter} rackType={RackTypes.ODFOpticRack} />
+          <CameraTableWrapper
+            filter={filter}
+            cameraType={CameraTypes.CHQBA}
+            productForForm={ProductTypes.CHQBACamera}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.miniOpticRackCount > 0 && (
+      {productsCounts.c733CameraCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Mini optik boks</h5>
+            <h5>Yuz yoki avtotransport vositasi davlat raqamini aniqlovchi kamera(733)</h5>
           </div>
-          <RackesTableWrapper filter={filter} rackType={RackTypes.MiniOpticRack} />
+          <CameraTableWrapper
+            filter={filter}
+            cameraType={CameraTypes.C733}
+            productForForm={ProductTypes.C733Camera}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.switchComboCount > 0 && (
+      {productsCounts.videoRecorderCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Switch kombo</h5>
+            <h5>Video registrator</h5>
           </div>
-          <SwitchesTableWrapper filter={filter} switchType={SwitchTypes.SwitchCombo} />
+          <VideoRecordersTableWrapper filter={filter} productForForm={ProductTypes.VideoRecorder} />
+        </CustomCard>
+      )}
+
+      {productsCounts.serverCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Server</h5>
+          </div>
+          <ServersTableWrapper filter={filter} productForForm={ProductTypes.Server} />
         </CustomCard>
       )}
 
@@ -238,34 +283,37 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <div className="my-2">
             <h5>Switch Poe</h5>
           </div>
-          <SwitchesTableWrapper filter={filter} switchType={SwitchTypes.SwitchPoE} />
+          <SwitchesTableWrapper
+            filter={filter}
+            switchType={SwitchTypes.SwitchPoE}
+            productForForm={ProductTypes.SwitchPoe}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.akumalatorCount > 0 && (
+      {productsCounts.switchComboCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Akumalator</h5>
+            <h5>Switch kombo</h5>
           </div>
-          <AkumalatorsTableWrapper filter={filter} />
+          <SwitchesTableWrapper
+            filter={filter}
+            switchType={SwitchTypes.SwitchCombo}
+            productForForm={ProductTypes.SwitchKombo}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.avtomatCount > 0 && (
+      {productsCounts.svetaforDetectorCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Avtomat</h5>
+            <h5>Svetafor detektor</h5>
           </div>
-          <AvtomatsTableWrapper filter={filter} />
-        </CustomCard>
-      )}
-
-      {productsCounts.stabilizerCount > 0 && (
-        <CustomCard className="mt-4 p-3">
-          <div className="my-2">
-            <h5>Stabilizator</h5>
-          </div>
-          <StabilizersTableWrapper filter={filter} />
+          <SvetaforTableWrapper
+            filter={filter}
+            svetaforType={SvetaforTypes.SvetaforDetector}
+            productForForm={ProductTypes.SvetaforDetektorForCamera}
+          />
         </CustomCard>
       )}
 
@@ -277,25 +325,8 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <SvetaforTableWrapper
             filter={filter}
             svetaforType={SvetaforTypes.SvetaforDetectorForCamera}
+            productForForm={ProductTypes.SvetaforDetektorForCamera}
           />
-        </CustomCard>
-      )}
-
-      {productsCounts.svetaforDetectorCount > 0 && (
-        <CustomCard className="mt-4 p-3">
-          <div className="my-2">
-            <h5>Svetafor detektor</h5>
-          </div>
-          <SvetaforTableWrapper filter={filter} svetaforType={SvetaforTypes.SvetaforDetector} />
-        </CustomCard>
-      )}
-
-      {productsCounts.socketCount > 0 && (
-        <CustomCard className="mt-4 p-3">
-          <div className="my-2">
-            <h5>Rozetka</h5>
-          </div>
-          <SocketTableWrapper filter={filter} />
         </CustomCard>
       )}
 
@@ -304,25 +335,37 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <div className="my-2">
             <h5>Terminal Server</h5>
           </div>
-          <TerminalServerTableWrapper filter={filter} />
+          <TerminalServerTableWrapper
+            filter={filter}
+            productForForm={ProductTypes.TerminalServer}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.telecommunicationShelfCount > 0 && (
+      {productsCounts.stabilizerCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Telekomunikatsion javon</h5>
+            <h5>Stabilizator</h5>
           </div>
-          <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.TelecommunicationShelf} />
+          <StabilizersTableWrapper filter={filter} productForForm={ProductTypes.Stabilizer} />
         </CustomCard>
       )}
 
-      {productsCounts.mainElectronicShelfCount > 0 && (
+      {productsCounts.projectorCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Asosiy elektron javon</h5>
+            <h5>Projektor</h5>
           </div>
-          <ShelvesTableWrapper filter={filter} shelfType={ShelfTypes.MainElectronicShelf} />
+          <ProjectorTableWrapper filter={filter} productForForm={ProductTypes.Projector} />
+        </CustomCard>
+      )}
+
+      {productsCounts.akumalatorCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Akumalator</h5>
+          </div>
+          <AkumalatorsTableWrapper filter={filter} productForForm={ProductTypes.Akumalator} />
         </CustomCard>
       )}
 
@@ -334,25 +377,47 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <ShelvesTableWrapper
             filter={filter}
             shelfType={ShelfTypes.CentralTelecommunicationShelf}
+            productForForm={ProductTypes.CentralTelecomunicationShelf}
           />
         </CustomCard>
       )}
 
-      {productsCounts.stanchionCount > 0 && (
+      {productsCounts.mainElectronicShelfCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Ustun</h5>
+            <h5>Asosiy elektron javon</h5>
           </div>
-          <StanchionsTableWrapper filter={filter} />
+          <ShelvesTableWrapper
+            filter={filter}
+            shelfType={ShelfTypes.MainElectronicShelf}
+            productForForm={ProductTypes.MainTelecomunicationShelf}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.speedCheckingCount > 0 && (
+      {productsCounts.distributionShelfCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Tezlikni o'lchovchi radar</h5>
+            <h5>Tarqatish javon</h5>
           </div>
-          <SpeedCheckingTableWrapper filter={filter} />
+          <ShelvesTableWrapper
+            filter={filter}
+            shelfType={ShelfTypes.DistributionShelf}
+            productForForm={ProductTypes.DistributionShelf}
+          />
+        </CustomCard>
+      )}
+
+      {productsCounts.telecommunicationShelfCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Telekomunikatsion javon</h5>
+          </div>
+          <ShelvesTableWrapper
+            filter={filter}
+            shelfType={ShelfTypes.TelecommunicationShelf}
+            productForForm={ProductTypes.TelecomunicationShelf}
+          />
         </CustomCard>
       )}
 
@@ -361,43 +426,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <div className="my-2">
             <h5>UPS</h5>
           </div>
-          <UpsTableWrapper filter={filter} />
-        </CustomCard>
-      )}
-
-      {productsCounts.boxCount > 0 && (
-        <CustomCard className="mt-4 p-3">
-          <div className="my-2">
-            <h5>Korob</h5>
-          </div>
-          <BoxesTableWrapper filter={filter} />
-        </CustomCard>
-      )}
-
-      {productsCounts.wallBracketCount > 0 && (
-        <CustomCard className="mt-4 p-3">
-          <div className="my-2">
-            <h5>Devorga aylanma kamerani o'rnatish uchun kronshteyn</h5>
-          </div>
-          <BracketsTableWrapper filter={filter} bracketType={BracketTypes.WallBracket} />
-        </CustomCard>
-      )}
-
-      {productsCounts.pillarBracketCount > 0 && (
-        <CustomCard className="mt-4 p-3">
-          <div className="my-2">
-            <h5>Kronshteyn</h5>
-          </div>
-          <BracketsTableWrapper filter={filter} bracketType={BracketTypes.PillarBracket} />
-        </CustomCard>
-      )}
-
-      {productsCounts.connectorCount > 0 && (
-        <CustomCard className="mt-4 p-3">
-          <div className="my-2">
-            <h5>Konnektor</h5>
-          </div>
-          <ConnectorsTableWrapper filter={filter} />
+          <UpsTableWrapper filter={filter} productForForm={ProductTypes.UPS} />
         </CustomCard>
       )}
 
@@ -406,61 +435,104 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <div className="my-2">
             <h5>Elektr energiya hisoblagichi</h5>
           </div>
-          <CountersTableWrapper filter={filter} />
+          <CountersTableWrapper filter={filter} productForForm={ProductTypes.Counter} />
         </CustomCard>
       )}
 
-      {productsCounts.sipHookCount > 0 && (
+      {productsCounts.utpCabelCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Sip.Xomut</h5>
+            <h5>UTP kabel</h5>
           </div>
-          <HooksTableWrapper filter={filter} hookType={HookTypes.SipHook} />
+          <CabelTableWrapper
+            filter={filter}
+            cabelType={CabelTypes.UTPable}
+            productForForm={ProductTypes.UtpCabel}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.cabelHookCount > 0 && (
+      {productsCounts.electrCabelCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Kabel.Xomut</h5>
+            <h5>Elektr kabel</h5>
           </div>
-          <HooksTableWrapper filter={filter} hookType={HookTypes.CabelHook} />
+          <CabelTableWrapper
+            filter={filter}
+            cabelType={CabelTypes.ElectricCable}
+            productForForm={ProductTypes.ElectrCabel}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.glueForNailCount > 0 && (
+      {productsCounts.socketCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Burama mix uchun yelim pona</h5>
+            <h5>Rozetka</h5>
           </div>
-          <HooksTableWrapper filter={filter} hookType={HookTypes.CabelHook} />
+          <SocketTableWrapper filter={filter} productForForm={ProductTypes.Socket} />
         </CustomCard>
       )}
 
-      {productsCounts.nailCount > 0 && (
+      {productsCounts.odfOpticRackCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Burama mix</h5>
+            <h5>ODF optik boks</h5>
           </div>
-          <NailsTableWrapper filter={filter} />
+          <RackesTableWrapper
+            filter={filter}
+            rackType={RackTypes.ODFOpticRack}
+            productForForm={ProductTypes.ODFOpticRack}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.ribbonCount > 0 && (
+      {productsCounts.miniOpticRackCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Sip.Lenta</h5>
+            <h5>Mini optik boks</h5>
           </div>
-          <RibbonsTableWrapper filter={filter} />
+          <RackesTableWrapper
+            filter={filter}
+            rackType={RackTypes.MiniOpticRack}
+            productForForm={ProductTypes.MiniOptikRack}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.serverCount > 0 && (
+      {productsCounts.avtomatCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Server</h5>
+            <h5>Avtomat</h5>
           </div>
-          <ServersTableWrapper filter={filter} />
+          <AvtomatsTableWrapper filter={filter} productForForm={ProductTypes.Avtomat} />
+        </CustomCard>
+      )}
+
+      {productsCounts.stanchionCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Ustun</h5>
+          </div>
+          <StanchionsTableWrapper filter={filter} productForForm={ProductTypes.Stanchion} />
+        </CustomCard>
+      )}
+
+      {productsCounts.bracketCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Kronshteyn</h5>
+          </div>
+          <BracketsTableWrapper filter={filter} productForForm={ProductTypes.Bracket} />
+        </CustomCard>
+      )}
+
+      {productsCounts.connectorCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Konnektor</h5>
+          </div>
+          <ConnectorsTableWrapper filter={filter} productForForm={ProductTypes.Connector} />
         </CustomCard>
       )}
 
@@ -469,25 +541,29 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <div className="my-2">
             <h5>Gofra qobiq</h5>
           </div>
-          <ShellsTableWrapper filter={filter} shellType={ShellTypes.GofraShell} />
+          <ShellsTableWrapper
+            filter={filter}
+            shellType={ShellTypes.GofraShell}
+            productForForm={ProductTypes.GofraShell}
+          />
         </CustomCard>
       )}
 
-      {productsCounts.plasticShellCount > 0 && (
+      {productsCounts.boxCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Plastik qobiq</h5>
+            <h5>Korob</h5>
           </div>
-          <ShellsTableWrapper filter={filter} shellType={ShellTypes.PlasticShell} />
+          <BoxesTableWrapper filter={filter} productForForm={ProductTypes.Corob} />
         </CustomCard>
       )}
 
-      {productsCounts.videoRecorderCount > 0 && (
+      {productsCounts.mountingBoxCount > 0 && (
         <CustomCard className="mt-4 p-3">
           <div className="my-2">
-            <h5>Video registrator</h5>
+            <h5>Montaj qutisi</h5>
           </div>
-          <VideoRecordersTableWrapper filter={filter} />
+          <MountingBoxTableWrapper filter={filter} productForForm={ProductTypes.MountingBox} />
         </CustomCard>
       )}
 
@@ -496,7 +572,77 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <div className="my-2">
             <h5>Qotirgich</h5>
           </div>
-          <FreezersTableWrapper filter={filter} />
+          <FreezersTableWrapper filter={filter} productForForm={ProductTypes.Freezer} />
+        </CustomCard>
+      )}
+
+      {productsCounts.ribbonCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>SIP Lenta</h5>
+          </div>
+          <RibbonsTableWrapper filter={filter} productForForm={ProductTypes.Ribbon} />
+        </CustomCard>
+      )}
+
+      {productsCounts.sipHookCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>SIP Xomut</h5>
+          </div>
+          <HooksTableWrapper
+            filter={filter}
+            hookType={HookTypes.SipHook}
+            productForForm={ProductTypes.SipHook}
+          />
+        </CustomCard>
+      )}
+
+      {productsCounts.nailCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Burama mix</h5>
+          </div>
+          <NailsTableWrapper filter={filter} productForForm={ProductTypes.Nail} />
+        </CustomCard>
+      )}
+
+      {productsCounts.glueForNailCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Burama mix uchun yelim pona</h5>
+          </div>
+          <HooksTableWrapper
+            filter={filter}
+            hookType={HookTypes.CabelHook}
+            productForForm={ProductTypes.GlueForNail}
+          />
+        </CustomCard>
+      )}
+
+      {productsCounts.cabelHookCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Kabel Xomut</h5>
+          </div>
+          <HooksTableWrapper
+            filter={filter}
+            hookType={HookTypes.CabelHook}
+            productForForm={ProductTypes.CabelHook}
+          />
+        </CustomCard>
+      )}
+
+      {productsCounts.plasticShellCount > 0 && (
+        <CustomCard className="mt-4 p-3">
+          <div className="my-2">
+            <h5>Plastik qobiq</h5>
+          </div>
+          <ShellsTableWrapper
+            filter={filter}
+            shellType={ShellTypes.PlasticShell}
+            productForForm={ProductTypes.PlasticShell}
+          />
         </CustomCard>
       )}
 

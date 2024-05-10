@@ -22,6 +22,8 @@ import axios from "axios";
 import TabPage from "../tabs/TabPage";
 import ObjectForm from "./ObjectForm";
 import { API_HOST } from "../../constants/AppConstants";
+import { formatLocationNumber } from "../../utils/FormatUtils";
+import { useOjbectClassTypeApiContext } from "../../api/object-class-type/ObjectClassTypeApiContext";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -65,6 +67,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
   const { DistrictsApi } = useDistrictsApiContext();
   const { ProjectsApi } = useProjectApiContext();
   const { NumberOfOrdersApi } = useNumberOfOrdersApiContext();
+  const { ObjectClassTypeApi } = useOjbectClassTypeApiContext();
   const { ObjectClassApi } = useOjbectClassApiContext();
   const { ModelsApi } = useModelsApiContext();
 
@@ -152,7 +155,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
       })
       .catch(showError);
 
-    ObjectClassApi.getObjectClassTypes()
+    ObjectClassTypeApi.getObjectClassTypesList()
       .then((r) => {
         const _objectClassicationTypes = r?.data?.map((region: any) => {
           return {
@@ -221,7 +224,8 @@ export default function ObjectFormWrapper({ filter }: Props) {
 
   const onChangeObjectClassType = useCallback(
     (value: any) => {
-      ObjectClassApi.getObjectClasses({ objectClassTypeId: value.value })
+      console.log(value);
+      ObjectClassApi.getObjectClassesList({ objectClassTypeId: value.value })
         .then((r) => {
           const _objectClassifications = r?.data?.map((d: any) => {
             return {

@@ -1,5 +1,7 @@
-import moment from "moment";
+import { useMemo } from "react";
 import { useI18n } from "../../i18n/I18nContext";
+
+import moment from "moment";
 import Table from "../table/Table";
 import Button, { BgColors } from "../ui/Button";
 import PencilIcon from "../icons/PencilIcon";
@@ -11,81 +13,80 @@ interface Props {
   readonly selectIds: (value: any) => void;
 }
 
-export default function NumberOfOrderTable({ data, loading, editNumberOfOrder, selectIds }: Props) {
+export default function NumberOfOrderTable({
+  data = [],
+  loading,
+  editNumberOfOrder,
+  selectIds,
+}: Props) {
   const { translate } = useI18n();
-  const headers: any = [
-    {
-      header: translate("T/r"),
-      access: "index",
-      width: 50,
-      ceil: (_: any, index: number) => {
-        return <div>{index + 1}</div>;
+  const columns = useMemo(
+    () => [
+      {
+        Header: translate("T/r"),
+        accessor: "id",
+        width: 100,
+        ceil: (row: any) => {
+          return <div>{Number(row?.row?.id) + 1}</div>;
+        },
       },
-    },
-    {
-      header: translate("Nomeri"),
-      access: "number",
-      width: 200,
-    },
-    {
-      header: translate("Hudud"),
-      access: "region",
-      width: 200,
-    },
-    {
-      header: translate("REGION_TABLE_CREATED_DATE_COLUMN_TITLE"),
-      access: "createdDate",
-      width: 200,
-      ceil: (row: any) => {
-        return <div>{moment(row.createdDate).format("HH:mm | DD-MM-YYYY")}</div>;
+      {
+        Header: translate("Nomeri"),
+        accessor: "number",
+        width: 300,
       },
-    },
-    {
-      header: translate("REGION_TABLE_UPDATED_DATE_COLUMN_TITLE"),
-      access: "updatedDate",
-      width: 200,
-      ceil: (row: any) => {
-        if (row.updatedDate)
-          return <div>{moment(row.updatedDate).format("HH:mm | DD-MM-YYYY")}</div>;
+      {
+        Header: translate("Hudud"),
+        accessor: "region",
+        width: 300,
       },
-    },
-    {
-      header: translate("REGION_TABLE_CREATED_BY_COLUMN_TITLE"),
-      access: "createdBy",
-      width: 200,
-    },
-    {
-      header: translate("REGION_TABLE_UPDATED_BY_COLUMN_TITLE"),
-      access: "updatedBy",
-      width: 200,
-    },
-    {
-      header: translate("..."),
-      access: "updatedBy",
-      width: 100,
-      ceil: (row: any) => {
-        return (
-          <div className="w-100 text-center">
-            <Button
-              onClick={() => editNumberOfOrder(row.id)}
-              className="py-2 px-2 text-light"
-              bgColor={BgColors.Yellow}
-            >
-              <PencilIcon />
-            </Button>
-          </div>
-        );
+      {
+        Header: translate("REGION_TABLE_CREATED_DATE_COLUMN_TITLE"),
+        accessor: "createdDate",
+        width: 200,
+        Cell: (row: any) => {
+          return <div>{moment(row?.value).format("DD-MM-YYYY | HH:mm")}</div>;
+        },
       },
-    },
-  ];
-
-  return (
-    <Table
-      loading={loading}
-      headers={headers}
-      data={data}
-      withCheckbox
-      selectRowCheckbox={selectIds}
-    />
+      {
+        Header: translate("REGION_TABLE_UPDATED_DATE_COLUMN_TITLE"),
+        accessor: "updatedDate",
+        width: 200,
+        Cell: (row: any) => {
+          return <div>{row?.value && moment(row?.value).format("DD-MM-YYYY | HH:mm")}</div>;
+        },
+      },
+      {
+        Header: translate("REGION_TABLE_CREATED_BY_COLUMN_TITLE"),
+        accessor: "creator",
+        width: 200,
+      },
+      {
+        Header: translate("REGION_TABLE_UPDATED_BY_COLUMN_TITLE"),
+        accessor: "updator",
+        width: 200,
+      },
+      {
+        Header: translate("..."),
+        accessor: "actions",
+        width: 200,
+        Cell: (row: any) => {
+          return (
+            <div className="d-flex justify-content-center">
+              <Button
+                onClick={() => editNumberOfOrder(row?.row?.original?.id)}
+                className="py-2 px-2 text-light"
+                bgColor={BgColors.Yellow}
+              >
+                <PencilIcon />
+              </Button>
+            </div>
+          );
+        },
+      },
+    ],
+    [],
   );
+
+  return <Table loading={loading} columns={columns} data={data} selectRowCheckbox={selectIds} />;
 }

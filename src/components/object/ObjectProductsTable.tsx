@@ -10,20 +10,20 @@ interface Props {
 export default function ObjectProductsTable({ data, setProduct }: Props) {
   const { translate } = useI18n();
 
-  const headers: any = [
+  const columns: any = [
     {
-      header: translate("Product Name"),
-      access: "name",
+      Header: translate("Product Name"),
+      accessor: "name",
       width: 200,
     },
     {
-      header: translate("Product Count"),
-      access: "count",
+      Header: translate("Product Count"),
+      accessor: "count",
       width: 200,
     },
     {
-      header: translate("View All"),
-      access: "view",
+      Header: translate("View All"),
+      accessor: "view",
       width: 100,
       ceil: (row: any) => {
         return (
@@ -41,5 +41,5 @@ export default function ObjectProductsTable({ data, setProduct }: Props) {
     },
   ];
 
-  return <Table loading={false} headers={headers} data={data} withCheckbox />;
+  return <Table loading={false} columns={columns} data={data} />;
 }

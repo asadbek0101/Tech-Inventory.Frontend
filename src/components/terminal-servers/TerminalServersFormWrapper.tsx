@@ -4,12 +4,12 @@ import { ObjectFilter } from "../../filters/ObjectFilter";
 import { useTerminalServerApiContext } from "../../api/terminal-server/TerminalServerApiContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { showError } from "../../utils/NotificationUtils";
-
-import TerminalServersForm from "./TerminalServersForm";
 import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { ModelTypes } from "../../api/models/ModelsDto";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
+import { showError } from "../../utils/NotificationUtils";
+
+import TerminalServersForm from "./TerminalServersForm";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -30,6 +30,22 @@ export default function TerminalServersFormWrapper({ filter }: Props) {
   const navigate = useNavigate();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      TerminalServerApi.getOneTerminalServer({ id: productId }).then((r) => {
+        const json = {
+          ...r?.data,
+          modelId: {
+            label: r?.data?.model,
+            value: r?.data?.modelId,
+          },
+        };
+        setInitalValues(json);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     ModelsApi.getModelsList({ type: ModelTypes.TerminalServer })
@@ -47,19 +63,34 @@ export default function TerminalServersFormWrapper({ filter }: Props) {
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-        modelId: value.modelId.value,
-      };
-      TerminalServerApi.createTerminalServer(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        TerminalServerApi.updateTerminalServer(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        TerminalServerApi.createTerminalServer(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [TerminalServerApi, objectId],
+    [TerminalServerApi, objectId, productId],
   );
 
   return (

@@ -30,6 +30,22 @@ export default function SocketFormWrapper({ filter }: Props) {
 
   const navigate = useNavigate();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      SocketApi.getOneSocket({ id: productId }).then((r) => {
+        const json = {
+          ...r?.data,
+          modelId: {
+            label: r?.data?.model,
+            value: r?.data?.modelId,
+          },
+        };
+        setInitalValues(json);
+      });
+    }
+  }, [SocketApi, productId]);
 
   useEffect(() => {
     ModelsApi.getModelsList({ type: ModelTypes.Socket })
@@ -47,19 +63,34 @@ export default function SocketFormWrapper({ filter }: Props) {
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-        modelId: value.modelId.value,
-      };
-      SocketApi.createSocket(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        SocketApi.updateSocket(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+          modelId: value.modelId.value,
+        };
+        SocketApi.createSocket(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [SocketApi, objectId],
+    [SocketApi, objectId, productId],
   );
 
   return (

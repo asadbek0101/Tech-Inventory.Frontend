@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ObjectFilter } from "../../filters/ObjectFilter";
 import { ShelfInitialProps, ShelfTypes } from "../../api/shelf/ShelfDto";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { showError } from "../../utils/NotificationUtils";
 
 import ShelvesForm from "./ShelvesForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -27,21 +28,45 @@ export default function ShelvesFormWrapper({ filter, shelfType }: Props) {
   const navigate = useNavigate();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const productId = useMemo(() => filter.getProductId() || 0, [filter]);
+  const product = useMemo(() => filter.getProduct() || 0, [filter]);
+
+  useEffect(() => {
+    if (productId) {
+      ShelfApi.getOneShelf({ id: productId })
+        .then((r) => setInitalValues(r?.data))
+        .catch(showError);
+    }
+  }, [ShelfApi, productId]);
 
   const onSubmit = useCallback(
     (value: any) => {
-      const json = {
-        ...value,
-        obyektId: objectId,
-      };
-      ShelfApi.createShelf(json)
-        .then((r) => {
-          toast.success(r?.data?.message);
-          navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
-        })
-        .catch(showError);
+      if (productId) {
+        const json = {
+          ...value,
+          id: productId,
+          obyektId: objectId,
+        };
+        ShelfApi.updateShelf(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}&product=${product}`);
+          })
+          .catch(showError);
+      } else {
+        const json = {
+          ...value,
+          obyektId: objectId,
+        };
+        ShelfApi.createShelf(json)
+          .then((r) => {
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+          })
+          .catch(showError);
+      }
     },
-    [ShelfApi],
+    [ShelfApi, productId],
   );
 
   return (

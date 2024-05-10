@@ -7,9 +7,27 @@ export class BoxesApi extends BaseApi {
     });
   }
 
+  public getOneBoxe(query: any) {
+    return this.get("Boxes/GetOne", {
+      query,
+    });
+  }
+
   public createBox(json: any) {
     return this.post("Boxes/Create", {
       json,
+    });
+  }
+
+  public updateBox(json: any) {
+    return this.put("Boxes/Update", {
+      json,
+    });
+  }
+
+  public deleteBox(query: any) {
+    return this.delete("Boxes/Delete", {
+      query,
     });
   }
 }
