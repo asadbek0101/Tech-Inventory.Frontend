@@ -24,6 +24,7 @@ import ObjectForm from "./ObjectForm";
 import { API_HOST } from "../../constants/AppConstants";
 import { formatLocationNumber } from "../../utils/FormatUtils";
 import { useOjbectClassTypeApiContext } from "../../api/object-class-type/ObjectClassTypeApiContext";
+import { useAttachmentsApiContext } from "../../api/attachments/AttachmentsApiContext";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -88,6 +89,48 @@ export default function ObjectFormWrapper({ filter }: Props) {
     if (objectId) {
       ObyektApi.getOneObyekt({ id: Number(objectId) })
         .then((r) => {
+          if (r?.data?.regionId) {
+            DistrictsApi.getDistrictsList({ regionId: r?.data?.regionId })
+              .then((r) => {
+                const _districts = r?.data?.map((d: any) => {
+                  return {
+                    label: d.name,
+                    value: d.id,
+                  };
+                });
+                setDistricts(_districts);
+              })
+              .catch(showError);
+          }
+
+          if (r?.data?.projectId) {
+            NumberOfOrdersApi.getNumberOfOrdersList({ projectId: r?.data?.projectId })
+              .then((r) => {
+                const _numberOfOrders = r?.data?.map((d: any) => {
+                  return {
+                    label: d.number,
+                    value: d.id,
+                  };
+                });
+                setNumberOfOrders(_numberOfOrders);
+              })
+              .catch(showError);
+          }
+
+          if (r?.data?.objectClassTypeId) {
+            ObjectClassApi.getObjectClassesList({ objectClassTypeId: r?.data?.objectClassTypeId })
+              .then((r) => {
+                const _objectClassifications = r?.data?.map((d: any) => {
+                  return {
+                    label: d.name,
+                    value: d.id,
+                  };
+                });
+                setObjectClassifications(_objectClassifications);
+              })
+              .catch(showError);
+          }
+
           const ob = {
             ...r?.data,
             regionId: {
@@ -122,13 +165,12 @@ export default function ObjectFormWrapper({ filter }: Props) {
               label: r?.data?.model,
               value: r?.data?.modelId,
             },
-            files: [],
           };
           setInitalValues(ob);
         })
         .catch(showError);
     }
-  }, [ObyektApi, objectId]);
+  }, [ObyektApi, DistrictsApi, RegionsApi, ObjectClassTypeApi, objectId]);
 
   useEffect(() => {
     RegionsApi.getRegionsList()
@@ -224,7 +266,6 @@ export default function ObjectFormWrapper({ filter }: Props) {
 
   const onChangeObjectClassType = useCallback(
     (value: any) => {
-      console.log(value);
       ObjectClassApi.getObjectClassesList({ objectClassTypeId: value.value })
         .then((r) => {
           const _objectClassifications = r?.data?.map((d: any) => {
@@ -269,10 +310,10 @@ export default function ObjectFormWrapper({ filter }: Props) {
           .then((r) => {
             const files = initialValues?.files;
             files.map((file: any) => {
-              if (file.file) {
-                const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}&fileName=${file.fileName}&type=1`;
+              if (file && Boolean(file.type)) {
+                const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}`;
                 const formData = new FormData();
-                formData.append("file", file.file);
+                formData.append("File", file);
                 const config = {
                   headers: {
                     "content-type": "multipart/form-data",
@@ -280,28 +321,16 @@ export default function ObjectFormWrapper({ filter }: Props) {
                     userId: `${userId}`,
                   },
                 };
-                axios.post(url, formData, config).then((response: any) => {
-                  toast.success(response?.data);
-                });
+                axios
+                  .post(url, formData, config)
+                  .then((response: any) => {
+                    toast.success(response?.data);
+                  })
+                  .catch(showError);
               }
             });
-
-            if (r?.data?.id) {
-              const connectionTypeJson = {
-                obyektId: r?.data?.id,
-                modelId: value.modelId.value,
-                numberOfPort: value.numberOfPort,
-                serialNumber: value.serialNumber,
-                phoneNumber: value.phoneNumber,
-                type: value.connectionType.value,
-              };
-
-              ObyektApi.updateConnectionType(connectionTypeJson)
-                .then((r: any) => console.log(r))
-                .catch(showError);
-            }
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-table`);
+            navigate(`/dashboard/objects/object-view?objectId=${r?.data?.id}`);
           })
           .catch(showError);
       } else {
@@ -320,11 +349,12 @@ export default function ObjectFormWrapper({ filter }: Props) {
           .then((r) => {
             if (r?.data?.id) {
               const files = initialValues?.files;
+              console.log(files);
               files.map((file: any) => {
-                if (file.file) {
-                  const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}&fileName=${file.fileName}&type=1`;
+                if (file && Boolean(file.type)) {
+                  const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}`;
                   const formData = new FormData();
-                  formData.append("file", file.file);
+                  formData.append("File", file);
                   const config = {
                     headers: {
                       "content-type": "multipart/form-data",
@@ -332,27 +362,17 @@ export default function ObjectFormWrapper({ filter }: Props) {
                       userId: `${userId}`,
                     },
                   };
-                  axios.post(url, formData, config).then((response: any) => {
-                    toast.success(response?.data);
-                  });
+                  axios
+                    .post(url, formData, config)
+                    .then((response: any) => {
+                      toast.success(response?.data);
+                    })
+                    .catch(showError);
                 }
               });
-
-              const connectionTypeJson = {
-                obyektId: r?.data?.id,
-                modelId: value.modelId.value,
-                numberOfPort: value.numberOfPort,
-                serialNumber: value.serialNumber,
-                phoneNumber: value.phoneNumber,
-                type: value.connectionType.value,
-              };
-
-              ObyektApi.createConnectionType(connectionTypeJson)
-                .then((r: any) => console.log(r))
-                .catch(showError);
             }
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-table`);
+            navigate(`/dashboard/objects/object-view?objectId=${r?.data?.id}`);
           })
           .catch(showError);
       }
@@ -391,6 +411,17 @@ export default function ObjectFormWrapper({ filter }: Props) {
     [ModelsApi],
   );
 
+  const deleteFileFromDb = useCallback(
+    (value: any) => {
+      if (objectId) {
+        ObyektApi.deleteFile({ id: objectId, fileName: value.fileName })
+          .then((r) => toast.success(r?.message))
+          .catch(showError);
+      }
+    },
+    [ObyektApi, objectId],
+  );
+
   return (
     <TabPage
       footerClassName="d-none"
@@ -415,6 +446,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
         numberOfOrdersOptions={numberOfOrders}
         initialValues={initialValues}
         setInitialValues={setInitalValues}
+        deleteFileFromDb={deleteFileFromDb}
         objectClassificationsTypesOptions={obClassTypes}
         objectClassificationsOptions={objectClassifications}
         onChangeRegion={onChangeRegion}

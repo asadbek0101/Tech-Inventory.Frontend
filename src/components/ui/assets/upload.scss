@@ -1,13 +1,17 @@
 .upload-container {
   width: 140px;
   .upload-label {
-    width: 100%;
-    background-color: gold;
-    padding: 4px 10px;
-    border-radius: 4px;
-    text-align: center;
-    color: white;
+    box-shadow: 0 1px 1px 1px rgb(202, 194, 194);
+    border: none;
+    border-radius: 2px;
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
     cursor: pointer;
+    position: relative;
   }
 }
 

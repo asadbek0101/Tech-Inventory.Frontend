@@ -51,7 +51,6 @@ interface Props {
 }
 
 export default function ObjectViewWrapper({ filter }: Props) {
-  const [attachments, setAttachments] = useState([]);
   const [initialValues, setInitialValues] = useState({
     region: "",
     district: "",
@@ -126,15 +125,11 @@ export default function ObjectViewWrapper({ filter }: Props) {
     ObyektApi.getObyektProducts({ obyektId: objectId })
       .then((r) => setProductsCounts(r?.data))
       .catch(showError);
-    AttachmentsApi.getAttachments({ obyektId: objectId })
-      .then((r) => setAttachments(r?.data))
-      .catch(showError);
   }, [ObyektApi, AttachmentsApi, objectId]);
 
   const downloadFile = useCallback(
     (value: any) => {
-      const type = value?.path?.substring(value?.path?.indexOf(".") + 1);
-      ObyektApi.getMultiFile(value?.path, value?.fileName, type).catch(showError);
+      ObyektApi.getMultiFile(value?.fileName).catch(showError);
     },
     [ObyektApi],
   );
@@ -151,11 +146,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
         </Button>
       </div>
       <CustomCard>
-        <ObjectView
-          initialValues={initialValues}
-          attachments={attachments}
-          setPath={downloadFile}
-        />
+        <ObjectView initialValues={initialValues} setPath={downloadFile} />
       </CustomCard>
       <div className="mt-3">
         <Button

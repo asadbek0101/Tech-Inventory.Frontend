@@ -17,6 +17,7 @@ import AddIcon from "../icons/AddIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 import { formatLocationNumber, formatPhoneNumber } from "../../utils/FormatUtils";
 import { toast } from "react-toastify";
+import ImgUpload from "../ui/ImgUpload";
 
 interface Props {
   readonly initialValues: any;
@@ -26,6 +27,7 @@ interface Props {
   readonly projectsOptions: any[];
   readonly objectClassificationsOptions: any[];
   readonly objectClassificationsTypesOptions: any[];
+  readonly deleteFileFromDb: (value: any) => void;
   readonly onSubmit: (value: any) => void;
   readonly onChangeRegion: (value: any) => void;
   readonly onChangeProject: (value: any) => void;
@@ -55,6 +57,7 @@ export default function ObjectForm({
   onChangeProject,
   onChangeObjectClassType,
   setConnectionType,
+  deleteFileFromDb,
   initialValues,
   regionsOptions,
   districtsOptions,
@@ -177,17 +180,6 @@ export default function ObjectForm({
     [setInitialValues],
   );
 
-  const onChangeInfo = useCallback(
-    (event: any) => {
-      setInitialValues((prev: any) =>
-        update(prev, {
-          info: event.target.value,
-        }),
-      );
-    },
-    [setInitialValues],
-  );
-
   const onChangeConnectionType = useCallback(
     (event: any) => {
       setInitialValues((prev: any) =>
@@ -212,13 +204,25 @@ export default function ObjectForm({
     [setInitialValues],
   );
 
-  const onChangeFileName = useCallback(
-    (event: any, index: number) => {
-      console.log(index);
+  const deleteFile = useCallback(
+    (file: any, index: number) => {
       const files = [...initialValues.files];
-      const file = initialValues?.files[index];
-      file.fileName = event.target.value;
-      files[index] = file;
+      files.splice(index, 1);
+
+      deleteFileFromDb(file);
+
+      setInitialValues((prev: any) =>
+        update(prev, {
+          files: files,
+        }),
+      );
+    },
+    [setInitialValues, initialValues, deleteFileFromDb],
+  );
+
+  const onChangeFile = useCallback(
+    (event: any) => {
+      const files = [...initialValues.files, ...event?.target?.files];
       setInitialValues((prev: any) =>
         update(prev, {
           files: files,
@@ -226,51 +230,6 @@ export default function ObjectForm({
       );
     },
     [setInitialValues, initialValues.files],
-  );
-
-  const addFile = useCallback(() => {
-    const files = [
-      ...initialValues.files,
-      {
-        fileName: "",
-        file: "",
-      },
-    ];
-
-    setInitialValues((prev: any) =>
-      update(prev, {
-        files: files,
-      }),
-    );
-  }, [setInitialValues, initialValues]);
-
-  const deleteFile = useCallback(
-    (index: number) => {
-      const files = [...initialValues.files];
-      files.splice(index, 1);
-
-      setInitialValues((prev: any) =>
-        update(prev, {
-          files: files,
-        }),
-      );
-    },
-    [setInitialValues, initialValues],
-  );
-
-  const onChangeFile = useCallback(
-    (event: any, index: number) => {
-      const files = [...initialValues.files];
-      const file = initialValues?.files[index];
-      file.file = event.target.files[0];
-      files[index] = file;
-      setInitialValues((prev: any) =>
-        update(prev, {
-          files: files,
-        }),
-      );
-    },
-    [setInitialValues, initialValues],
   );
 
   const onBlurLong = useCallback(
@@ -470,14 +429,14 @@ export default function ObjectForm({
               <div className="row">
                 {initialValues?.files?.map((file: any, index: number) => {
                   return (
-                    <div className="col-4 mb-4">
+                    <div className="col-4 mb-4" key={index}>
                       <GroupBox>
                         <div className="col-12 d-flex justify-content-end">
                           <Button
                             bgColor={BgColors.Red}
                             className="p-1"
                             type="button"
-                            onClick={() => deleteFile(index)}
+                            onClick={() => deleteFile(file, index)}
                           >
                             {<DeleteIcon />}
                           </Button>
@@ -485,16 +444,9 @@ export default function ObjectForm({
                         <div className="col-12">
                           <InputField
                             name={`fileName${index}`}
+                            disabled
                             label="File Nomi"
-                            onChange={(event) => onChangeFileName(event, index)}
-                            value={file.fileName}
-                          />
-                        </div>
-                        <div className="col-12 mt-3">
-                          <InputField
-                            name={`fileName${index}`}
-                            type="file"
-                            onChange={(event) => onChangeFile(event, index)}
+                            value={file.name}
                           />
                         </div>
                       </GroupBox>
@@ -504,15 +456,12 @@ export default function ObjectForm({
               </div>
             </div>
             <div className="col-12 d-flex justify-content-end mt-3">
-              <Button
-                type="button"
-                className="px-3 py-2 text-light"
-                bgColor={BgColors.Yellow}
-                onClick={addFile}
-                icon={<AddIcon />}
-              >
-                {translate("Fayl qo'shish")}
-              </Button>
+              <ImgUpload
+                setFiles={onChangeFile}
+                className="px-3 py-2 ms-2 text-light"
+                name="files"
+              />
+
               <Button type="submit" className="px-3 py-2 ms-2 text-light" bgColor={BgColors.Green}>
                 {translate("SAVE_BUTTON_TITLE")}
               </Button>

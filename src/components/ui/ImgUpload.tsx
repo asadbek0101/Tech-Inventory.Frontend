@@ -1,19 +1,32 @@
 import "./assets/upload.scss";
 
-interface ImgUploadProps{
-    readonly setImage: (value: any) => void;
-    readonly className?: string;
+interface ImgUploadProps {
+  readonly setFiles: (value: any) => void;
+  readonly className?: string;
+  readonly label?: string;
+  readonly name?: string;
 }
 
 export default function ImgUpload({
-    setImage, 
-    className
-}:ImgUploadProps){
-
-    return (
-        <div className={`upload-container ${className}`}>
-            <input id="fileUpload" multiple className="hidden" type="file" hidden onChange={(event: any) => setImage(event)} />
-            <label className="upload-label" htmlFor="fileUpload">Загрузка изображений</label>
-        </div>
-    )
+  setFiles,
+  className,
+  label = "Fayl yuklash",
+  name,
+}: ImgUploadProps) {
+  return (
+    <div className={`upload-container `}>
+      <input
+        name={name}
+        id="fileUpload"
+        multiple
+        className="hidden"
+        type="file"
+        hidden
+        onChange={setFiles}
+      />
+      <label className={`upload-label ${className} bg-warning`} htmlFor="fileUpload">
+        {label}
+      </label>
+    </div>
+  );
 }

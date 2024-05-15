@@ -1,12 +1,11 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-interface Props{
-    readonly chartData: any;
+interface Props {
+  readonly chartData: any;
 }
 
-
-export function LineChart({ chartData }:Props) {
+export function LineChart({ chartData }: Props) {
   return (
     <div className="chart-container">
       <Line
@@ -15,12 +14,12 @@ export function LineChart({ chartData }:Props) {
           plugins: {
             title: {
               display: true,
-              text: "Users Gained between 2016-2020"
+              text: "Users Gained between 2016-2020",
             },
             legend: {
-              display: false
-            }
-          }
+              display: false,
+            },
+          },
         }}
       />
     </div>

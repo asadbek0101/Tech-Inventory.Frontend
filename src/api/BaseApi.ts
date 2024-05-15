@@ -209,7 +209,6 @@ export class BaseApi {
   protected downloadFile<TData = any>(
     url: string,
     fileName = "filename",
-    type = "pdf",
     options?: Options,
   ): Promise<void> {
     return this.request(url, options)
@@ -219,7 +218,7 @@ export class BaseApi {
         const a = document.createElement("a");
 
         a.href = url;
-        a.download = `${fileName}.${type}`;
+        a.download = `${fileName}`;
 
         document.body.appendChild(a);
 

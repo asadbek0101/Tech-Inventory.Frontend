@@ -8,11 +8,10 @@ import { ConnectionTypes } from "../../api/obyekt/ObyektDto";
 
 interface Props {
   readonly initialValues: any;
-  readonly attachments?: any[];
   readonly setPath: (value: any) => void;
 }
 
-export default function ObjectView({ initialValues, attachments, setPath }: Props) {
+export default function ObjectView({ initialValues, setPath }: Props) {
   return (
     <Formik initialValues={initialValues} onSubmit={noop} enableReinitialize={true}>
       {() => (
@@ -147,14 +146,11 @@ export default function ObjectView({ initialValues, attachments, setPath }: Prop
               </div>
             )}
             <div className="row my-4">
-              {attachments &&
-                attachments.map((p: any) => {
+              {initialValues?.files &&
+                initialValues?.files?.map((p: any) => {
                   return (
                     <div className="col-2">
-                      <FileDownload
-                        onClick={() => setPath(p)}
-                        title={`${p.fileName} \n (Yuklash)`}
-                      />
+                      <FileDownload onClick={() => setPath(p)} title={`${p.fileName}`} />
                     </div>
                   );
                 })}
