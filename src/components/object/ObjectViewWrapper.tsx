@@ -3,7 +3,6 @@ import { ObjectFilter } from "../../filters/ObjectFilter";
 import Button, { BgColors } from "../ui/Button";
 import { useObyektApiContext } from "../../api/obyekt/ObyektApiContext";
 import { showError } from "../../utils/NotificationUtils";
-import { useAttachmentsApiContext } from "../../api/attachments/AttachmentsApiContext";
 import { useNavigate } from "react-router-dom";
 import { ShelfTypes } from "../../api/shelf/ShelfDto";
 import { CabelTypes } from "../../api/cabels/CabelDto";
@@ -112,7 +111,6 @@ export default function ObjectViewWrapper({ filter }: Props) {
   });
 
   const { ObyektApi } = useObyektApiContext();
-  const { AttachmentsApi } = useAttachmentsApiContext();
 
   const navigate = useNavigate();
 
@@ -125,11 +123,11 @@ export default function ObjectViewWrapper({ filter }: Props) {
     ObyektApi.getObyektProducts({ obyektId: objectId })
       .then((r) => setProductsCounts(r?.data))
       .catch(showError);
-  }, [ObyektApi, AttachmentsApi, objectId]);
+  }, [ObyektApi, objectId]);
 
   const downloadFile = useCallback(
     (value: any) => {
-      ObyektApi.getMultiFile(value?.fileName).catch(showError);
+      ObyektApi.getMultiFile(value?.fileName, value?.originalFileName).catch(showError);
     },
     [ObyektApi],
   );

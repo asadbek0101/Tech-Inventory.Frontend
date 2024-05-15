@@ -64,8 +64,8 @@ export class ObyektApi extends BaseApi {
     return this.downloadPdf("Pdf/GetObyektReport", fileName, { query: { id } });
   }
 
-  public getMultiFile(fileName: string) {
-    return this.downloadFile(`Files/DownloadFile?fileName=${fileName}`, fileName);
+  public getMultiFile(fileName: string, originalFileName: string) {
+    return this.downloadFile(`Files/DownloadFile?fileName=${fileName}`, originalFileName);
   }
 
   public deleteFile(query: any) {
