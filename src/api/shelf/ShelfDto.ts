@@ -1,5 +1,6 @@
 export interface ShelfInitialProps {
   readonly obyektId: number;
+  readonly brandId: number;
   readonly info: string;
   readonly serialNumber: string;
   readonly number: string;

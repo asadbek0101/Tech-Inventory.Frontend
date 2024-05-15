@@ -27,6 +27,11 @@ export default function ShelvesTable({ data, loading, dele, edit }: Props) {
         },
       },
       {
+        Header: translate("Markasi"),
+        accessor: "brand",
+        width: 300,
+      },
+      {
         Header: translate("Seriyasi"),
         accessor: "serialNumber",
         width: 300,

@@ -8,6 +8,9 @@ import { showError } from "../../utils/NotificationUtils";
 
 import ShelvesForm from "./ShelvesForm";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
+import { useModelsApiContext } from "../../api/models/ModelsApiContext";
+import { SelectPickerOptionsProps } from "../../api/AppDto";
+import { ModelTypes } from "../../api/models/ModelsDto";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -17,13 +20,17 @@ interface Props {
 export default function ShelvesFormWrapper({ filter, shelfType }: Props) {
   const [initialValues, setInitalValues] = useState<ShelfInitialProps>({
     obyektId: 0,
+    brandId: 0,
     number: "",
     info: "",
     serialNumber: "",
     shelfType: shelfType,
   });
 
+  const [models, setModels] = useState<SelectPickerOptionsProps[]>([]);
+
   const { ShelfApi } = useShelfApiContext();
+  const { ModelsApi } = useModelsApiContext();
 
   const navigate = useNavigate();
 
@@ -34,10 +41,33 @@ export default function ShelvesFormWrapper({ filter, shelfType }: Props) {
   useEffect(() => {
     if (productId) {
       ShelfApi.getOneShelf({ id: productId })
-        .then((r) => setInitalValues(r?.data))
+        .then((r) => {
+          const json = {
+            ...r?.data,
+            brandId: {
+              label: r?.data?.brand,
+              value: r?.data?.brandId,
+            },
+          };
+          setInitalValues(json);
+        })
         .catch(showError);
     }
   }, [ShelfApi, productId]);
+
+  useEffect(() => {
+    ModelsApi.getModelsList({ type: ModelTypes.Shelf })
+      .then((r) => {
+        const _models = r?.data.map((sw: any) => {
+          return {
+            label: sw.name,
+            value: sw.id,
+          };
+        });
+        setModels(_models);
+      })
+      .catch(showError);
+  }, [ModelsApi]);
 
   const onSubmit = useCallback(
     (value: any) => {
@@ -46,6 +76,7 @@ export default function ShelvesFormWrapper({ filter, shelfType }: Props) {
           ...value,
           id: productId,
           obyektId: objectId,
+          brandId: value?.brandId?.value,
         };
         ShelfApi.updateShelf(json)
           .then((r) => {
@@ -57,6 +88,7 @@ export default function ShelvesFormWrapper({ filter, shelfType }: Props) {
         const json = {
           ...value,
           obyektId: objectId,
+          brandId: value?.brandId?.value,
         };
         ShelfApi.createShelf(json)
           .then((r) => {
@@ -71,6 +103,7 @@ export default function ShelvesFormWrapper({ filter, shelfType }: Props) {
 
   return (
     <ShelvesForm
+      models={models}
       initialValues={initialValues}
       setInitialValues={setInitalValues}
       onSubmit={onSubmit}

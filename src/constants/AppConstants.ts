@@ -1,6 +1,6 @@
 export const IS_DEV = process.env.NODE_ENV !== "production";
 
-// export const API_HOST = "https://localhost:44368/api/" as string;
+//export const API_HOST = "https://localhost:44368/api/" as string;
 export const API_HOST = "http://172.24.201.4:8080/api/" as string;
 
 export const objectProductTypesOptions = [
@@ -250,6 +250,10 @@ export const modelTypesOptions = [
   {
     label: "Montaj qutisi",
     value: 20,
+  },
+  {
+    label: "Javon",
+    value: 21,
   },
 ];
 

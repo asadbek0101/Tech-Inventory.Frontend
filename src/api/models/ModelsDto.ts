@@ -40,4 +40,5 @@ export enum ModelTypes {
   Counter = 18,
   VideoRecorder = 19,
   MountingBox = 20,
+  Shelf = 21,
 }

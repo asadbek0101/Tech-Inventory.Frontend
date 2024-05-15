@@ -46,22 +46,25 @@ export default function ObjectTable({
       {
         Header: translate("Loyiha nomi"),
         accessor: "project",
-        width: 200,
+        width: 300,
       },
       {
         Header: translate("Hududi"),
-        accessor: "region",
-        width: 200,
+        accessor: "regionAndDistrict",
+        width: 300,
+        Cell: (row: any) => {
+          return <span>{row?.row?.original?.region + ", " + row?.row?.original?.district}</span>;
+        },
       },
       {
         Header: translate("Obyekt nomi va manzili"),
         accessor: "nameAndAddress",
-        width: 200,
+        width: 300,
       },
       {
         Header: translate("Ulanish turi"),
         accessor: "connectionType",
-        width: 140,
+        width: 200,
       },
       {
         Header: translate("Joylashuv"),

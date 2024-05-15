@@ -165,6 +165,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
               label: r?.data?.model,
               value: r?.data?.modelId,
             },
+            files: r?.data?.files || [],
           };
           setInitalValues(ob);
         })
@@ -306,50 +307,11 @@ export default function ObjectFormWrapper({ filter }: Props) {
           objectClassTypeId: value?.objectClassTypeId?.value,
           connectionType: value?.connectionType?.value,
         };
+
         ObyektApi.updateObyekt(json)
           .then((r) => {
             const files = initialValues?.files;
-            files.map((file: any) => {
-              if (file && Boolean(file.type)) {
-                const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}`;
-                const formData = new FormData();
-                formData.append("File", file);
-                const config = {
-                  headers: {
-                    "content-type": "multipart/form-data",
-                    Authorization: `Bearer ${token}`,
-                    userId: `${userId}`,
-                  },
-                };
-                axios
-                  .post(url, formData, config)
-                  .then((response: any) => {
-                    toast.success(response?.data);
-                  })
-                  .catch(showError);
-              }
-            });
-            toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${r?.data?.id}`);
-          })
-          .catch(showError);
-      } else {
-        // Create METHOD
-        const json = {
-          ...value,
-          regionId: value?.regionId?.value,
-          districtId: value?.districtId?.value,
-          projectId: value?.projectId?.value,
-          numberOfOrderId: value?.numberOfOrderId?.value,
-          objectClassId: value?.objectClassId?.value,
-          objectClassTypeId: value?.objectClassTypeId?.value,
-          connectionType: value?.connectionType?.value,
-        };
-        ObyektApi.createObyekt(json)
-          .then((r) => {
-            if (r?.data?.id) {
-              const files = initialValues?.files;
-              console.log(files);
+            files &&
               files.map((file: any) => {
                 if (file && Boolean(file.type)) {
                   const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}`;
@@ -370,7 +332,76 @@ export default function ObjectFormWrapper({ filter }: Props) {
                     .catch(showError);
                 }
               });
+
+            const updateConnectionType = {
+              obyektId: r?.data?.id,
+              modelId: value?.modelId?.value,
+              numberOfPort: value?.numberOfPort,
+              serialNumber: value?.serialNumber,
+              phoneNumber: value?.phoneNumber,
+              type: value?.connectionType?.value,
+            };
+
+            ObyektApi.updateConnectionType(updateConnectionType)
+              .then((r) => toast.success(r?.data?.message))
+              .catch(showError);
+
+            toast.success(r?.data?.message);
+            navigate(`/dashboard/objects/object-view?objectId=${r?.data?.id}`);
+          })
+          .catch(showError);
+      } else {
+        // Create METHOD
+        const json = {
+          ...value,
+          regionId: value?.regionId?.value,
+          districtId: value?.districtId?.value,
+          projectId: value?.projectId?.value,
+          numberOfOrderId: value?.numberOfOrderId?.value,
+          objectClassId: value?.objectClassId?.value,
+          objectClassTypeId: value?.objectClassTypeId?.value,
+          connectionType: value?.connectionType?.value,
+        };
+        ObyektApi.createObyekt(json)
+          .then((r) => {
+            if (r?.data?.id) {
+              const files = initialValues?.files;
+              files &&
+                files.map((file: any) => {
+                  if (file && Boolean(file.type)) {
+                    const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}`;
+                    const formData = new FormData();
+                    formData.append("File", file);
+                    const config = {
+                      headers: {
+                        "content-type": "multipart/form-data",
+                        Authorization: `Bearer ${token}`,
+                        userId: `${userId}`,
+                      },
+                    };
+                    axios
+                      .post(url, formData, config)
+                      .then((response: any) => {
+                        toast.success(response?.data);
+                      })
+                      .catch(showError);
+                  }
+                });
             }
+
+            const createConnectionType = {
+              obyektId: r?.data?.id,
+              modelId: value?.modelId?.value,
+              numberOfPort: value?.numberOfPort,
+              serialNumber: value?.serialNumber,
+              phoneNumber: value?.phoneNumber,
+              type: value?.connectionType?.value,
+            };
+
+            ObyektApi.createConnectionType(createConnectionType)
+              .then((r) => toast.success(r?.data?.message))
+              .catch(showError);
+
             toast.success(r?.data?.message);
             navigate(`/dashboard/objects/object-view?objectId=${r?.data?.id}`);
           })

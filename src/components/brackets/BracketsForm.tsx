@@ -44,6 +44,17 @@ export default function BracketsForm({
     [setInitialValues],
   );
 
+  const onChangeCount = useCallback(
+    (event: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          count: event?.target.value,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
+
   const onChangeInfo = useCallback(
     (event: any) => {
       setInitialValues((prev: any) =>
@@ -74,6 +85,15 @@ export default function BracketsForm({
                       label="Modeli"
                       onChanges={onChangeModelId}
                       options={models}
+                    />
+                  </div>
+
+                  <div className="col-12 mt-3">
+                    <InputField
+                      name="count"
+                      label="Soni"
+                      onChange={onChangeCount}
+                      defaultValue={initialValues.count}
                     />
                   </div>
 

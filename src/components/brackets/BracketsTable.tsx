@@ -32,6 +32,11 @@ export default function BracketsTable({ data, dele, edit, loading }: Props) {
         width: 300,
       },
       {
+        Header: translate("Soni"),
+        accessor: "count",
+        width: 300,
+      },
+      {
         Header: translate("Qo'shimcha ma'lumot"),
         accessor: "info",
         width: 300,

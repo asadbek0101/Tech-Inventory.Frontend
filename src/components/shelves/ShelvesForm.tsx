@@ -9,12 +9,15 @@ import { useCallback } from "react";
 import { update } from "immupdate";
 import { ShelfInitialProps } from "../../api/shelf/ShelfDto";
 import { ProductFormTypes } from "../../filters/ObjectFilter";
+import { SelectPickerOptionsProps } from "../../api/AppDto";
+import { SelectPickerField } from "../form/SelectPrickerField";
 
 interface Props {
   readonly initialValues: ShelfInitialProps;
   readonly setInitialValues: (value: any) => void;
   readonly onSubmit: (value: any) => void;
   readonly formType?: ProductFormTypes;
+  readonly models: SelectPickerOptionsProps[];
 }
 
 const validationSchema = object({
@@ -27,9 +30,21 @@ export default function ShelvesForm({
   initialValues,
   setInitialValues,
   onSubmit,
+  models,
   formType = ProductFormTypes.WithOutObjectForm,
 }: Props) {
   const { translate } = useI18n();
+
+  const onChangeBrandId = useCallback(
+    (event: any) => {
+      setInitialValues((prev: any) =>
+        update(prev, {
+          brandId: event,
+        }),
+      );
+    },
+    [setInitialValues],
+  );
 
   const onChangeNumber = useCallback(
     (event: any) => {
@@ -78,6 +93,14 @@ export default function ShelvesForm({
               <GroupBox>
                 <div className="row">
                   <div className="col-12">
+                    <SelectPickerField
+                      name="brandId"
+                      label="Markasi"
+                      onChanges={onChangeBrandId}
+                      options={models}
+                    />
+                  </div>
+                  <div className="col-12 mt-3">
                     <InputField
                       name="serailNumber"
                       label="Seriasi"

@@ -18,6 +18,7 @@ export default function BracketsFormWrapper({ filter }: Props) {
   const [initialValues, setInitalValues] = useState<BracketsInitialProps>({
     obyektId: 0,
     modelId: 0,
+    count: "",
     info: "",
   });
 
