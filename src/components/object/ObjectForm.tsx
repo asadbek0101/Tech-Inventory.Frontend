@@ -446,7 +446,7 @@ export default function ObjectForm({
                             name={`fileName${index}`}
                             disabled
                             label="File Nomi"
-                            value={file.name}
+                            value={file.originalFileName || file.name}
                           />
                         </div>
                       </GroupBox>
