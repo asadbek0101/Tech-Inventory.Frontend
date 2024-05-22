@@ -14,6 +14,8 @@ import { Form, Formik } from "formik";
 import { InputField } from "../form/InputField";
 import { noop } from "lodash";
 import { toast } from "react-toastify";
+import { useOjbectClassApiContext } from "../../api/object-class/ObjectClassApiContext";
+import { useOjbectClassTypeApiContext } from "../../api/object-class-type/ObjectClassTypeApiContext";
 
 import AddIcon from "../icons/AddIcon";
 import Button, { BgColors } from "../ui/Button";
@@ -25,8 +27,6 @@ import Paginator from "../paginator/Paginator";
 import Modal from "../ui/Modal";
 import YesOrNoModal from "../ui/YesOrNoModal";
 import Loader from "../ui/Loader";
-import { useOjbectClassApiContext } from "../../api/object-class/ObjectClassApiContext";
-import { useOjbectClassTypeApiContext } from "../../api/object-class-type/ObjectClassTypeApiContext";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -346,10 +346,7 @@ export default function ObjectTableWrapper({ filter }: Props) {
           data={data?.data}
           selectIds={setDeleteDocuments}
           readOnMap={(value) => navigate(`/dashboard/objects/object-view-on?objectId=${value}`)}
-          downloadPdf={(value, fileName) => {
-            setLoadingFile(true);
-            ObyektApi.getObyektReport(Number(value), fileName).then(() => setLoadingFile(false));
-          }}
+          downloadPdf={(value) => navigate(`/dashboard/objects/object-pdf-report?objectId=${value}`)}
           editObyekt={(value) => navigate(`/dashboard/objects/object-form?objectId=${value}`)}
           setOjectForProducts={(value) =>
             navigate(`/dashboard/objects/object-products?objectId=${value}`)

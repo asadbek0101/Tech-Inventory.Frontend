@@ -19,6 +19,12 @@ export class ObyektApi extends BaseApi {
     });
   }
 
+  public getObyektReportForPdf(query: any) {
+    return this.get("Obyekts/GetObyektReport", {
+      query,
+    });
+  }
+
   public getRegionsList() {
     return this.get("Regions/GetList");
   }
