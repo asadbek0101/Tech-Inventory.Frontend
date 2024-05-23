@@ -66,6 +66,12 @@ export class ObyektApi extends BaseApi {
     });
   }
 
+  public updateFile(json: any) {
+    return this.put("Files/UpdateFile", {
+      json,
+    });
+  }
+
   public getObyektReport(id: number, fileName: string) {
     return this.downloadPdf("Pdf/GetObyektReport", fileName, { query: { id } });
   }

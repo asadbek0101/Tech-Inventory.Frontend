@@ -17,14 +17,12 @@ import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { ModelTypes } from "../../api/models/ModelsDto";
 import { useShallowEqualSelector } from "../../hooks/useShallowSelector";
 import { tokenSelector, userIdSelector } from "../../reducers/authReducer";
+import { API_HOST } from "../../constants/AppConstants";
+import { useOjbectClassTypeApiContext } from "../../api/object-class-type/ObjectClassTypeApiContext";
 
 import axios from "axios";
 import TabPage from "../tabs/TabPage";
 import ObjectForm from "./ObjectForm";
-import { API_HOST } from "../../constants/AppConstants";
-import { formatLocationNumber } from "../../utils/FormatUtils";
-import { useOjbectClassTypeApiContext } from "../../api/object-class-type/ObjectClassTypeApiContext";
-import { useAttachmentsApiContext } from "../../api/attachments/AttachmentsApiContext";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -313,10 +311,10 @@ export default function ObjectFormWrapper({ filter }: Props) {
             const files = initialValues?.files;
             files &&
               files.map((file: any) => {
-                if (file && Boolean(file.type)) {
-                  const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}`;
+                if (file && Boolean(file?.file?.type)) {
+                  const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}&originalFileName=${file.originalFileName}`;
                   const formData = new FormData();
-                  formData.append("File", file);
+                  formData.append("File", file?.file);
                   const config = {
                     headers: {
                       "content-type": "multipart/form-data",
@@ -330,6 +328,12 @@ export default function ObjectFormWrapper({ filter }: Props) {
                       toast.success(response?.data);
                     })
                     .catch(showError);
+                }
+
+                if(file?.id){
+                  ObyektApi.updateFile({id: file.id, originalFileName: file.originalFileName})
+                  .then((r)=>toast.success(r?.data?.message))
+                  .catch(showError)
                 }
               });
 

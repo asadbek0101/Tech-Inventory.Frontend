@@ -220,9 +220,41 @@ export default function ObjectForm({
     [setInitialValues, initialValues, deleteFileFromDb],
   );
 
+  const addFile = useCallback(()=>{
+    
+    const files = [...initialValues.files];
+
+    const file = {
+      file: "",
+      originalFileName: ""
+    }
+
+    files.push(file)
+      setInitialValues((prev: any) =>
+        update(prev, {
+          files: files,
+        }),
+      );
+  },[initialValues.files])
+
+  const onChangeFileName = useCallback(
+    (event: any, index: number) => {
+      const files = [...initialValues.files];
+      files[index].originalFileName = event.target.value;
+      setInitialValues((prev: any) =>
+        update(prev, {
+          files: files,
+        }),
+      );
+    },
+    [setInitialValues, initialValues.files],
+  );
+
+  
   const onChangeFile = useCallback(
-    (event: any) => {
-      const files = [...initialValues.files, ...event?.target?.files];
+    (event: any, index: number) => {
+      const files = [...initialValues.files];
+      files[index].file = event.target.files[0];
       setInitialValues((prev: any) =>
         update(prev, {
           files: files,
@@ -444,10 +476,20 @@ export default function ObjectForm({
                         <div className="col-12">
                           <InputField
                             name={`fileName${index}`}
-                            disabled
                             label="File Nomi"
-                            value={file.originalFileName || file.name}
+                            onChange={(event: any) => onChangeFileName(event, index)}
+                            value={file.originalFileName}
                           />
+                        </div>
+                        <div className="col-12">
+                        <ImgUpload
+                            setFiles={(event: any)=>onChangeFile(event, index)}
+                            className="px-3 py-2 mt-3 text-light"
+                            bg_color={file.file === ""? "bg-warning" : "bg-success"}
+                            label={file.file === ""? "Fayl yuklash" : "Fayl yuklandi"}
+                            name={`file${index}`}
+                          />
+
                         </div>
                       </GroupBox>
                     </div>
@@ -456,12 +498,9 @@ export default function ObjectForm({
               </div>
             </div>
             <div className="col-12 d-flex justify-content-end mt-3">
-              <ImgUpload
-                setFiles={onChangeFile}
-                className="px-3 py-2 ms-2 text-light"
-                name="files"
-              />
-
+              <Button type="button" className="px-3 py-2 ms-2 text-light" bgColor={BgColors.Yellow} onClick={addFile}>
+                {translate("Fay qo'shish")}
+              </Button>
               <Button type="submit" className="px-3 py-2 ms-2 text-light" bgColor={BgColors.Green}>
                 {translate("SAVE_BUTTON_TITLE")}
               </Button>

@@ -44,6 +44,7 @@ import AddIcon from "../icons/AddIcon";
 import { ProductTypes } from "../../api/AppDto";
 import { CameraTypes } from "../../api/cameras/CameraDto";
 import MountingBoxTableWrapper from "../mounting-box/MountingBoxTableWrapper";
+import PencilIcon from "../icons/PencilIcon";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -120,6 +121,9 @@ export default function ObjectViewWrapper({ filter }: Props) {
     ObyektApi.getOneObyekt({ id: objectId })
       .then((r) => setInitialValues(r?.data))
       .catch(showError);
+  }, [ObyektApi, objectId]);
+
+  useEffect(() => {
     ObyektApi.getObyektProducts({ obyektId: objectId })
       .then((r) => setProductsCounts(r?.data))
       .catch(showError);
@@ -146,7 +150,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
       <CustomCard>
         <ObjectView initialValues={initialValues} setPath={downloadFile} />
       </CustomCard>
-      <div className="mt-3">
+      <div className="mt-3 d-flex">
         <Button
           className="py-1 px-3 text-light"
           bgColor={BgColors.Green}
@@ -155,6 +159,15 @@ export default function ObjectViewWrapper({ filter }: Props) {
           onClick={() => navigate(`/dashboard/objects/object-products?objectId=${objectId}`)}
         >
           Jihozlar qo'shish
+        </Button>
+        <Button
+          className="py-1 px-3 text-light ms-3"
+          bgColor={BgColors.Yellow}
+          heigh="34px"
+          icon={<PencilIcon />}
+          onClick={() => navigate(`/dashboard/objects/object-form?objectId=${objectId}`)}
+        >
+          Obyektni o'zgaritirish
         </Button>
       </div>
 

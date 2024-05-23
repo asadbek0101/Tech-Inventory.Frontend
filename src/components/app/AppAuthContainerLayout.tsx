@@ -11,7 +11,7 @@ export default function AppAuthContainerLayout({ children }: Props) {
     <div className="app-auth-container-layout">
       <div className="safe-city-image" />
       <div className="app-auth-form">{children}</div>
-      <span className="app-auth-container-version">V-0.0.9</span>
+      <span className="app-auth-container-version">V-0.0.10</span>
     </div>
   );
 }
