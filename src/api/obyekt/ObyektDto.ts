@@ -17,7 +17,7 @@ export interface ObyektReportProps{
   readonly latitude: string;
   readonly longitude: string;
   readonly cameras: ObyektReportCameraProps[];
-  readonly radarCameras: ObyektReportCameraProps[];
+  readonly raradCameras: ObyektReportCameraProps[];
   readonly ptzCameras: ObyektReportCameraProps[];
   readonly anprCameras: ObyektReportCameraProps[];
   readonly c327Cameras: ObyektReportCameraProps[];
