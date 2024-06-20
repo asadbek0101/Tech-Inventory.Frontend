@@ -10,7 +10,7 @@ import { update } from "immupdate";
 import { useObyektApiContext } from "../../api/obyekt/ObyektApiContext";
 import { toast } from "react-toastify";
 import { showError } from "../../utils/NotificationUtils";
-import { ObjectFilter, ObjectFormTypes } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs, ObjectFormTypes } from "../../filters/ObjectFilter";
 import { useOjbectClassApiContext } from "../../api/object-class/ObjectClassApiContext";
 import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
@@ -23,6 +23,7 @@ import { useOjbectClassTypeApiContext } from "../../api/object-class-type/Object
 import axios from "axios";
 import TabPage from "../tabs/TabPage";
 import ObjectForm from "./ObjectForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -70,8 +71,8 @@ export default function ObjectFormWrapper({ filter }: Props) {
   const { ObjectClassApi } = useOjbectClassApiContext();
   const { ModelsApi } = useModelsApiContext();
 
-  const navigate = useNavigate();
-  const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
+  const locationHelpers = useLocationHelpers();
+  const objectId = useMemo(() => Number(filter.getObyektId()) || 0, [filter]);
 
   const token = useShallowEqualSelector(tokenSelector);
   const userId = useShallowEqualSelector(userIdSelector);
@@ -84,7 +85,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
   );
 
   useEffect(() => {
-    if (objectId) {
+    if (objectId !== 0) {
       ObyektApi.getOneObyekt({ id: Number(objectId) })
         .then((r) => {
           if (r?.data?.regionId) {
@@ -312,7 +313,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
             files &&
               files.map((file: any) => {
                 if (file && Boolean(file?.file?.type)) {
-                  const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}&originalFileName=${file.originalFileName}`;
+                  const url = `${API_HOST}Attachments/Create?objectId=${r?.data?.id}&originalFileName=${file.originalFileName}`;
                   const formData = new FormData();
                   formData.append("File", file?.file);
                   const config = {
@@ -328,12 +329,13 @@ export default function ObjectFormWrapper({ filter }: Props) {
                       toast.success(response?.data);
                     })
                     .catch(showError);
-                }
-
-                if(file?.id){
-                  ObyektApi.updateFile({id: file.id, originalFileName: file.originalFileName})
-                  .then((r)=>toast.success(r?.data?.message))
-                  .catch(showError)
+                } else {
+                  const json = {
+                    ...file,
+                  };
+                  ObyektApi.updateAttachment(json)
+                    .then((r) => console.log(r))
+                    .catch(showError);
                 }
               });
 
@@ -351,7 +353,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
               .catch(showError);
 
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${r?.data?.id}`);
+            locationHelpers.pushQuery({ tab: ObjectFilterTabs.ObjectView, objectId: r?.data?.id });
           })
           .catch(showError);
       } else {
@@ -372,10 +374,10 @@ export default function ObjectFormWrapper({ filter }: Props) {
               const files = initialValues?.files;
               files &&
                 files.map((file: any) => {
-                  if (file && Boolean(file.type)) {
-                    const url = `${API_HOST}Files/UploadFile?id=${r?.data?.id}`;
+                  if (file && Boolean(file?.file?.type)) {
+                    const url = `${API_HOST}Attachments/Create?objectId=${r?.data?.id}&originalFileName=${file.originalFileName}`;
                     const formData = new FormData();
-                    formData.append("File", file);
+                    formData.append("File", file?.file);
                     const config = {
                       headers: {
                         "content-type": "multipart/form-data",
@@ -407,12 +409,12 @@ export default function ObjectFormWrapper({ filter }: Props) {
               .catch(showError);
 
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${r?.data?.id}`);
+            locationHelpers.pushQuery({ tab: ObjectFilterTabs.ObjectView, objectId: r?.data?.id });
           })
           .catch(showError);
       }
     },
-    [ObyektApi, navigate, objectId, initialValues.files],
+    [ObyektApi, locationHelpers, objectId, initialValues.files],
   );
 
   const setConnectionType = useCallback(
@@ -449,7 +451,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
   const deleteFileFromDb = useCallback(
     (value: any) => {
       if (objectId) {
-        ObyektApi.deleteFile({ id: objectId, fileName: value.fileName })
+        ObyektApi.deleteFile({ id: value.id })
           .then((r) => toast.success(r?.message))
           .catch(showError);
       }
@@ -465,7 +467,9 @@ export default function ObjectFormWrapper({ filter }: Props) {
           className=" px-3 text-light"
           bgColor={BgColors.Yellow}
           heigh="34px"
-          onClick={() => navigate(`/dashboard/objects/object-table`)}
+          onClick={() =>
+            locationHelpers.pushQuery({ tab: ObjectFilterTabs.ObjectTable, objectId: 0 })
+          }
         >
           {translate("BACK_BUTTON_TITLE")}
         </Button>

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import Button, { BgColors } from "../ui/Button";
 import { useObyektApiContext } from "../../api/obyekt/ObyektApiContext";
 import { showError } from "../../utils/NotificationUtils";
@@ -45,6 +45,7 @@ import { ProductTypes } from "../../api/AppDto";
 import { CameraTypes } from "../../api/cameras/CameraDto";
 import MountingBoxTableWrapper from "../mounting-box/MountingBoxTableWrapper";
 import PencilIcon from "../icons/PencilIcon";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -113,14 +114,15 @@ export default function ObjectViewWrapper({ filter }: Props) {
 
   const { ObyektApi } = useObyektApiContext();
 
-  const navigate = useNavigate();
-
+  const locationHelpers = useLocationHelpers();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
 
   useEffect(() => {
-    ObyektApi.getOneObyekt({ id: objectId })
-      .then((r) => setInitialValues(r?.data))
-      .catch(showError);
+    if (objectId !== 0) {
+      ObyektApi.getOneObyekt({ id: objectId })
+        .then((r) => setInitialValues(r?.data))
+        .catch(showError);
+    }
   }, [ObyektApi, objectId]);
 
   useEffect(() => {
@@ -142,7 +144,9 @@ export default function ObjectViewWrapper({ filter }: Props) {
         <Button
           className="px-3 py-2 text-light"
           bgColor={BgColors.Yellow}
-          onClick={() => navigate("/dashboard/objects/object-table")}
+          onClick={() =>
+            locationHelpers.pushQuery({ tab: ObjectFilterTabs.ObjectTable, objectId: 0 })
+          }
         >
           Back
         </Button>
@@ -156,7 +160,9 @@ export default function ObjectViewWrapper({ filter }: Props) {
           bgColor={BgColors.Green}
           heigh="34px"
           icon={<AddIcon />}
-          onClick={() => navigate(`/dashboard/objects/object-products?objectId=${objectId}`)}
+          onClick={() =>
+            locationHelpers.pushQuery({ tab: ObjectFilterTabs.ObjectProducts, objectId: objectId })
+          }
         >
           Jihozlar qo'shish
         </Button>
@@ -165,7 +171,9 @@ export default function ObjectViewWrapper({ filter }: Props) {
           bgColor={BgColors.Yellow}
           heigh="34px"
           icon={<PencilIcon />}
-          onClick={() => navigate(`/dashboard/objects/object-form?objectId=${objectId}`)}
+          onClick={() =>
+            locationHelpers.pushQuery({ tab: ObjectFilterTabs.ObjectForm, objectId: objectId })
+          }
         >
           Obyektni o'zgaritirish
         </Button>

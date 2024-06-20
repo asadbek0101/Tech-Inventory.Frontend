@@ -5,7 +5,7 @@ import { TextAreaField } from "../form/TextAreaField";
 import { object, string } from "yup";
 import Button, { BgColors } from "../ui/Button";
 import { useI18n } from "../../i18n/I18nContext";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { update } from "immupdate";
 import { AkumalatorInitialProps } from "../../api/akumalator/AkumalatorDto";
 import { ProductFormTypes } from "../../filters/ObjectFilter";
@@ -29,6 +29,8 @@ export default function AkumalatorsForm({
   formType = ProductFormTypes.WithOutObjectForm,
 }: Props) {
   const { translate } = useI18n();
+
+  const [data, setData] = useState();
 
   const onChangePower = useCallback(
     (event: any) => {

@@ -1,5 +1,9 @@
 import { useCallback, useMemo } from "react";
-import { ObjectFilter, ObjectProductsPageTypes } from "../../filters/ObjectFilter";
+import {
+  ObjectFilter,
+  ObjectFilterTabs,
+  ObjectProductsPageTypes,
+} from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { CabelTypes } from "../../api/cabels/CabelDto";
 import { RackTypes } from "../../api/rackes/RackesDto";
@@ -46,6 +50,7 @@ import VideoRecordersTableWrapper from "../video-recorders/VideoRecorderTableWra
 import FreezersTableWrapper from "../freezers/FreezersTableWrapper";
 import { CameraTypes } from "../../api/cameras/CameraDto";
 import MountingBoxTableWrapper from "../mounting-box/MountingBoxTableWrapper";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -54,8 +59,8 @@ interface Props {
 export default function ObjectProductsTableWrapper({ filter }: Props) {
   const { translate } = useI18n();
 
+  const locationHelpers = useLocationHelpers();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
-  const navigate = useNavigate();
   const product: number = useMemo(() => Number(filter.getProduct()) || 1, [filter]);
 
   const getProductType = useCallback(
@@ -78,9 +83,12 @@ export default function ObjectProductsTableWrapper({ filter }: Props) {
               heigh="34px"
               icon={<AddIcon />}
               onClick={() =>
-                navigate(
-                  `/dashboard/objects/object-products?productPageType=${ObjectProductsPageTypes.Form}&product=${product}&objectId=${objectId}`,
-                )
+                locationHelpers.pushQuery({
+                  tab: ObjectFilterTabs.ObjectProducts,
+                  productPageType: ObjectProductsPageTypes.Form,
+                  product: product,
+                  objectId: objectId,
+                })
               }
             >
               {translate("ADD_BUTTON_TITLE")}
@@ -93,9 +101,11 @@ export default function ObjectProductsTableWrapper({ filter }: Props) {
                     width={400}
                     name="type"
                     onChanges={(value) =>
-                      navigate(
-                        `/dashboard/objects/object-products?product=${value.value}&objectId=${objectId}`,
-                      )
+                      locationHelpers.pushQuery({
+                        tab: ObjectFilterTabs.ObjectProducts,
+                        product: value.value,
+                        objectId: objectId,
+                      })
                     }
                     options={objectProductTypesOptions}
                   />
@@ -107,7 +117,12 @@ export default function ObjectProductsTableWrapper({ filter }: Props) {
             className="py-1 px-3 text-light"
             bgColor={BgColors.Yellow}
             heigh="34px"
-            onClick={() => navigate(`/dashboard/objects`)}
+            onClick={() =>
+              locationHelpers.pushQuery({
+                tab: ObjectFilterTabs.ObjectTable,
+                objectId: 0,
+              })
+            }
           >
             {translate("BACK_BUTTON_TITLE")}
           </Button>

@@ -9,16 +9,17 @@ import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { ModelTypes } from "../../api/models/ModelsDto";
 import { useCountersApiContext } from "../../api/counters/CountersApiContext";
 import CountersForm from "./CountersForm";
+import { CounterInitialProps } from "../../api/counters/CountersDto";
 
 interface Props {
   readonly filter: ObjectFilter;
 }
 
 export default function CountersFormWrapper({ filter }: Props) {
-  const [initialValues, setInitalValues] = useState<AvtomatInitialProps>({
+  const [initialValues, setInitalValues] = useState<CounterInitialProps>({
     obyektId: 0,
     modelId: 0,
-    count: "",
+    numberOfConcern: "",
     info: "",
   });
 

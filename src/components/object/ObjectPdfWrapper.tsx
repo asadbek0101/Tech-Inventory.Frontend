@@ -66,6 +66,7 @@ export default function ObjectPdfWrapper({ filter }: Props) {
     gpoNs: [],
     fttXs: [],
     gsMs: [],
+    attachments: [],
   });
 
   const { ObyektApi } = useObyektApiContext();

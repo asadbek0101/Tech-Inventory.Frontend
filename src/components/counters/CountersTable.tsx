@@ -32,6 +32,11 @@ export default function CountersTable({ data, loading, dele, edit }: Props) {
         width: 300,
       },
       {
+        Header: translate("Korxona raqami"),
+        accessor: "numberOfConcern",
+        width: 300,
+      },
+      {
         Header: translate("Qo'shimcha ma'lumot"),
         accessor: "info",
         width: 300,

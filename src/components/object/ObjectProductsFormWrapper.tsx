@@ -1,5 +1,9 @@
 import { useCallback, useMemo } from "react";
-import { ObjectFilter, ObjectProductsPageTypes } from "../../filters/ObjectFilter";
+import {
+  ObjectFilter,
+  ObjectFilterTabs,
+  ObjectProductsPageTypes,
+} from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { CabelTypes } from "../../api/cabels/CabelDto";
 import { ShelfTypes } from "../../api/shelf/ShelfDto";
@@ -42,15 +46,16 @@ import ShellsFormWrapper from "../shells/ShellsFormWrapper";
 import VideoRecordersFormWrapper from "../video-recorders/VideoRecorderFormWrapper";
 import FreezersFormWrapper from "../freezers/FreezersFormWrapper";
 import MountingBoxFormWrapper from "../mounting-box/MountingBoxFormWrapper";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
 }
 
 export default function ObjectProductsFormWrapper({ filter }: Props) {
-  const navigate = useNavigate();
   const { translate } = useI18n();
 
+  const locationHelpers = useLocationHelpers();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const product = useMemo(() => Number(filter.getProduct()) || 0, [filter]);
 
@@ -78,9 +83,12 @@ export default function ObjectProductsFormWrapper({ filter }: Props) {
             bgColor={BgColors.Yellow}
             heigh="34px"
             onClick={() =>
-              navigate(
-                `/dashboard/objects/object-products?productPageType=${ObjectProductsPageTypes.Table}&product=${product}&objectId=${objectId}`,
-              )
+              locationHelpers.pushQuery({
+                tab: ObjectFilterTabs.ObjectProducts,
+                productPageType: ObjectProductsPageTypes.Table,
+                product: product,
+                objectId: objectId,
+              })
             }
           >
             {translate("BACK_BUTTON_TITLE")}

@@ -147,9 +147,9 @@ export default function ObjectView({ initialValues, setPath }: Props) {
             )}
             <div className="row my-4">
               {initialValues?.files &&
-                initialValues?.files?.map((p: any) => {
+                initialValues?.files?.map((p: any, index: number) => {
                   return (
-                    <div className="col-2">
+                    <div className="col-2" key={index}>
                       <FileDownload onClick={() => setPath(p)} title={`${p.originalFileName}`} />
                     </div>
                   );

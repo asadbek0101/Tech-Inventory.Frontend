@@ -21,21 +21,23 @@ export default function ObjectMapWrapper({ filter }: Props) {
   const { ObyektApi } = useObyektApiContext();
 
   useEffect(() => {
-    ObyektApi.getOneObyekt({ id: objectId })
-      .then((r) => {
-        const _obects: any = {
-          ...r?.data,
-          lng: r?.data?.longitude,
-          lat: r?.data?.latitude,
-        };
-        const _center = {
-          lng: Number(r?.data?.longitude),
-          lat: Number(r?.data?.latitude),
-        };
-        setObject([_obects]);
-        setCenter(_center);
-      })
-      .catch(showError);
+    if (objectId !== 0) {
+      ObyektApi.getOneObyekt({ id: objectId })
+        .then((r) => {
+          const _obects: any = {
+            ...r?.data,
+            lng: r?.data?.longitude,
+            lat: r?.data?.latitude,
+          };
+          const _center = {
+            lng: Number(r?.data?.longitude),
+            lat: Number(r?.data?.latitude),
+          };
+          setObject([_obects]);
+          setCenter(_center);
+        })
+        .catch(showError);
+    }
   }, [ObyektApi, objectId]);
 
   return <ObjectMap center={center} area={object} />;

@@ -3,6 +3,7 @@ import { ObyektReportProps } from "../../api/obyekt/ObyektDto";
 import PdfTitle from "../ui/PdfTitle";
 import PDFHeader from "../ui/PdfHeader";
 import PdfBody from "../ui/PdfBody";
+import PdfFiles from "../ui/PdfFiles";
 
 interface Props {
   readonly data: ObyektReportProps;
@@ -274,7 +275,10 @@ export default function ObjectPdf({ data }: Props) {
           />
 
           <PdfBody
-            headers={[{ header: "Modeli", access: "model" }]}
+            headers={[
+              { header: "Modeli", access: "model" },
+              { header: "Korxona raqami", access: "numberOfConcern" },
+            ]}
             data={data.counters}
             title="Elektr energiya hisoblagichi"
           />
@@ -420,6 +424,8 @@ export default function ObjectPdf({ data }: Props) {
           />
 
           <PdfTitle title="Loyiha bo'yicha biriktirilgan fayllar" />
+
+          <PdfFiles data={data.attachments} />
         </Page>
       </Document>
     </PDFViewer>

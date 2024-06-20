@@ -4,7 +4,7 @@ export enum ConnectionTypes {
   GSM = 3,
 }
 
-export interface ObyektReportProps{
+export interface ObyektReportProps {
   readonly id: number;
   readonly projectName: string;
   readonly nameAndAddress: string;
@@ -60,171 +60,177 @@ export interface ObyektReportProps{
   readonly gpoNs: ObyektReportGPONProps[];
   readonly fttXs: ObyektReportFTTXProps[];
   readonly gsMs: ObyektReportGSMProps[];
+  readonly attachments: ObyektReportAttachmentProps[];
 }
 
-interface ObyektReportCameraProps{
+interface ObyektReportCameraProps {
   readonly id: number;
   readonly serialNumber: string;
   readonly ip: string;
   readonly status: string;
 }
 
-interface ObyektReportVideoRecorderProps{
+interface ObyektReportVideoRecorderProps {
   readonly id: number;
   readonly model: string;
 }
 
-interface ObyektReportServerProps{
+interface ObyektReportServerProps {
   readonly id: number;
   readonly ip: string;
 }
 
-interface ObyektReportSwitchProps{
+interface ObyektReportSwitchProps {
   readonly id: number;
   readonly model: string;
   readonly count: string;
 }
 
-interface ObyektReportSvetaforProps{
+interface ObyektReportSvetaforProps {
   readonly id: number;
   readonly model: string;
   readonly countOfPorts: string;
 }
 
-interface ObyektReportTerminalServerProps{
+interface ObyektReportTerminalServerProps {
   readonly id: number;
   readonly model: string;
 }
 
-interface ObyektReportStabilizatorProps{
+interface ObyektReportStabilizatorProps {
   readonly id: number;
   readonly model: string;
   readonly power: string;
 }
 
-interface ObyektReportProjectorProps{
+interface ObyektReportProjectorProps {
   readonly id: number;
   readonly model: string;
   readonly count: string;
 }
 
-interface ObyektReportAkumalatorProps{
+interface ObyektReportAkumalatorProps {
   readonly id: number;
   readonly model: string;
   readonly count: string;
 }
 
-interface ObyektReportShelfProps{
+interface ObyektReportShelfProps {
   readonly id: number;
   readonly brand: string;
   readonly serialNumber: string;
   readonly number: string;
 }
 
-interface ObyektReportUpsProps{
+interface ObyektReportUpsProps {
   readonly id: number;
   readonly model: string;
   readonly power: string;
 }
 
-interface ObyektReportCounterProps{
+interface ObyektReportCounterProps {
   readonly id: number;
   readonly model: string;
 }
 
-interface ObyektReportCabelProps{
+interface ObyektReportCabelProps {
   readonly id: number;
   readonly model: string;
   readonly meter: string;
 }
 
-interface ObyektReportSocketProps{
+interface ObyektReportSocketProps {
   readonly id: number;
   readonly model: string;
   readonly count: string;
 }
 
-interface ObyektReportRackProps{
+interface ObyektReportRackProps {
   readonly id: number;
   readonly numberOfFibers: string;
   readonly typeOfAdapter: string;
   readonly countOfPorts: string;
 }
 
-interface ObyektReportAvtomatProps{
+interface ObyektReportAvtomatProps {
   readonly id: number;
   readonly model: string;
   readonly count: string;
 }
 
-interface ObyektReportStanchionProps{
+interface ObyektReportStanchionProps {
   readonly id: number;
   readonly type: string;
   readonly count: string;
 }
 
-interface ObyektReportBracketProps{
+interface ObyektReportBracketProps {
   readonly id: number;
   readonly model: string;
   readonly count: string;
 }
 
-interface ObyektReportConnectorProps{
+interface ObyektReportConnectorProps {
   readonly id: number;
   readonly count: string;
 }
 
-interface ObyektReportShellProps{
+interface ObyektReportShellProps {
   readonly id: number;
   readonly meter: string;
 }
 
-interface ObyektReportBoxProps{
+interface ObyektReportBoxProps {
   readonly id: number;
   readonly type: string;
   readonly meter: string;
 }
 
-interface ObyektReportMountingBoxProps{
+interface ObyektReportMountingBoxProps {
   readonly id: number;
   readonly model: string;
   readonly count: string;
 }
 
-interface ObyektReportFreezerProps{
+interface ObyektReportFreezerProps {
   readonly id: number;
   readonly count: string;
 }
 
-interface ObyektReportRibbonProps{
+interface ObyektReportRibbonProps {
   readonly id: number;
   readonly meter: string;
 }
 
-interface ObyektReportHookProps{
+interface ObyektReportHookProps {
   readonly id: number;
   readonly count: string;
 }
 
-interface ObyektReportNailProps{
+interface ObyektReportNailProps {
   readonly id: number;
   readonly weigth: string;
 }
 
-interface ObyektReportGPONProps{
+interface ObyektReportGPONProps {
   readonly id: number;
   readonly model: string;
   readonly serialNumber: string;
   readonly numberOfPort: string;
 }
 
-interface ObyektReportFTTXProps{
+interface ObyektReportFTTXProps {
   readonly id: number;
   readonly model: string;
   readonly numberOfPort: string;
 }
 
-interface ObyektReportGSMProps{
+interface ObyektReportGSMProps {
+  readonly id: number;
+  readonly phoneNumber: string;
+}
+
+interface ObyektReportAttachmentProps {
   readonly id: number;
   readonly phoneNumber: string;
 }

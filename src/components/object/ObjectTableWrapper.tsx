@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { useObyektApiContext } from "../../api/obyekt/ObyektApiContext";
 import { useCallback, useEffect, useState } from "react";
@@ -7,7 +6,7 @@ import { useRegionApiContext } from "../../api/regions/RegionsApiContext";
 import { useDistrictsApiContext } from "../../api/districts/DistrictsApiContext";
 import { useProjectApiContext } from "../../api/projects/ProjectsApiContext";
 import { useNumberOfOrdersApiContext } from "../../api/number-of-orders/NumberOfOrderApiContext";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { GroupBox } from "../ui/GroupBox";
 import { update } from "immupdate";
 import { Form, Formik } from "formik";
@@ -27,6 +26,7 @@ import Paginator from "../paginator/Paginator";
 import Modal from "../ui/Modal";
 import YesOrNoModal from "../ui/YesOrNoModal";
 import Loader from "../ui/Loader";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -61,13 +61,12 @@ export default function ObjectTableWrapper({ filter }: Props) {
   const [regions, setRegions] = useState([]);
   const [projects, setProjects] = useState([]);
   const [objectClassificationTypes, setOobjectClassificationTypes] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
 
   const [districts, setDistricts] = useState([]);
   const [numberOfOrders, setNumberOfOrders] = useState([]);
   const [objectClassifications, setObjectClassifications] = useState([]);
 
-  const navigate = useNavigate();
+  const locationHelpers = useLocationHelpers();
   const { translate } = useI18n();
   const { ObyektApi } = useObyektApiContext();
   const { RegionsApi } = useRegionApiContext();
@@ -79,13 +78,13 @@ export default function ObjectTableWrapper({ filter }: Props) {
 
   useEffect(() => {
     setLoading(true);
-    ObyektApi.getObyekts({ ...filterValues, searchValue, ...filter.getPaginationQuery() })
+    ObyektApi.getObyekts(filter.getObjectFilter())
       .then((r) => {
         setData(r?.data);
         setLoading(false);
       })
       .catch(showError);
-  }, [ObyektApi, filterValues, searchValue, filter]);
+  }, [ObyektApi, filterValues, filter]);
 
   useEffect(() => {
     RegionsApi.getRegionsList()
@@ -275,6 +274,8 @@ export default function ObjectTableWrapper({ filter }: Props) {
     [setInitialValues, setFilterValues],
   );
 
+  console.log(filter.getObjectFilter());
+
   return (
     <div className="w-100 p-4">
       {isWithFilter && (
@@ -304,9 +305,12 @@ export default function ObjectTableWrapper({ filter }: Props) {
             heigh="34px"
             icon={<AddIcon />}
             onClick={() =>
-              navigate(
-                `/dashboard/objects/object-form?formType=create&productFormType=1&objectFormType=1`,
-              )
+              locationHelpers.pushQuery({
+                tab: ObjectFilterTabs.ObjectForm,
+                formType: "create",
+                productFormType: "1",
+                objectFormType: "1",
+              })
             }
           >
             {translate("ADD_BUTTON_TITLE")}
@@ -320,14 +324,21 @@ export default function ObjectTableWrapper({ filter }: Props) {
             {isWithFilter ? "Hide Filter" : "Show Filter"}
           </Button>
         </div>
-        <Formik initialValues={{ searchValue: "" }} onSubmit={noop}>
+        <Formik
+          initialValues={{ searchValue: filter?.getObjectFilter()?.searchValue }}
+          onSubmit={noop}
+          enableReinitialize={true}
+        >
           {() => (
             <Form>
               <InputField
                 name="searchValue"
                 width={320}
-                value={searchValue}
-                onChange={(event) => setSearchValue(event.target.value)}
+                onChange={(event) =>
+                  locationHelpers.replaceQuery({
+                    searchValue: event.target.value,
+                  })
+                }
                 placeholder="Seach..."
               />
             </Form>
@@ -345,13 +356,36 @@ export default function ObjectTableWrapper({ filter }: Props) {
           loading={loading}
           data={data?.data}
           selectIds={setDeleteDocuments}
-          readOnMap={(value) => navigate(`/dashboard/objects/object-view-on?objectId=${value}`)}
-          downloadPdf={(value) => navigate(`/dashboard/objects/object-pdf-report?objectId=${value}`)}
-          editObyekt={(value) => navigate(`/dashboard/objects/object-form?objectId=${value}`)}
-          setOjectForProducts={(value) =>
-            navigate(`/dashboard/objects/object-products?objectId=${value}`)
+          readOnMap={(value) =>
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectOnView,
+              objectId: value,
+            })
           }
-          setOjectForView={(value) => navigate(`/dashboard/objects/object-view?objectId=${value}`)}
+          downloadPdf={(value) =>
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectPdfReport,
+              objectId: value,
+            })
+          }
+          editObyekt={(value) =>
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectForm,
+              objectId: value,
+            })
+          }
+          setOjectForProducts={(value) =>
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectProducts,
+              objectId: value,
+            })
+          }
+          setOjectForView={(value) =>
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: value,
+            })
+          }
         />
       </CustomCard>
       <div className="d-flex justify-content-between align-items-center mt-4 pb-3">

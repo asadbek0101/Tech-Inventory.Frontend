@@ -33,11 +33,11 @@ export default function CountersForm({
 }: Props) {
   const { translate } = useI18n();
 
-  const onChangeCount = useCallback(
+  const onChangeNumberOfConcern = useCallback(
     (event: any) => {
       setInitialValues((prev: any) =>
         update(prev, {
-          count: event?.target.value,
+          numberOfConcern: event?.target.value,
         }),
       );
     },
@@ -85,6 +85,14 @@ export default function CountersForm({
                       label="Modeli"
                       onChanges={onChangeModelId}
                       options={models}
+                    />
+                  </div>
+                  <div className="col-12 mt-3">
+                    <InputField
+                      name="numberOfConcern"
+                      label="Korxona raqami"
+                      onChange={onChangeNumberOfConcern}
+                      value={initialValues.numberOfConcern}
                     />
                   </div>
                   <div className="col-12 mt-3">

@@ -134,8 +134,12 @@ export default function Table({ columns, data = [], loading, selectRowCheckbox }
                   ) : (
                     <span>{index + 1}.</span>
                   )}{" "}
-                  {row.cells.map((cell: any) => {
-                    return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                  {row.cells.map((cell: any, index: number) => {
+                    return (
+                      <td key={index} {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </td>
+                    );
                   })}
                 </tr>
               );
