@@ -1,5 +1,6 @@
 export const IS_DEV = "production";
 
+// export const API_HOST = "http://172.24.200.60:8080/api/" as string;
 // export const API_HOST = "https://localhost:44368/api/" as string;
 export const API_HOST = "http://172.24.201.4:8080/api/" as string;
 

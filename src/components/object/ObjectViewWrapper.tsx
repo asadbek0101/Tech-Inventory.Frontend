@@ -46,6 +46,7 @@ import { CameraTypes } from "../../api/cameras/CameraDto";
 import MountingBoxTableWrapper from "../mounting-box/MountingBoxTableWrapper";
 import PencilIcon from "../icons/PencilIcon";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
+import axios from "axios";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -133,7 +134,20 @@ export default function ObjectViewWrapper({ filter }: Props) {
 
   const downloadFile = useCallback(
     (value: any) => {
-      ObyektApi.getMultiFile(value?.fileName, value?.originalFileName).catch(showError);
+      axios({
+        url: `http://172.24.201.4:1000/api/Object/tech-inventory-bucket?token=${value?.fileName}`,
+        method: "GET",
+        responseType: "blob", // important
+      }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link: any = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${value?.fileName}`);
+        document.body.appendChild(link);
+        link.click();
+
+        link.parentNode.removeChild(link);
+      });
     },
     [ObyektApi],
   );

@@ -274,8 +274,6 @@ export default function ObjectTableWrapper({ filter }: Props) {
     [setInitialValues, setFilterValues],
   );
 
-  console.log(filter.getObjectFilter());
-
   return (
     <div className="w-100 p-4">
       {isWithFilter && (
