@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useStabilizerApiContext } from "../../api/stabilizer/StabilizerApiContext";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StabilizerInitialProps } from "../../api/stabilizer/StabilizerDto";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ import { ModelTypes } from "../../api/models/ModelsDto";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
 
 import StabilizersForm from "./StabilizersForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -28,7 +29,7 @@ export default function StabilizersFormWrapper({ filter }: Props) {
   const { StabilizerApi } = useStabilizerApiContext();
   const { ModelsApi } = useModelsApiContext();
 
-  const navigate = useNavigate();
+  const locationHelpers = useLocationHelpers();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
@@ -75,7 +76,10 @@ export default function StabilizersFormWrapper({ filter }: Props) {
         StabilizerApi.updateStabilizer(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -87,12 +91,15 @@ export default function StabilizersFormWrapper({ filter }: Props) {
         StabilizerApi.createStabilizer(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }
     },
-    [objectId, StabilizerApi, navigate, productId],
+    [objectId, StabilizerApi, productId],
   );
   return (
     <StabilizersForm

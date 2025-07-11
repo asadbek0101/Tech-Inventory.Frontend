@@ -2,9 +2,9 @@ import { Form, Formik } from "formik";
 import { noop } from "lodash";
 import { GroupBox } from "../ui/GroupBox";
 import { InputField } from "../form/InputField";
+import { ConnectionTypes } from "../../api/obyekt/ObyektDto";
 
 import FileDownload from "../ui/FileDownload";
-import { ConnectionTypes } from "../../api/obyekt/ObyektDto";
 
 interface Props {
   readonly initialValues: any;
@@ -100,7 +100,7 @@ export default function ObjectView({ initialValues, setPath }: Props) {
                 </div>
               </GroupBox>
             </div>
-            {initialValues.connectionType && (
+            {initialValues?.connectionType && (
               <div className="col-12 mt-4">
                 <GroupBox title={`Aloqa tarmog'i (${initialValues?.connectionType})`}>
                   <div className="row">

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { showError } from "../../utils/NotificationUtils";
@@ -10,6 +10,7 @@ import { BoxesInitialProps } from "../../api/boxes/BoxesDto";
 import { useBoxesApiContext } from "../../api/boxes/BoxesApiContext";
 
 import BoxesForm from "./BoxesForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -29,6 +30,8 @@ export default function BoxesFormWrapper({ filter }: Props) {
   const { ModelsApi } = useModelsApiContext();
 
   const navigate = useNavigate();
+
+  const locationHelpers = useLocationHelpers();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
@@ -74,7 +77,10 @@ export default function BoxesFormWrapper({ filter }: Props) {
         BoxesApi.updateBox(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -86,7 +92,10 @@ export default function BoxesFormWrapper({ filter }: Props) {
         BoxesApi.createBox(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

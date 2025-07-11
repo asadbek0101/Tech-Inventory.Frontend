@@ -115,14 +115,14 @@ export default function ObjectTable({
               >
                 <EyeIcon />
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => setOjectForProducts(row?.row?.original?.id)}
                 className="py-2 px-2 text-light"
                 bgColor={BgColors.Green}
                 hoverLabel="Jihozlarni qo'shish"
               >
                 <ProductsIcon />
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => editObyekt(row?.row?.original?.id)}
                 className="py-2 px-2 text-light"

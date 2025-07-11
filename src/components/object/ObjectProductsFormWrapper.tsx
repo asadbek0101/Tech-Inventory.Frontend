@@ -47,6 +47,10 @@ import VideoRecordersFormWrapper from "../video-recorders/VideoRecorderFormWrapp
 import FreezersFormWrapper from "../freezers/FreezersFormWrapper";
 import MountingBoxFormWrapper from "../mounting-box/MountingBoxFormWrapper";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
+import { Formik } from "formik";
+import { InputField } from "../form/InputField";
+import { noop } from "lodash";
+import { SelectPickerField } from "../form/SelectPrickerField";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -76,7 +80,21 @@ export default function ObjectProductsFormWrapper({ filter }: Props) {
       headerComponent={
         <div className="d-flex justify-content-between">
           <div>
-            <h5>{getTitle(product)}</h5>
+            <Formik initialValues={{}} onSubmit={noop}>
+              {() => (
+                <SelectPickerField
+                  name="name"
+                  width={500}
+                  options={objectProductTypesOptions}
+                  onChanges={(value: any) => {
+                    locationHelpers.pushQuery({
+                      product: value.value,
+                      objectId: objectId,
+                    });
+                  }}
+                />
+              )}
+            </Formik>
           </div>
           <Button
             className=" px-3 text-light"

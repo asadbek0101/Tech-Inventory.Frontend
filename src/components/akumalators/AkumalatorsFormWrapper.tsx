@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AkumalatorInitialProps } from "../../api/akumalator/AkumalatorDto";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { showError } from "../../utils/NotificationUtils";
 import { useAkumalatorApiContext } from "../../api/akumalator/AkumalatorApiContext";
 
 import AkumalatorsForm from "./AkumalatorsForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -23,6 +24,8 @@ export default function AkumalatorsFormWrapper({ filter }: Props) {
   const { AkumalatorApi } = useAkumalatorApiContext();
 
   const navigate = useNavigate();
+
+  const locationHelpers = useLocationHelpers();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
@@ -46,7 +49,10 @@ export default function AkumalatorsFormWrapper({ filter }: Props) {
         AkumalatorApi.updateAkumalator(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -57,7 +63,10 @@ export default function AkumalatorsFormWrapper({ filter }: Props) {
         AkumalatorApi.createAkumalator(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

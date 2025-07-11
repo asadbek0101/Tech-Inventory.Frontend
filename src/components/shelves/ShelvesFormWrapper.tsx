@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { ShelfInitialProps, ShelfTypes } from "../../api/shelf/ShelfDto";
 import { useNavigate } from "react-router-dom";
 import { useShelfApiContext } from "../../api/shelf/ShelfApiContext";
@@ -32,7 +32,7 @@ export default function ShelvesFormWrapper({ filter, shelfType }: Props) {
   const { ShelfApi } = useShelfApiContext();
   const { ModelsApi } = useModelsApiContext();
 
-  const navigate = useNavigate();
+  const locationHelpers = useLocationHelpers();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
@@ -81,7 +81,10 @@ export default function ShelvesFormWrapper({ filter, shelfType }: Props) {
         ShelfApi.updateShelf(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}&product=${product}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -93,7 +96,10 @@ export default function ShelvesFormWrapper({ filter, shelfType }: Props) {
         ShelfApi.createShelf(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

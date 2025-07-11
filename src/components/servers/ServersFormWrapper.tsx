@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { showError } from "../../utils/NotificationUtils";
 import { useServersApiContext } from "../../api/servers/ServersApiContext";
 import { ServerInitialProps } from "../../api/servers/ServersDto";
 import ServersForm from "./ServersForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -20,7 +21,7 @@ export default function ServersFormWrapper({ filter }: Props) {
 
   const { ServersApi } = useServersApiContext();
 
-  const navigate = useNavigate();
+  const locationHelpers = useLocationHelpers();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
@@ -44,7 +45,10 @@ export default function ServersFormWrapper({ filter }: Props) {
         ServersApi.updateServer(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -55,7 +59,10 @@ export default function ServersFormWrapper({ filter }: Props) {
         ServersApi.createServer(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

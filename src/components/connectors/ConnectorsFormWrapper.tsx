@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { AvtomatInitialProps } from "../../api/avtomat/AvtomatDto";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -7,6 +7,7 @@ import { showError } from "../../utils/NotificationUtils";
 import { useConnectorsApiContext } from "../../api/connectors/ConnectorsApiContext";
 import ConnectorsForm from "./ConnectorsForm";
 import { ConnectorInitialProps } from "../../api/connectors/ConnectorsDto";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -22,6 +23,8 @@ export default function ConnectorsFormWrapper({ filter }: Props) {
   const { ConnectorsApi } = useConnectorsApiContext();
 
   const navigate = useNavigate();
+
+  const locationHelpers = useLocationHelpers();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
@@ -44,7 +47,10 @@ export default function ConnectorsFormWrapper({ filter }: Props) {
         ConnectorsApi.updateConnector(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -55,7 +61,10 @@ export default function ConnectorsFormWrapper({ filter }: Props) {
         ConnectorsApi.createConnector(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

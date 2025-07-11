@@ -175,7 +175,10 @@ export default function ObjectViewWrapper({ filter }: Props) {
           heigh="34px"
           icon={<AddIcon />}
           onClick={() =>
-            locationHelpers.pushQuery({ tab: ObjectFilterTabs.ObjectProducts, objectId: objectId })
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectProductsForm,
+              objectId: objectId,
+            })
           }
         >
           Jihozlar qo'shish

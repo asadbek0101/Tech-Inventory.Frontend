@@ -8,6 +8,7 @@ import ObjectViewWrapper from "./ObjectViewWrapper";
 import ObjectProductsTabWrapper from "./ObjectProductsTabWrapper";
 import ObjectMapWrapper from "./ObjectMapWrapper";
 import ObjectPdfWrapper from "./ObjectPdfWrapper";
+import ObjectProductsFormWrapper from "./ObjectProductsFormWrapper";
 
 export default function ObjectTab() {
   const query = useQuery();
@@ -24,6 +25,7 @@ export default function ObjectTab() {
       {tab === "object-products" && <ObjectProductsTabWrapper filter={filter} />}
       {tab === "object-view-on" && <ObjectMapWrapper filter={filter} />}
       {tab === "object-pdf-report" && <ObjectPdfWrapper filter={filter} />}
+      {tab === "object-products-form" && <ObjectProductsFormWrapper filter={filter} />}
     </>
   );
 }

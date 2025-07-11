@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { SocketInitialProps } from "../../api/socket/SocketDto";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { useSocketApiContext } from "../../api/socket/SocketApiContext";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { ModelTypes } from "../../api/models/ModelsDto";
 
 import SocketForm from "./SocketForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -28,7 +29,7 @@ export default function SocketFormWrapper({ filter }: Props) {
   const { SocketApi } = useSocketApiContext();
   const { ModelsApi } = useModelsApiContext();
 
-  const navigate = useNavigate();
+  const locationHelpers = useLocationHelpers();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
 
@@ -73,7 +74,10 @@ export default function SocketFormWrapper({ filter }: Props) {
         SocketApi.updateSocket(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -85,7 +89,10 @@ export default function SocketFormWrapper({ filter }: Props) {
         SocketApi.createSocket(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

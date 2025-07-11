@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { useCabelApiContext } from "../../api/cabels/CabelApiContext";
 import { showError } from "../../utils/NotificationUtils";
@@ -10,6 +10,7 @@ import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { ModelTypes } from "../../api/models/ModelsDto";
 
 import CabelForm from "./CabelForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -32,6 +33,8 @@ export default function CabelFormWrapper({ filter, cabelType }: Props) {
   const { ModelsApi } = useModelsApiContext();
 
   const navigate = useNavigate();
+
+  const locationHelpers = useLocationHelpers();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
 
@@ -76,7 +79,10 @@ export default function CabelFormWrapper({ filter, cabelType }: Props) {
         CabelApi.updateCabel(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -88,7 +94,10 @@ export default function CabelFormWrapper({ filter, cabelType }: Props) {
         CabelApi.createCabel(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { showError } from "../../utils/NotificationUtils";
 import { toast } from "react-toastify";
@@ -7,6 +7,7 @@ import { useRackApiContext } from "../../api/rackes/RackesApiContext";
 import { RackTypes, RackesInitialProps } from "../../api/rackes/RackesDto";
 
 import RackesForm from "./RackesForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -24,8 +25,7 @@ export default function RackesFormWrapper({ filter, rackType }: Props) {
   });
 
   const { RackesApi } = useRackApiContext();
-
-  const navigate = useNavigate();
+  const locationHelpers = useLocationHelpers();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
 
@@ -48,7 +48,10 @@ export default function RackesFormWrapper({ filter, rackType }: Props) {
         RackesApi.updateRack(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -59,7 +62,10 @@ export default function RackesFormWrapper({ filter, rackType }: Props) {
         RackesApi.createRack(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

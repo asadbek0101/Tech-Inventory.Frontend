@@ -6,10 +6,11 @@ import { useUpsApiContext } from "../../api/ups/UpsApiContext";
 import { useNavigate } from "react-router-dom";
 import { ModelTypes } from "../../api/models/ModelsDto";
 import { showError } from "../../utils/NotificationUtils";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { toast } from "react-toastify";
 
 import UpsForm from "./UpsForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -28,7 +29,7 @@ export default function UpsFormWrapper({ filter }: Props) {
   const { UpsApi } = useUpsApiContext();
   const { ModelsApi } = useModelsApiContext();
 
-  const navigate = useNavigate();
+  const locationHelpers = useLocationHelpers();
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
 
@@ -75,7 +76,10 @@ export default function UpsFormWrapper({ filter }: Props) {
         UpsApi.updateUps(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -87,7 +91,10 @@ export default function UpsFormWrapper({ filter }: Props) {
         UpsApi.createUps(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

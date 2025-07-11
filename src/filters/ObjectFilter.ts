@@ -4,6 +4,7 @@ export enum ObjectFilterTabs {
   ObjectTable = "object-table",
   ObjectForm = "object-form",
   ObjectView = "object-view",
+  ObjectProductsForm = "object-products-form",
   ObjectProducts = "object-products",
   ObjectOnView = "object-view-on",
   ObjectPdfReport = "object-pdf-report",

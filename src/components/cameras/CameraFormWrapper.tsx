@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { showError } from "../../utils/NotificationUtils";
 import { useCameraApiContext } from "../../api/cameras/CameraApiContext";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CameraInitialProps, CameraTypes } from "../../api/cameras/CameraDto";
@@ -10,6 +10,7 @@ import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { ModelTypes } from "../../api/models/ModelsDto";
 
 import CameraForm from "./CameraForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -28,6 +29,8 @@ export default function CameraFormWrapper({ filter, cameraType }: Props) {
   });
 
   const [models, setModels] = useState<SelectPickerOptionsProps[]>([]);
+
+  const locationHelpers = useLocationHelpers();
 
   const { CameraApi } = useCameraApiContext();
   const { ModelsApi } = useModelsApiContext();
@@ -80,7 +83,10 @@ export default function CameraFormWrapper({ filter, cameraType }: Props) {
         CameraApi.updateCamera(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -92,7 +98,10 @@ export default function CameraFormWrapper({ filter, cameraType }: Props) {
         CameraApi.createCamera(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }

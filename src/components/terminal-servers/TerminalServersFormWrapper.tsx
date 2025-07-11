@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { TerminalServerInitialProps } from "../../api/terminal-server/TerminalServerDto";
-import { ObjectFilter } from "../../filters/ObjectFilter";
+import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { useTerminalServerApiContext } from "../../api/terminal-server/TerminalServerApiContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { showError } from "../../utils/NotificationUtils";
 
 import TerminalServersForm from "./TerminalServersForm";
+import useLocationHelpers from "../../hooks/userLocationHelpers";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -27,7 +28,7 @@ export default function TerminalServersFormWrapper({ filter }: Props) {
   const { TerminalServerApi } = useTerminalServerApiContext();
   const { ModelsApi } = useModelsApiContext();
 
-  const navigate = useNavigate();
+  const locationHelpers = useLocationHelpers();
 
   const objectId = useMemo(() => filter.getObyektId() || 0, [filter]);
   const productId = useMemo(() => filter.getProductId() || 0, [filter]);
@@ -73,7 +74,10 @@ export default function TerminalServersFormWrapper({ filter }: Props) {
         TerminalServerApi.updateTerminalServer(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       } else {
@@ -85,7 +89,10 @@ export default function TerminalServersFormWrapper({ filter }: Props) {
         TerminalServerApi.createTerminalServer(json)
           .then((r) => {
             toast.success(r?.data?.message);
-            navigate(`/dashboard/objects/object-view?objectId=${objectId}`);
+            locationHelpers.pushQuery({
+              tab: ObjectFilterTabs.ObjectView,
+              objectId: objectId,
+            });
           })
           .catch(showError);
       }
