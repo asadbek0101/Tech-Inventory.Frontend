@@ -8,7 +8,7 @@ export class ObyektApi extends BaseApi {
   }
 
   public getObyektProducts(query: any) {
-    return this.get("Obyekts/GetProducts", {
+    return this.get("Obyekts/GetProductsCounts", {
       query,
     });
   }

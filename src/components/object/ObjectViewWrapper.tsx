@@ -47,6 +47,7 @@ import MountingBoxTableWrapper from "../mounting-box/MountingBoxTableWrapper";
 import PencilIcon from "../icons/PencilIcon";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
 import axios from "axios";
+import GluesTableWrapper from "../glues/GluesTableWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -639,11 +640,7 @@ export default function ObjectViewWrapper({ filter }: Props) {
           <div className="my-2">
             <h5>Burama mix uchun yelim pona</h5>
           </div>
-          <HooksTableWrapper
-            filter={filter}
-            hookType={HookTypes.CabelHook}
-            productForForm={ProductTypes.GlueForNail}
-          />
+          <GluesTableWrapper filter={filter} productForForm={ProductTypes.GlueForNail} />
         </CustomCard>
       )}
 

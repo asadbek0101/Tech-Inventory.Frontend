@@ -51,6 +51,7 @@ import FreezersTableWrapper from "../freezers/FreezersTableWrapper";
 import { CameraTypes } from "../../api/cameras/CameraDto";
 import MountingBoxTableWrapper from "../mounting-box/MountingBoxTableWrapper";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
+import GluesTableWrapper from "../glues/GluesTableWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -343,6 +344,10 @@ export default function ObjectProductsTableWrapper({ filter }: Props) {
           shellType={ShellTypes.PlasticShell}
           productForForm={ProductTypes.PlasticShell}
         />
+      )}
+
+      {product === ProductTypes.GlueForNail && (
+        <GluesTableWrapper filter={filter} productForForm={ProductTypes.GlueForNail} />
       )}
     </TabPage>
   );

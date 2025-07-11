@@ -51,6 +51,7 @@ import { Formik } from "formik";
 import { InputField } from "../form/InputField";
 import { noop } from "lodash";
 import { SelectPickerField } from "../form/SelectPrickerField";
+import GluesFormWrapper from "../glues/GluesFormWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -204,6 +205,8 @@ export default function ObjectProductsFormWrapper({ filter }: Props) {
       {product === ProductTypes.PlasticShell && (
         <ShellsFormWrapper filter={filter} shellType={ShellTypes.PlasticShell} />
       )}
+
+      {product === ProductTypes.GlueForNail && <GluesFormWrapper filter={filter} />}
     </TabPage>
   );
 }

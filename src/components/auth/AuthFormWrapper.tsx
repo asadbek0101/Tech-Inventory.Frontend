@@ -28,7 +28,6 @@ export default function AuthFormWrapper() {
 
   const onSubmit = useCallback(
     (value: AuthProps) => {
-      console.log(value);
       if (value.username.length === 0) {
         toast.warn(translate("AUTH_REQUIRED_USERNAME_TITLE"));
       } else if (value.password.length === 0) {
