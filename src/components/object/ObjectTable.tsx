@@ -57,6 +57,11 @@ export default function ObjectTable({
         },
       },
       {
+        Header: translate("Mahalla"),
+        accessor: "street",
+        width: 300,
+      },
+      {
         Header: translate("Obyekt nomi va manzili"),
         accessor: "nameAndAddress",
         width: 300,
