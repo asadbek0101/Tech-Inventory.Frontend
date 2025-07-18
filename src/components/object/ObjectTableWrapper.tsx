@@ -15,6 +15,10 @@ import { noop } from "lodash";
 import { toast } from "react-toastify";
 import { useOjbectClassApiContext } from "../../api/object-class/ObjectClassApiContext";
 import { useOjbectClassTypeApiContext } from "../../api/object-class-type/ObjectClassTypeApiContext";
+import { useUsersContext } from "../../api/users/UsersContext";
+import { useShallowEqualSelector } from "../../hooks/useShallowSelector";
+import { appIsCreatedBySelector, switchIsCreatedBy } from "../../reducers/appReducer";
+import { SelectPickerField } from "../form/SelectPrickerField";
 
 import AddIcon from "../icons/AddIcon";
 import Button, { BgColors } from "../ui/Button";
@@ -27,8 +31,9 @@ import Modal from "../ui/Modal";
 import YesOrNoModal from "../ui/YesOrNoModal";
 import Loader from "../ui/Loader";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
-import { useUsersContext } from "../../api/users/UsersContext";
-import { SelectPickerField } from "../form/SelectPrickerField";
+import { profileSelector, userIdSelector } from "../../reducers/authReducer";
+import { CheckboxField } from "../form/CheckboxField";
+import { useDispatch } from "react-redux";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -70,6 +75,10 @@ export default function ObjectTableWrapper({ filter }: Props) {
   const [objectClassifications, setObjectClassifications] = useState([]);
 
   const locationHelpers = useLocationHelpers();
+
+  const showOnlyCreatedMe = useShallowEqualSelector(appIsCreatedBySelector);
+  const userId = useShallowEqualSelector(userIdSelector);
+
   const { translate } = useI18n();
   const { UsersApi } = useUsersContext();
   const { ObyektApi } = useObyektApiContext();
@@ -79,6 +88,8 @@ export default function ObjectTableWrapper({ filter }: Props) {
   const { NumberOfOrdersApi } = useNumberOfOrdersApiContext();
   const { ObjectClassTypeApi } = useOjbectClassTypeApiContext();
   const { ObjectClassApi } = useOjbectClassApiContext();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     UsersApi.getUsersList()
@@ -100,13 +111,16 @@ export default function ObjectTableWrapper({ filter }: Props) {
 
   useEffect(() => {
     setLoading(true);
-    ObyektApi.getObyekts(filter.getObjectFilter())
+    ObyektApi.getObyekts({
+      ...filter.getObjectFilter(),
+      createdBy: showOnlyCreatedMe ? Number(userId) : filter.getObjectFilter().createdBy,
+    })
       .then((r) => {
         setData(r?.data);
         setLoading(false);
       })
       .catch(showError);
-  }, [ObyektApi, filterValues, filter]);
+  }, [ObyektApi, filterValues, filter, userId, showOnlyCreatedMe]);
 
   useEffect(() => {
     RegionsApi.getRegionsList()
@@ -357,12 +371,25 @@ export default function ObjectTableWrapper({ filter }: Props) {
           initialValues={{
             searchValue: filter?.getObjectFilter()?.searchValue,
             createdBy: getCreatedByObject(filter?.getObjectFilter()?.createdBy),
+            showOnlyCreatedMe: showOnlyCreatedMe,
           }}
           onSubmit={noop}
           enableReinitialize={true}
         >
           {() => (
             <Form className="d-flex gap-2">
+              <CheckboxField
+                checked={showOnlyCreatedMe}
+                name="showOnlyCreatedMe"
+                label="Faqat men yaratganlarni ko'rsat"
+                onChange={() => {
+                  dispatch(
+                    switchIsCreatedBy({
+                      isCreatedBy: !showOnlyCreatedMe,
+                    }),
+                  );
+                }}
+              />
               <SelectPickerField
                 name="createdBy"
                 width={320}

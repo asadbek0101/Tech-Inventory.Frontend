@@ -7,8 +7,12 @@ import { createReducer, createRootReducer, PerformAction } from "../utils/Reduce
 import { AppMenuType } from "../api/AppDto";
 
 export const appReducerPersistConfig: Partial<PersistConfig<AppReducerState>> = {
-  whitelist: ["language", "menuType", "username", "totalRowCount", "totalPageCount"],
+  whitelist: ["language", "menuType", "username", "isCreatedBy", "totalRowCount", "totalPageCount"],
 };
+
+interface SwitchIsCreatedByMeta {
+  readonly isCreatedBy: boolean;
+}
 
 interface SwitchLanguageMeta {
   readonly language: AppLanguage;
@@ -32,6 +36,7 @@ interface SwitchTotalPageCountMeta {
 
 enum ReducerActions {
   SwitchLanguage = "App/SwitchLanguage",
+  SwitchIsCreatedBy = "App/SwitchIsCreatedBy",
   SwitchMenuType = "App/SwitchMenuType",
   SwitchUsername = "App/SwitchUsername",
   SwitchTotalRowCount = "App/SwitchTotalRowCount",
@@ -42,6 +47,7 @@ export interface AppReducerState {
   readonly language: AppLanguage;
   readonly menuType: AppMenuType;
   readonly username: string;
+  readonly isCreatedBy: boolean;
   readonly totalPageCount: string;
   readonly totalRowCount: string;
 }
@@ -53,11 +59,16 @@ function getState(): AppReducerState {
     username: "",
     totalPageCount: "0",
     totalRowCount: "0",
+    isCreatedBy: false,
   };
 }
 
 export const appReducer = createRootReducer<AppReducerState>(
   getState(),
+
+  createReducer([ReducerActions.SwitchIsCreatedBy], (state, { meta }) =>
+    update(state, { isCreatedBy: meta.isCreatedBy }),
+  ),
 
   createReducer([ReducerActions.SwitchLanguage], (state, { meta }) =>
     update(state, { language: meta.language }),
@@ -83,6 +94,8 @@ export const appReducer = createRootReducer<AppReducerState>(
 // ==================
 // Selectors
 // ==================
+
+export const appIsCreatedBySelector = ({ app }: AppStoreState): boolean => app.isCreatedBy;
 
 export const appLanguageSelector = ({ app }: AppStoreState): AppLanguage => app.language;
 
@@ -120,4 +133,10 @@ export function switchTotalRowCount(
   meta: SwitchTotalRowCountMeta,
 ): PerformAction<SwitchTotalRowCountMeta> {
   return { type: ReducerActions.SwitchTotalRowCount, meta };
+}
+
+export function switchIsCreatedBy(
+  meta: SwitchIsCreatedByMeta,
+): PerformAction<SwitchIsCreatedByMeta> {
+  return { type: ReducerActions.SwitchIsCreatedBy, meta };
 }
