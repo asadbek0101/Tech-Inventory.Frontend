@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Button, { BgColors } from "../ui/Button";
-import { useNavigate } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { useRegionApiContext } from "../../api/regions/RegionsApiContext";
 import { useDistrictsApiContext } from "../../api/districts/DistrictsApiContext";
@@ -33,6 +32,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
   const [initialValues, setInitalValues] = useState({
     regionId: 0,
     districtId: 0,
+    streetId: 0,
     projectId: 0,
     numberOfOrderId: 0,
     objectClassId: 0,
@@ -57,6 +57,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
   const [projects, setProjects] = useState([]);
   const [obClassTypes, setObClassTypes] = useState([]);
   const [districts, setDistricts] = useState([]);
+  const [streets, setStreets] = useState([]);
   const [numberOfOrders, setNumberOfOrders] = useState([]);
   const [objectClassifications, setObjectClassifications] = useState([]);
 
@@ -102,6 +103,20 @@ export default function ObjectFormWrapper({ filter }: Props) {
               .catch(showError);
           }
 
+          if (r?.data?.districtId) {
+            DistrictsApi.getStreetsList({ districtId: r?.data?.districtId })
+              .then((r) => {
+                const _streets = r?.data?.map((d: any) => {
+                  return {
+                    label: d.name,
+                    value: d.id,
+                  };
+                });
+                setStreets(_streets);
+              })
+              .catch(showError);
+          }
+
           if (r?.data?.projectId) {
             NumberOfOrdersApi.getNumberOfOrdersList({ projectId: r?.data?.projectId })
               .then((r) => {
@@ -139,6 +154,10 @@ export default function ObjectFormWrapper({ filter }: Props) {
             districtId: {
               label: r?.data?.district,
               value: r?.data?.districtId,
+            },
+            streetId: {
+              label: r?.data?.street,
+              value: r?.data?.streetId,
             },
             projectId: {
               label: r?.data?.project,
@@ -237,6 +256,33 @@ export default function ObjectFormWrapper({ filter }: Props) {
     [DistrictsApi],
   );
 
+  const onChangeDistrict = useCallback(
+    (value: any) => {
+      DistrictsApi.getStreetsList({ districtId: value.value })
+        .then((r) => {
+          const _streets = r?.data?.map((d: any) => {
+            return {
+              label: d.name,
+              value: d.id,
+            };
+          });
+          setStreets(_streets);
+        })
+        .catch(showError);
+
+      setInitalValues((prev: any) =>
+        update(prev, {
+          districtId: value,
+          streetId: {
+            label: "",
+            value: "",
+          },
+        }),
+      );
+    },
+    [setInitalValues],
+  );
+
   const onChangeProject = useCallback(
     (value: any) => {
       NumberOfOrdersApi.getNumberOfOrdersList({ projectId: value.value })
@@ -300,6 +346,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
           id: objectId,
           regionId: value?.regionId?.value,
           districtId: value?.districtId?.value,
+          streetId: value?.streetId?.value,
           projectId: value?.projectId?.value,
           numberOfOrderId: value?.numberOfOrderId?.value,
           objectClassId: value?.objectClassId?.value,
@@ -362,6 +409,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
           ...value,
           regionId: value?.regionId?.value,
           districtId: value?.districtId?.value,
+          streetId: value?.streetId?.value,
           projectId: value?.projectId?.value,
           numberOfOrderId: value?.numberOfOrderId?.value,
           objectClassId: value?.objectClassId?.value,
@@ -481,6 +529,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
         onSubmit={onSubmit}
         regionsOptions={regions}
         districtsOptions={districts}
+        streetsOptions={streets}
         projectsOptions={projects}
         numberOfOrdersOptions={numberOfOrders}
         initialValues={initialValues}
@@ -489,6 +538,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
         objectClassificationsTypesOptions={obClassTypes}
         objectClassificationsOptions={objectClassifications}
         onChangeRegion={onChangeRegion}
+        onChangeDistrict={onChangeDistrict}
         onChangeProject={onChangeProject}
         setConnectionType={setConnectionType}
         onChangeObjectClassType={onChangeObjectClassType}

@@ -8,6 +8,10 @@ export class UsersApi extends BaseApi {
     });
   }
 
+  public getUsersList() {
+    return this.get("Users/GetList");
+  }
+
   public getOneUser(id: number) {
     return this.get("Users/GetOne", {
       query: { id },

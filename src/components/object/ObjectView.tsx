@@ -34,6 +34,13 @@ export default function ObjectView({ initialValues, setPath }: Props) {
                       disabled
                     />
                   </div>
+                  <div className="col-12 mt-3">
+                    <InputField
+                      name="street"
+                      label="OBJECT_FORM_STREET_NAME_FIELD_TITLE"
+                      disabled
+                    />
+                  </div>
                 </div>
               </GroupBox>
             </div>

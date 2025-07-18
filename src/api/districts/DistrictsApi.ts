@@ -19,6 +19,12 @@ export class DistrictsApi extends BaseApi {
     });
   }
 
+  public getStreetsList(query: any) {
+    return this.get("Street/GetList", {
+      query,
+    });
+  }
+
   public cretaeDistrict(json: any) {
     return this.post("Districts/Create", {
       json,

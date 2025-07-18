@@ -27,6 +27,8 @@ import Modal from "../ui/Modal";
 import YesOrNoModal from "../ui/YesOrNoModal";
 import Loader from "../ui/Loader";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
+import { useUsersContext } from "../../api/users/UsersContext";
+import { SelectPickerField } from "../form/SelectPrickerField";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -58,6 +60,7 @@ export default function ObjectTableWrapper({ filter }: Props) {
   const [loading, setLoading] = useState(false);
   const [isWithFilter, setIsWithFilter] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [users, setUsers] = useState([]);
   const [regions, setRegions] = useState([]);
   const [projects, setProjects] = useState([]);
   const [objectClassificationTypes, setOobjectClassificationTypes] = useState([]);
@@ -68,6 +71,7 @@ export default function ObjectTableWrapper({ filter }: Props) {
 
   const locationHelpers = useLocationHelpers();
   const { translate } = useI18n();
+  const { UsersApi } = useUsersContext();
   const { ObyektApi } = useObyektApiContext();
   const { RegionsApi } = useRegionApiContext();
   const { DistrictsApi } = useDistrictsApiContext();
@@ -75,6 +79,24 @@ export default function ObjectTableWrapper({ filter }: Props) {
   const { NumberOfOrdersApi } = useNumberOfOrdersApiContext();
   const { ObjectClassTypeApi } = useOjbectClassTypeApiContext();
   const { ObjectClassApi } = useOjbectClassApiContext();
+
+  useEffect(() => {
+    UsersApi.getUsersList()
+      .then((r) => {
+        const _users = r?.data?.map((user: any) => {
+          return {
+            label: user.fullName,
+            value: user.id,
+          };
+        });
+        _users.unshift({
+          label: "Hamma",
+          value: 0,
+        });
+        setUsers(_users);
+      })
+      .catch(showError);
+  }, [ObyektApi, filterValues, filter]);
 
   useEffect(() => {
     setLoading(true);
@@ -274,6 +296,15 @@ export default function ObjectTableWrapper({ filter }: Props) {
     [setInitialValues, setFilterValues],
   );
 
+  const getCreatedByObject = useCallback(
+    (id: any) => {
+      const user = users.filter((x: any) => x.value == id);
+      if (user?.length > 0) return user[0];
+      return {};
+    },
+    [users],
+  );
+
   return (
     <div className="w-100 p-4">
       {isWithFilter && (
@@ -323,12 +354,26 @@ export default function ObjectTableWrapper({ filter }: Props) {
           </Button>
         </div>
         <Formik
-          initialValues={{ searchValue: filter?.getObjectFilter()?.searchValue }}
+          initialValues={{
+            searchValue: filter?.getObjectFilter()?.searchValue,
+            createdBy: getCreatedByObject(filter?.getObjectFilter()?.createdBy),
+          }}
           onSubmit={noop}
           enableReinitialize={true}
         >
           {() => (
-            <Form>
+            <Form className="d-flex gap-2">
+              <SelectPickerField
+                name="createdBy"
+                width={320}
+                onChanges={(event) =>
+                  locationHelpers.replaceQuery({
+                    createdBy: event.value,
+                  })
+                }
+                placeholder="Tomonidan kiritilgan..."
+                options={users}
+              />
               <InputField
                 name="searchValue"
                 width={320}

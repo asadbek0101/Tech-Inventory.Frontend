@@ -26,6 +26,7 @@ export enum ObjectProductsPageTypes {
 }
 
 interface ObjectFilterProps extends AppFilterProps<ObjectFilterTabs> {
+  readonly createdBy?: string;
   readonly objectId?: string;
   readonly product?: string;
   readonly productId?: string;
@@ -58,12 +59,14 @@ export class ObjectFilter extends AppFilter<ObjectFilterTabs> {
   private readonly objectClassificationId: string;
   private readonly objectClassificationTypeId: string;
   private readonly searchValue: string;
+  private readonly createdBy: string;
 
   public constructor(
     {
       objectId,
       product,
       productId,
+      createdBy,
       formType,
       productFormType,
       productPageType,
@@ -86,6 +89,7 @@ export class ObjectFilter extends AppFilter<ObjectFilterTabs> {
     this.productFormType = productFormType || ProductFormTypes.WithOutObjectForm;
     this.productPageType = productPageType || ObjectProductsPageTypes.Table;
     this.objectFormType = objectFormType || ObjectFormTypes.WithoutProductForm;
+    this.createdBy = createdBy || "0";
     this.regionId = regionId || "0";
     this.districtId = districtId || "0";
     this.projectId = projectId || "0";
@@ -134,6 +138,7 @@ export class ObjectFilter extends AppFilter<ObjectFilterTabs> {
       searchValue: this.searchValue,
       pageNumber: this.pageCount,
       pageSize: this.perPage,
+      createdBy: this.createdBy,
     };
   }
 }

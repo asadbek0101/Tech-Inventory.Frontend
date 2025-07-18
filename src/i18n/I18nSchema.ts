@@ -113,6 +113,7 @@ export interface I18nSchema {
 
   readonly OBJECT_FORM_REGION_NAME_FIELD_TITLE: string;
   readonly OBJECT_FORM_DISTRICT_NAME_FIELD_TITLE: string;
+  readonly OBJECT_FORM_STREET_NAME_FIELD_TITLE: string;
   readonly OBJECT_FORM_PROEJCT_NAME_FIELD_TITLE: string;
   readonly OBJECT_FORM_NUMBER_OF_ORDER_FIELD_TITLE: string;
   readonly OBJECT_FORM_OBJECT_CLASS_TYPE_FIELD_TITLE: string;

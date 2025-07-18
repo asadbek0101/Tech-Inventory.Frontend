@@ -20,6 +20,7 @@ interface Props {
   readonly initialValues: any;
   readonly regionsOptions: any[];
   readonly districtsOptions: any[];
+  readonly streetsOptions: any[];
   readonly numberOfOrdersOptions: any[];
   readonly projectsOptions: any[];
   readonly objectClassificationsOptions: any[];
@@ -27,6 +28,7 @@ interface Props {
   readonly deleteFileFromDb: (value: any) => void;
   readonly onSubmit: (value: any) => void;
   readonly onChangeRegion: (value: any) => void;
+  readonly onChangeDistrict: (value: any) => void;
   readonly onChangeProject: (value: any) => void;
   readonly setInitialValues: (value: any) => void;
   readonly setConnectionType: (value: any) => void;
@@ -51,6 +53,7 @@ export default function ObjectForm({
   setInitialValues,
   onSubmit,
   onChangeRegion,
+  onChangeDistrict,
   onChangeProject,
   onChangeObjectClassType,
   setConnectionType,
@@ -58,6 +61,7 @@ export default function ObjectForm({
   initialValues,
   regionsOptions,
   districtsOptions,
+  streetsOptions,
   numberOfOrdersOptions,
   projectsOptions,
   objectClassificationsOptions,
@@ -66,11 +70,11 @@ export default function ObjectForm({
 }: Props) {
   const { translate } = useI18n();
 
-  const onChangeDistrict = useCallback(
+  const onChangeStreet = useCallback(
     (value: any) => {
       setInitialValues((prev: any) =>
         update(prev, {
-          districtId: value,
+          streetId: value,
         }),
       );
     },
@@ -310,6 +314,14 @@ export default function ObjectForm({
                       label="OBJECT_FORM_DISTRICT_NAME_FIELD_TITLE"
                       options={districtsOptions}
                       onChanges={onChangeDistrict}
+                    />
+                  </div>
+                  <div className="col-12 mt-3">
+                    <SelectPickerField
+                      name="streetId"
+                      label="OBJECT_FORM_STREET_NAME_FIELD_TITLE"
+                      options={streetsOptions}
+                      onChanges={onChangeStreet}
                     />
                   </div>
                 </div>
