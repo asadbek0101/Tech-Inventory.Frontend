@@ -1,0 +1,28 @@
+.custom-popup-wrapper {
+  width: 240px;
+
+  .custom-popup-header {
+    width: 100%;
+    font-size: 18px;
+  }
+
+  .custom-popup-body {
+    width: 100%;
+    margin-top: 10px;
+
+    .custom-popup-body-row {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border-bottom: 1px dashed black;
+      padding: 2px 0;
+    }
+  }
+
+  .custom-popup-footer {
+    margin-top: 10px;
+    width: 100%;
+  }
+}

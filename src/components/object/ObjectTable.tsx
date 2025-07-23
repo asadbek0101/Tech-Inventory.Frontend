@@ -1,4 +1,5 @@
 import { useI18n } from "../../i18n/I18nContext";
+import { useMemo } from "react";
 
 import Table from "../table/Table";
 import moment from "moment";
@@ -6,9 +7,7 @@ import Button, { BgColors } from "../ui/Button";
 import PencilIcon from "../icons/PencilIcon";
 import DonwloadIcon from "../icons/DowloadIcon";
 import LocationIcon from "../icons/LocationIcon";
-import ProductsIcon from "../icons/ProductsIcon";
 import EyeIcon from "../icons/EyeIcon";
-import { useMemo } from "react";
 
 interface Props {
   readonly data: any;
@@ -17,14 +16,12 @@ interface Props {
   readonly readOnMap: (value: any) => void;
   readonly editObyekt: (value: any) => void;
   readonly setOjectForView: (value: any) => void;
-  readonly setOjectForProducts: (value: any) => void;
   readonly downloadPdf: (value: any, fileName: string) => void;
 }
 
 export default function ObjectTable({
   data = [],
   setOjectForView,
-  setOjectForProducts,
   selectIds,
   readOnMap,
   loading,
@@ -46,20 +43,23 @@ export default function ObjectTable({
       {
         Header: translate("Loyiha nomi"),
         accessor: "project",
-        width: 300,
+        width: 280,
       },
       {
         Header: translate("Hududi"),
         accessor: "regionAndDistrict",
         width: 300,
         Cell: (row: any) => {
-          return <span>{row?.row?.original?.region + ", " + row?.row?.original?.district}</span>;
+          return (
+            <span>
+              {row?.row?.original?.region +
+                ", " +
+                row?.row?.original?.district +
+                ", " +
+                row?.row?.original?.street}
+            </span>
+          );
         },
-      },
-      {
-        Header: translate("Mahalla"),
-        accessor: "street",
-        width: 300,
       },
       {
         Header: translate("Obyekt nomi va manzili"),
@@ -69,7 +69,7 @@ export default function ObjectTable({
       {
         Header: translate("Ulanish turi"),
         accessor: "connectionType",
-        width: 200,
+        width: 160,
       },
       {
         Header: translate("Joylashuv"),
@@ -108,7 +108,7 @@ export default function ObjectTable({
       {
         Header: translate("Actions"),
         accessor: "actions",
-        width: 220,
+        width: 180,
         Cell: (row: any) => {
           return (
             <div className="d-flex gap-2">
@@ -120,14 +120,6 @@ export default function ObjectTable({
               >
                 <EyeIcon />
               </Button>
-              {/* <Button
-                onClick={() => setOjectForProducts(row?.row?.original?.id)}
-                className="py-2 px-2 text-light"
-                bgColor={BgColors.Green}
-                hoverLabel="Jihozlarni qo'shish"
-              >
-                <ProductsIcon />
-              </Button> */}
               <Button
                 onClick={() => editObyekt(row?.row?.original?.id)}
                 className="py-2 px-2 text-light"

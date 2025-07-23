@@ -10,7 +10,8 @@ export const I18nUzbek: I18nSchema = {
   SIDE_MENU_USERS_TITLE: "Foydalanuvchilar",
   SIDE_MENU_SETTINGS_TITLE: "Sozlamalar",
   SIDE_MENU_PRODUCT_TYPES_TITLE: "Jihozlar turi",
-  SIDE_MENU_MAP_TITLE: "Xarita",
+  SIDE_MENU_MAP_TITLE: "Joylashuvlar",
+  SIDE_MENU_DASHBOARD_TITLE: "Statistika",
   SIDE_MENU_OBJECT_CLASSIFICATION_TYPE_TITLE: "Loyihani tasniflash turi",
 
   ADD_BUTTON_TITLE: "Qo'shish",

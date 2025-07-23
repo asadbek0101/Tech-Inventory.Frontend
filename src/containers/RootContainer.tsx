@@ -10,12 +10,12 @@ import UsersContainer from "./UsersContainer";
 import AuthContainer from "./AuthContainer";
 import SettingsContainer from "./SettingsContainer";
 import ObjectContainer from "./ObjectContainer";
-import RegionsContainer from "./RegionsContainer";
 import ProjectsContainer from "./ProjectsContainer";
-import MapContainer from "./MapContainer";
 import ModelsContainer from "./ModelsContainer";
 import PageNotFoundContainer from "./PageNotFoundContainer";
 import ObjectClassContainer from "./ObjectClassContainer";
+import LocationsContainer from "./LocationsContainer";
+import DashboardContainer from "./DashboardContainer";
 
 export default function RootContainer() {
   const token = useShallowEqualSelector(tokenSelector);
@@ -45,12 +45,14 @@ export default function RootContainer() {
             CheckRole(UserRoles.ChiefSpecialist, profile) ||
             CheckRole(UserRoles.SeniorSpecialist, profile) ||
             CheckRole(UserRoles.LeadingExpert, profile)) && (
-            <Route path="objects/:tab?" element={<ObjectContainer />} />
+            <Route path="statistics/:tab?" element={<DashboardContainer />} />
           )}
           {(CheckRole(UserRoles.Programmer, profile) ||
             CheckRole(UserRoles.DepartmentHead, profile) ||
-            CheckRole(UserRoles.ChiefSpecialist, profile)) && (
-            <Route path="regions/:tab?" element={<RegionsContainer />} />
+            CheckRole(UserRoles.ChiefSpecialist, profile) ||
+            CheckRole(UserRoles.SeniorSpecialist, profile) ||
+            CheckRole(UserRoles.LeadingExpert, profile)) && (
+            <Route path="objects/:tab?" element={<ObjectContainer />} />
           )}
           {(CheckRole(UserRoles.Programmer, profile) ||
             CheckRole(UserRoles.DepartmentHead, profile) ||
@@ -82,7 +84,7 @@ export default function RootContainer() {
             CheckRole(UserRoles.ChiefSpecialist, profile) ||
             CheckRole(UserRoles.LeadingExpert, profile) ||
             CheckRole(UserRoles.SeniorSpecialist, profile)) && (
-            <Route path="map/:tab?" element={<MapContainer />} />
+            <Route path="locations/:tab?" element={<LocationsContainer />} />
           )}
 
           <Route path="*" element={<PageNotFoundContainer />} />

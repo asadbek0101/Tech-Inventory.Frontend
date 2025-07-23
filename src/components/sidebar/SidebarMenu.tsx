@@ -14,10 +14,10 @@ import SidebarItem from "./SidebarItem";
 import CameraIcon from "../icons/CameraIcon";
 import UsersIcon from "../icons/UsersIcon";
 import LocationIcon from "../icons/LocationIcon";
-import FlagIcon from "../icons/FlagIcon";
 import LandMarkIcon from "../icons/LandMarkIcon";
 import FileInvoiceIcon from "../icons/FileInvoiceIcon";
 import MapLocationIcon from "../icons/MapLocationIcon";
+import DashboardIcon from "../icons/DashboardIcon";
 
 export default function SidebarMenu() {
   const { translate } = useI18n();
@@ -45,7 +45,26 @@ export default function SidebarMenu() {
         )}
       </div>
       <CustomLine />
+
       <div className="sidebar-menu-menu">
+        {(CheckRole(UserRoles.Programmer, profile) ||
+          CheckRole(UserRoles.DepartmentHead, profile) ||
+          CheckRole(UserRoles.ChiefSpecialist, profile) ||
+          CheckRole(UserRoles.LeadingExpert, profile) ||
+          CheckRole(UserRoles.SeniorSpecialist, profile)) && (
+          <SidebarItem link="statistics" icon={<DashboardIcon />}>
+            {translate("SIDE_MENU_DASHBOARD_TITLE")}
+          </SidebarItem>
+        )}
+        {(CheckRole(UserRoles.Programmer, profile) ||
+          CheckRole(UserRoles.DepartmentHead, profile) ||
+          CheckRole(UserRoles.ChiefSpecialist, profile) ||
+          CheckRole(UserRoles.LeadingExpert, profile) ||
+          CheckRole(UserRoles.SeniorSpecialist, profile)) && (
+          <SidebarItem link="locations" icon={<LocationIcon />}>
+            {translate("SIDE_MENU_MAP_TITLE")}
+          </SidebarItem>
+        )}
         {(CheckRole(UserRoles.Programmer, profile) ||
           CheckRole(UserRoles.DepartmentHead, profile) ||
           CheckRole(UserRoles.ChiefSpecialist, profile) ||
@@ -53,13 +72,6 @@ export default function SidebarMenu() {
           CheckRole(UserRoles.SeniorSpecialist, profile)) && (
           <SidebarItem link="objects" icon={<LandMarkIcon />}>
             {translate("SIDE_MENU_OBJECTS_TITLE")}
-          </SidebarItem>
-        )}
-        {(CheckRole(UserRoles.Programmer, profile) ||
-          CheckRole(UserRoles.DepartmentHead, profile) ||
-          CheckRole(UserRoles.ChiefSpecialist, profile)) && (
-          <SidebarItem link="regions" icon={<FlagIcon />}>
-            {translate("SIDE_MENU_REGIONS_TITLE")}
           </SidebarItem>
         )}
         {(CheckRole(UserRoles.Programmer, profile) ||
@@ -88,15 +100,7 @@ export default function SidebarMenu() {
             {translate("SIDE_MENU_USERS_TITLE")}
           </SidebarItem>
         )}
-        {(CheckRole(UserRoles.Programmer, profile) ||
-          CheckRole(UserRoles.DepartmentHead, profile) ||
-          CheckRole(UserRoles.ChiefSpecialist, profile) ||
-          CheckRole(UserRoles.LeadingExpert, profile) ||
-          CheckRole(UserRoles.SeniorSpecialist, profile)) && (
-          <SidebarItem link="map" icon={<LocationIcon />}>
-            {translate("SIDE_MENU_MAP_TITLE")}
-          </SidebarItem>
-        )}
+
         <CustomLine />
         {(CheckRole(UserRoles.Programmer, profile) ||
           CheckRole(UserRoles.DepartmentHead, profile) ||

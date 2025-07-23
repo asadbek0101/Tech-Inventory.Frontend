@@ -14,7 +14,8 @@ export const I18nEnglish: I18nSchema = {
   SIDE_MENU_USERS_TITLE: "Users",
   SIDE_MENU_SETTINGS_TITLE: "Settings",
   SIDE_MENU_PRODUCT_TYPES_TITLE: "Type of equipment",
-  SIDE_MENU_MAP_TITLE: "Map",
+  SIDE_MENU_MAP_TITLE: "Locations",
+  SIDE_MENU_DASHBOARD_TITLE: "Dashboard",
   SIDE_MENU_OBJECT_CLASSIFICATION_TYPE_TITLE: "Object Classification Type",
 
   ADD_BUTTON_TITLE: "Add",

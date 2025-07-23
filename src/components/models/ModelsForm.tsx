@@ -7,7 +7,6 @@ import Button, { BgColors } from "../ui/Button";
 import { useI18n } from "../../i18n/I18nContext";
 import { useCallback } from "react";
 import { update } from "immupdate";
-import { RegionsProps } from "../../api/regions/RegoinsDto";
 import { SelectPickerField } from "../form/SelectPrickerField";
 import { ModelsProps } from "../../api/models/ModelsDto";
 import { modelTypesOptions } from "../../constants/AppConstants";

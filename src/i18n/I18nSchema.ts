@@ -16,6 +16,7 @@ export interface I18nSchema {
   readonly SIDE_MENU_PROJECTS_TITLE: string;
   readonly SIDE_MENU_SETTINGS_TITLE: string;
   readonly SIDE_MENU_PRODUCT_TYPES_TITLE: string;
+  readonly SIDE_MENU_DASHBOARD_TITLE: string;
   readonly SIDE_MENU_MAP_TITLE: string;
   readonly SIDE_MENU_OBJECT_CLASSIFICATION_TYPE_TITLE: string;
 

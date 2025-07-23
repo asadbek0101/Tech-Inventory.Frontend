@@ -18,6 +18,9 @@ import { useOjbectClassTypeApiContext } from "../../api/object-class-type/Object
 import { useUsersContext } from "../../api/users/UsersContext";
 import { useShallowEqualSelector } from "../../hooks/useShallowSelector";
 import { appIsCreatedBySelector, switchIsCreatedBy } from "../../reducers/appReducer";
+import { userIdSelector } from "../../reducers/authReducer";
+import { CheckboxField } from "../form/CheckboxField";
+import { useDispatch } from "react-redux";
 import { SelectPickerField } from "../form/SelectPrickerField";
 
 import AddIcon from "../icons/AddIcon";
@@ -31,9 +34,6 @@ import Modal from "../ui/Modal";
 import YesOrNoModal from "../ui/YesOrNoModal";
 import Loader from "../ui/Loader";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
-import { profileSelector, userIdSelector } from "../../reducers/authReducer";
-import { CheckboxField } from "../form/CheckboxField";
-import { useDispatch } from "react-redux";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -441,12 +441,6 @@ export default function ObjectTableWrapper({ filter }: Props) {
           editObyekt={(value) =>
             locationHelpers.pushQuery({
               tab: ObjectFilterTabs.ObjectForm,
-              objectId: value,
-            })
-          }
-          setOjectForProducts={(value) =>
-            locationHelpers.pushQuery({
-              tab: ObjectFilterTabs.ObjectProducts,
               objectId: value,
             })
           }

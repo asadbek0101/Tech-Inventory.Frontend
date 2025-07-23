@@ -23,6 +23,7 @@ import axios from "axios";
 import TabPage from "../tabs/TabPage";
 import ObjectForm from "./ObjectForm";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
+import ProductForms from "../products/ProductForms";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -32,7 +33,6 @@ export default function ObjectFormWrapper({ filter }: Props) {
   const [initialValues, setInitalValues] = useState({
     regionId: 0,
     districtId: 0,
-    streetId: 0,
     projectId: 0,
     numberOfOrderId: 0,
     objectClassId: 0,
@@ -49,6 +49,50 @@ export default function ObjectFormWrapper({ filter }: Props) {
     serialNumber: "",
     numberOfPort: "",
     phoneNumber: "",
+    // products
+    akumalator: [],
+    avtomat: [],
+    box: [],
+    bracket: [],
+    utpCabel: [],
+    electrCabel: [],
+    camera: [],
+    anprCamera: [],
+    speedCheckingCamera: [],
+    ptzCamera: [],
+    c327Camera: [],
+    chqbaCamera: [],
+    c733Camera: [],
+    videoRecorder: [],
+    server: [],
+    switchPoe: [],
+    switchKombo: [],
+    svetaforDetektor: [],
+    svetaforDetektorForCamera: [],
+    terminalServer: [],
+    stabilizer: [],
+    projector: [],
+    centralTelecomunicationShelf: [],
+    mainTelecomunicationShelf: [],
+    distributionShelf: [],
+    telecomunicationShelf: [],
+    ups: [],
+    counter: [],
+    socket: [],
+    odfOpticRack: [],
+    miniOptikRack: [],
+    stanchion: [],
+    connector: [],
+    gofraShell: [],
+    corob: [],
+    mountingBox: [],
+    freezer: [],
+    ribbon: [],
+    sipHook: [],
+    nail: [],
+    glueForNail: [],
+    cabelHook: [],
+    plasticShell: [],
   });
 
   const [models, setModels] = useState<SelectPickerOptionsProps[]>([]);
@@ -103,20 +147,6 @@ export default function ObjectFormWrapper({ filter }: Props) {
               .catch(showError);
           }
 
-          if (r?.data?.districtId) {
-            DistrictsApi.getStreetsList({ districtId: r?.data?.districtId })
-              .then((r) => {
-                const _streets = r?.data?.map((d: any) => {
-                  return {
-                    label: d.name,
-                    value: d.id,
-                  };
-                });
-                setStreets(_streets);
-              })
-              .catch(showError);
-          }
-
           if (r?.data?.projectId) {
             NumberOfOrdersApi.getNumberOfOrdersList({ projectId: r?.data?.projectId })
               .then((r) => {
@@ -154,10 +184,6 @@ export default function ObjectFormWrapper({ filter }: Props) {
             districtId: {
               label: r?.data?.district,
               value: r?.data?.districtId,
-            },
-            streetId: {
-              label: r?.data?.street,
-              value: r?.data?.streetId,
             },
             projectId: {
               label: r?.data?.project,
@@ -340,7 +366,6 @@ export default function ObjectFormWrapper({ filter }: Props) {
   const onSubmit = useCallback(
     (value: any) => {
       if (objectId) {
-        // Update METHOD
         const json = {
           ...value,
           id: objectId,
@@ -404,7 +429,6 @@ export default function ObjectFormWrapper({ filter }: Props) {
           })
           .catch(showError);
       } else {
-        // Create METHOD
         const json = {
           ...value,
           regionId: value?.regionId?.value,
@@ -510,6 +534,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
   return (
     <TabPage
       footerClassName="d-none"
+      contentClassName="pb-3"
       headerComponent={
         <Button
           className=" px-3 text-light"
@@ -523,10 +548,8 @@ export default function ObjectFormWrapper({ filter }: Props) {
         </Button>
       }
     >
-      <div className="fs-5 fw-bold px-4 pt-3">Obyekt</div>
       <ObjectForm
         models={models}
-        onSubmit={onSubmit}
         regionsOptions={regions}
         districtsOptions={districts}
         streetsOptions={streets}
@@ -544,6 +567,16 @@ export default function ObjectFormWrapper({ filter }: Props) {
         onChangeObjectClassType={onChangeObjectClassType}
         formType={objectFormType}
       />
+      <ProductForms initialValues={initialValues} setInitialValues={setInitalValues} />
+      <div className="mt-4 px-4 d-flex justify-content-end align-items-center">
+        <Button
+          className="px-4 py-2 text-light"
+          bgColor={BgColors.Green}
+          onClick={() => onSubmit(initialValues)}
+        >
+          Saqlash
+        </Button>
+      </div>
     </TabPage>
   );
 }

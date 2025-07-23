@@ -7,6 +7,10 @@ export class ObyektApi extends BaseApi {
     });
   }
 
+  public getObyektLocations() {
+    return this.get("Obyekts/GetLocations");
+  }
+
   public getObyektProducts(query: any) {
     return this.get("Obyekts/GetProductsCounts", {
       query,

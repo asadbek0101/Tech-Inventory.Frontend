@@ -1,11 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { RegionsProps } from "../../api/regions/RegoinsDto";
-import { useRegionApiContext } from "../../api/regions/RegionsApiContext";
 import { toast } from "react-toastify";
 import { showError } from "../../utils/NotificationUtils";
-import { DistrictFilter } from "../../filters/DistrictFilter";
 
 import Button, { BgColors } from "../ui/Button";
 import TabPage from "../tabs/TabPage";

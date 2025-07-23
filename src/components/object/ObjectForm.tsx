@@ -12,6 +12,7 @@ import { connectionTypes } from "../../constants/AppConstants";
 import { ConnectionTypes } from "../../api/obyekt/ObyektDto";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { formatLocationNumber, formatPhoneNumber } from "../../utils/FormatUtils";
+import { noop } from "lodash";
 
 import DeleteIcon from "../icons/DeleteIcon";
 import ImgUpload from "../ui/ImgUpload";
@@ -26,7 +27,6 @@ interface Props {
   readonly objectClassificationsOptions: any[];
   readonly objectClassificationsTypesOptions: any[];
   readonly deleteFileFromDb: (value: any) => void;
-  readonly onSubmit: (value: any) => void;
   readonly onChangeRegion: (value: any) => void;
   readonly onChangeDistrict: (value: any) => void;
   readonly onChangeProject: (value: any) => void;
@@ -51,7 +51,6 @@ const validationSchema = object({
 
 export default function ObjectForm({
   setInitialValues,
-  onSubmit,
   onChangeRegion,
   onChangeDistrict,
   onChangeProject,
@@ -68,8 +67,6 @@ export default function ObjectForm({
   objectClassificationsTypesOptions,
   models,
 }: Props) {
-  const { translate } = useI18n();
-
   const onChangeStreet = useCallback(
     (value: any) => {
       setInitialValues((prev: any) =>
@@ -290,14 +287,15 @@ export default function ObjectForm({
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={onSubmit}
+      onSubmit={noop}
       enableReinitialize={true}
       validationSchema={validationSchema}
     >
       {() => (
         <Form>
           <div className="row p-4">
-            <div className="col-4">
+            <div>Obyekt</div>
+            <div className="col-4 mt-2">
               <GroupBox>
                 <div className="row">
                   <div className="col-12">
@@ -327,7 +325,7 @@ export default function ObjectForm({
                 </div>
               </GroupBox>
             </div>
-            <div className="col-4">
+            <div className="col-4 mt-2">
               <GroupBox>
                 <div className="row">
                   <div className="col-12">
@@ -349,7 +347,7 @@ export default function ObjectForm({
                 </div>
               </GroupBox>
             </div>
-            <div className="col-4">
+            <div className="col-4 mt-2">
               <GroupBox>
                 <div className="row">
                   <div className="col-12">
@@ -510,10 +508,7 @@ export default function ObjectForm({
                 bgColor={BgColors.Yellow}
                 onClick={addFile}
               >
-                {translate("Fay qo'shish")}
-              </Button>
-              <Button type="submit" className="px-3 py-2 ms-2 text-light" bgColor={BgColors.Green}>
-                {translate("SAVE_BUTTON_TITLE")}
+                Fay qo'shish
               </Button>
             </div>
           </div>
