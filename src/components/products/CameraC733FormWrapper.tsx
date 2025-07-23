@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { CameraTypes } from "../../api/cameras/CameraDto";
 import { SelectPickerOptionsProps } from "../../api/AppDto";
 import { useModelsApiContext } from "../../api/models/ModelsApiContext";
 import { ModelTypes } from "../../api/models/ModelsDto";
