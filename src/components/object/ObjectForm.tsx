@@ -508,7 +508,7 @@ export default function ObjectForm({
                 bgColor={BgColors.Yellow}
                 onClick={addFile}
               >
-                Fay qo'shish
+                Fayl qo'shish
               </Button>
             </div>
           </div>

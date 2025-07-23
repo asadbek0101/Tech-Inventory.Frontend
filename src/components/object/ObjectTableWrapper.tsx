@@ -1,39 +1,29 @@
 import { useI18n } from "../../i18n/I18nContext";
 import { useObyektApiContext } from "../../api/obyekt/ObyektApiContext";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { showError } from "../../utils/NotificationUtils";
-import { useRegionApiContext } from "../../api/regions/RegionsApiContext";
-import { useDistrictsApiContext } from "../../api/districts/DistrictsApiContext";
-import { useProjectApiContext } from "../../api/projects/ProjectsApiContext";
-import { useNumberOfOrdersApiContext } from "../../api/number-of-orders/NumberOfOrderApiContext";
 import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { GroupBox } from "../ui/GroupBox";
-import { update } from "immupdate";
 import { Form, Formik } from "formik";
 import { InputField } from "../form/InputField";
 import { noop } from "lodash";
 import { toast } from "react-toastify";
-import { useOjbectClassApiContext } from "../../api/object-class/ObjectClassApiContext";
-import { useOjbectClassTypeApiContext } from "../../api/object-class-type/ObjectClassTypeApiContext";
-import { useUsersContext } from "../../api/users/UsersContext";
 import { useShallowEqualSelector } from "../../hooks/useShallowSelector";
 import { appIsCreatedBySelector, switchIsCreatedBy } from "../../reducers/appReducer";
 import { userIdSelector } from "../../reducers/authReducer";
 import { CheckboxField } from "../form/CheckboxField";
 import { useDispatch } from "react-redux";
-import { SelectPickerField } from "../form/SelectPrickerField";
 
 import AddIcon from "../icons/AddIcon";
 import Button, { BgColors } from "../ui/Button";
-import CustomCard from "../ui/CustomCard";
-import ObjectHeaderFilter from "./ObjectHeaderFilter";
 import ObjectTable from "./ObjectTable";
 import DeleteIcon from "../icons/DeleteIcon";
 import Paginator from "../paginator/Paginator";
 import Modal from "../ui/Modal";
 import YesOrNoModal from "../ui/YesOrNoModal";
-import Loader from "../ui/Loader";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
+import TabPage from "../tabs/TabPage";
+import OwnerCheckbox from "../ui/OwnerCheckbox";
 
 interface Props {
   readonly filter: ObjectFilter;
@@ -41,73 +31,17 @@ interface Props {
 
 export default function ObjectTableWrapper({ filter }: Props) {
   const [data, setData] = useState<any>();
-
-  const [initialValues, setInitialValues] = useState({
-    regionId: 0,
-    districtId: 0,
-    projectId: 0,
-    numberOfOrderId: 0,
-    objectClassificationId: 0,
-    objectClassificationTypeId: 0,
-  });
-
-  const [filterValues, setFilterValues] = useState({
-    regionId: 0,
-    districtId: 0,
-    projectId: 0,
-    numberOfOrderId: 0,
-    objectClassificationId: 0,
-    objectClassificationTypeId: 0,
-  });
-
   const [deleteDocuments, setDeleteDocuments] = useState<number[]>();
-  const [loadingFile, setLoadingFile] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isWithFilter, setIsWithFilter] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [regions, setRegions] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [objectClassificationTypes, setOobjectClassificationTypes] = useState([]);
-
-  const [districts, setDistricts] = useState([]);
-  const [numberOfOrders, setNumberOfOrders] = useState([]);
-  const [objectClassifications, setObjectClassifications] = useState([]);
-
   const locationHelpers = useLocationHelpers();
-
   const showOnlyCreatedMe = useShallowEqualSelector(appIsCreatedBySelector);
   const userId = useShallowEqualSelector(userIdSelector);
 
   const { translate } = useI18n();
-  const { UsersApi } = useUsersContext();
   const { ObyektApi } = useObyektApiContext();
-  const { RegionsApi } = useRegionApiContext();
-  const { DistrictsApi } = useDistrictsApiContext();
-  const { ProjectsApi } = useProjectApiContext();
-  const { NumberOfOrdersApi } = useNumberOfOrdersApiContext();
-  const { ObjectClassTypeApi } = useOjbectClassTypeApiContext();
-  const { ObjectClassApi } = useOjbectClassApiContext();
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    UsersApi.getUsersList()
-      .then((r) => {
-        const _users = r?.data?.map((user: any) => {
-          return {
-            label: user.fullName,
-            value: user.id,
-          };
-        });
-        _users.unshift({
-          label: "Hamma",
-          value: 0,
-        });
-        setUsers(_users);
-      })
-      .catch(showError);
-  }, [ObyektApi, filterValues, filter]);
 
   useEffect(() => {
     setLoading(true);
@@ -120,228 +54,12 @@ export default function ObjectTableWrapper({ filter }: Props) {
         setLoading(false);
       })
       .catch(showError);
-  }, [ObyektApi, filterValues, filter, userId, showOnlyCreatedMe]);
-
-  useEffect(() => {
-    RegionsApi.getRegionsList()
-      .then((r) => {
-        const _regions = r?.data?.map((region: any) => {
-          return {
-            label: region.name,
-            value: region.id,
-          };
-        });
-        setRegions(_regions);
-      })
-      .catch(showError);
-
-    ProjectsApi.getProjectsList()
-      .then((r) => {
-        const _projects = r?.data?.map((region: any) => {
-          return {
-            label: region.name,
-            value: region.id,
-          };
-        });
-        setProjects(_projects);
-      })
-      .catch(showError);
-
-    ObjectClassTypeApi.getObjectClassTypesList()
-      .then((r) => {
-        const _objectClassicationTypes = r?.data?.map((region: any) => {
-          return {
-            label: region.name,
-            value: region.id,
-          };
-        });
-        setOobjectClassificationTypes(_objectClassicationTypes);
-      })
-      .catch(showError);
-  }, [RegionsApi, ObjectClassApi, ProjectsApi]);
-
-  const onChangeRegion = useCallback(
-    (value: any) => {
-      DistrictsApi.getDistrictsList({ regionId: value.value })
-        .then((r) => {
-          const _districts = r?.data?.map((d: any) => {
-            return {
-              label: d.name,
-              value: d.id,
-            };
-          });
-          setDistricts(_districts);
-        })
-        .catch(showError);
-
-      setInitialValues((prev: any) =>
-        update(prev, {
-          regionId: value,
-          districtId: {
-            label: "",
-            value: "",
-          },
-        }),
-      );
-
-      setFilterValues((prev: any) =>
-        update(prev, {
-          regionId: value.value,
-          districtId: 0,
-        }),
-      );
-    },
-    [DistrictsApi],
-  );
-
-  const onChangeProject = useCallback(
-    (value: any) => {
-      NumberOfOrdersApi.getNumberOfOrdersList({ projectId: value.value })
-        .then((r) => {
-          const _numberOfOrders = r?.data?.map((d: any) => {
-            return {
-              label: d.name,
-              value: d.id,
-            };
-          });
-          setNumberOfOrders(_numberOfOrders);
-        })
-        .catch(showError);
-
-      setInitialValues((prev: any) =>
-        update(prev, {
-          projectId: value,
-          numberOfOrderId: {
-            label: "",
-            value: "",
-          },
-        }),
-      );
-
-      setFilterValues((prev: any) =>
-        update(prev, {
-          projectId: value.value,
-          numberOfOrderId: 0,
-        }),
-      );
-    },
-    [NumberOfOrdersApi],
-  );
-
-  const onChangeObjectClassType = useCallback(
-    (value: any) => {
-      ObjectClassApi.getObjectClasses({ objectClassTypeId: value.value })
-        .then((r) => {
-          const _objectClassifications = r?.data?.map((d: any) => {
-            return {
-              label: d.name,
-              value: d.id,
-            };
-          });
-          setObjectClassifications(_objectClassifications);
-        })
-        .catch(showError);
-
-      setInitialValues((prev: any) =>
-        update(prev, {
-          objectClassificationTypeId: value,
-          objectClassificationId: {
-            label: "",
-            value: "",
-          },
-        }),
-      );
-
-      setFilterValues((prev: any) =>
-        update(prev, {
-          objectClassificationTypeId: value.value,
-          objectClassificationId: 0,
-        }),
-      );
-    },
-    [ObjectClassApi],
-  );
-
-  const onChangeDistricts = useCallback((value: any) => {
-    setInitialValues((prev: any) =>
-      update(prev, {
-        districtId: value,
-      }),
-    );
-
-    setFilterValues((prev: any) =>
-      update(prev, {
-        districtId: value.value,
-      }),
-    );
-  }, []);
-
-  const onChangeNumberOfOrders = useCallback(
-    (value: any) => {
-      setInitialValues((prev: any) =>
-        update(prev, {
-          numberOfOrderId: value,
-        }),
-      );
-
-      setFilterValues((prev: any) =>
-        update(prev, {
-          numberOfOrderId: value.value,
-        }),
-      );
-    },
-    [setInitialValues, setFilterValues],
-  );
-
-  const onChangeObjectClass = useCallback(
-    (value: any) => {
-      setInitialValues((prev: any) =>
-        update(prev, {
-          objectClassificationId: value,
-        }),
-      );
-
-      setFilterValues((prev: any) =>
-        update(prev, {
-          objectClassificationId: value.value,
-        }),
-      );
-    },
-    [setInitialValues, setFilterValues],
-  );
-
-  const getCreatedByObject = useCallback(
-    (id: any) => {
-      const user = users.filter((x: any) => x.value == id);
-      if (user?.length > 0) return user[0];
-      return {};
-    },
-    [users],
-  );
+  }, [ObyektApi, filter, userId, showOnlyCreatedMe]);
 
   return (
-    <div className="w-100 p-4">
-      {isWithFilter && (
-        <CustomCard className="mt-3">
-          <ObjectHeaderFilter
-            initialValues={initialValues}
-            regionsOptions={regions}
-            projectsOptions={projects}
-            districtsOptions={districts}
-            numberOfOrdersOptions={numberOfOrders}
-            objectClassificationsOptions={objectClassifications}
-            objectClassificationsTypesOptions={objectClassificationTypes}
-            onChangeRegion={onChangeRegion}
-            onChangeProject={onChangeProject}
-            onChangeDistricts={onChangeDistricts}
-            onChangeObjectClass={onChangeObjectClass}
-            onChangeNumberOfOrders={onChangeNumberOfOrders}
-            onChangeObjectClassType={onChangeObjectClassType}
-          />
-        </CustomCard>
-      )}
-      <div className="d-flex align-items-center justify-content-between mt-3">
-        <div className="d-flex">
+    <TabPage
+      headerComponent={
+        <div className="d-flex justify-content-between">
           <Button
             className="py-1 px-3 text-light"
             bgColor={BgColors.Green}
@@ -358,154 +76,124 @@ export default function ObjectTableWrapper({ filter }: Props) {
           >
             {translate("ADD_BUTTON_TITLE")}
           </Button>
-          <Button
-            className="py-1 px-3 text-light ms-2"
-            bgColor={BgColors.Navy}
-            heigh="34px"
-            onClick={() => setIsWithFilter(!isWithFilter)}
+          <Formik
+            initialValues={{
+              searchValue: filter?.getObjectFilter()?.searchValue,
+              showOnlyCreatedMe: showOnlyCreatedMe,
+            }}
+            onSubmit={noop}
+            enableReinitialize={true}
           >
-            {isWithFilter ? "Hide Filter" : "Show Filter"}
-          </Button>
+            {() => (
+              <Form className="d-flex gap-2">
+                <div className="d-flex align-items-center gap-2">
+                  <OwnerCheckbox
+                    checked={showOnlyCreatedMe}
+                    title="Faqat men yaratganlar"
+                    onChange={(value) => {
+                      dispatch(
+                        switchIsCreatedBy({
+                          isCreatedBy: !showOnlyCreatedMe,
+                        }),
+                      );
+                    }}
+                  />
+                </div>
+                <InputField
+                  name="searchValue"
+                  width={320}
+                  onChange={(event) =>
+                    locationHelpers.replaceQuery({
+                      searchValue: event.target.value,
+                    })
+                  }
+                  placeholder="Seach..."
+                />
+              </Form>
+            )}
+          </Formik>
         </div>
-        <Formik
-          initialValues={{
-            searchValue: filter?.getObjectFilter()?.searchValue,
-            createdBy: getCreatedByObject(filter?.getObjectFilter()?.createdBy),
-            showOnlyCreatedMe: showOnlyCreatedMe,
-          }}
-          onSubmit={noop}
-          enableReinitialize={true}
-        >
-          {() => (
-            <Form className="d-flex gap-2">
-              <CheckboxField
-                checked={showOnlyCreatedMe}
-                name="showOnlyCreatedMe"
-                label="Faqat men yaratganlarni ko'rsat"
-                onChange={() => {
-                  dispatch(
-                    switchIsCreatedBy({
-                      isCreatedBy: !showOnlyCreatedMe,
-                    }),
-                  );
+      }
+      footerComponent={
+        <div>
+          <div className="d-flex justify-content-between align-items-center mt-4 pb-3">
+            <Button
+              disabled={!(deleteDocuments && deleteDocuments?.length > 0)}
+              onClick={() => setDeleteModal(true)}
+              className="py-2 px-2 text-light"
+              bgColor={
+                deleteDocuments && deleteDocuments?.length > 0 ? BgColors.Red : BgColors.White
+              }
+            >
+              <DeleteIcon
+                color={deleteDocuments && deleteDocuments?.length > 0 ? "#fff" : "#000"}
+              />
+            </Button>
+            <Paginator
+              filter={filter}
+              totalPageCount={data?.totalPageCount}
+              totalRowCount={data?.totalRowCount}
+            />
+          </div>
+          <Modal
+            show={deleteModal}
+            closeHandler={() => setDeleteModal(false)}
+            className="d-flex justify-content-center align-items-center"
+            contentClassName="rounded p-4"
+            width="500px"
+          >
+            <GroupBox>
+              <YesOrNoModal
+                title="REGION_TABLE_DELETE_REGIONS_MODAL_QUESTION"
+                setResponse={(value: string) => {
+                  if (value === "YES") {
+                    const json: any = {
+                      obyektIds: deleteDocuments,
+                    };
+                    ObyektApi.deleteObyekts(json)
+                      .then((r) => {
+                        toast.success(r?.data?.message);
+                        window.location.reload();
+                      })
+                      .catch(showError);
+                  }
+                  setDeleteModal(false);
                 }}
               />
-              <SelectPickerField
-                name="createdBy"
-                width={320}
-                onChanges={(event) =>
-                  locationHelpers.replaceQuery({
-                    createdBy: event.value,
-                  })
-                }
-                placeholder="Tomonidan kiritilgan..."
-                options={users}
-              />
-              <InputField
-                name="searchValue"
-                width={320}
-                onChange={(event) =>
-                  locationHelpers.replaceQuery({
-                    searchValue: event.target.value,
-                  })
-                }
-                placeholder="Seach..."
-              />
-            </Form>
-          )}
-        </Formik>
-      </div>
-
-      <CustomCard
-        className="mt-3"
-        style={{
-          height: "76vh",
-        }}
-      >
-        <ObjectTable
-          loading={loading}
-          data={data?.data}
-          selectIds={setDeleteDocuments}
-          readOnMap={(value) =>
-            locationHelpers.pushQuery({
-              tab: ObjectFilterTabs.ObjectOnView,
-              objectId: value,
-            })
-          }
-          downloadPdf={(value) =>
-            locationHelpers.pushQuery({
-              tab: ObjectFilterTabs.ObjectPdfReport,
-              objectId: value,
-            })
-          }
-          editObyekt={(value) =>
-            locationHelpers.pushQuery({
-              tab: ObjectFilterTabs.ObjectForm,
-              objectId: value,
-            })
-          }
-          setOjectForView={(value) =>
-            locationHelpers.pushQuery({
-              tab: ObjectFilterTabs.ObjectView,
-              objectId: value,
-            })
-          }
-        />
-      </CustomCard>
-      <div className="d-flex justify-content-between align-items-center mt-4 pb-3">
-        <Button
-          disabled={!(deleteDocuments && deleteDocuments?.length > 0)}
-          onClick={() => setDeleteModal(true)}
-          className="py-2 px-2 text-light"
-          bgColor={deleteDocuments && deleteDocuments?.length > 0 ? BgColors.Red : BgColors.White}
-        >
-          <DeleteIcon color={deleteDocuments && deleteDocuments?.length > 0 ? "#fff" : "#000"} />
-        </Button>
-        <Paginator
-          filter={filter}
-          totalPageCount={data?.totalPageCount}
-          totalRowCount={data?.totalRowCount}
-        />
-      </div>
-      <Modal
-        show={deleteModal}
-        closeHandler={() => setDeleteModal(false)}
-        className="d-flex justify-content-center align-items-center"
-        contentClassName="rounded p-4"
-        width="500px"
-      >
-        <GroupBox>
-          <YesOrNoModal
-            title="REGION_TABLE_DELETE_REGIONS_MODAL_QUESTION"
-            setResponse={(value: string) => {
-              if (value === "YES") {
-                const json: any = {
-                  obyektIds: deleteDocuments,
-                };
-                ObyektApi.deleteObyekts(json)
-                  .then((r) => {
-                    toast.success(r?.data?.message);
-                    window.location.reload();
-                  })
-                  .catch(showError);
-              }
-              setDeleteModal(false);
-            }}
-          />
-        </GroupBox>
-      </Modal>
-      <Modal
-        show={loadingFile}
-        closeHandler={noop}
-        className="d-flex justify-content-center align-items-center"
-        contentClassName="rounded p-4"
-        width="400px"
-      >
-        <div className="card text-center py-2">
-          <h5>File is downloading...</h5>
-          <Loader />
+            </GroupBox>
+          </Modal>
         </div>
-      </Modal>
-    </div>
+      }
+    >
+      <ObjectTable
+        loading={loading}
+        data={data?.data}
+        selectIds={setDeleteDocuments}
+        readOnMap={(value) =>
+          locationHelpers.pushQuery({
+            tab: ObjectFilterTabs.ObjectOnView,
+            objectId: value,
+          })
+        }
+        downloadPdf={(value) =>
+          locationHelpers.pushQuery({
+            tab: ObjectFilterTabs.ObjectPdfReport,
+            objectId: value,
+          })
+        }
+        editObyekt={(value) =>
+          locationHelpers.pushQuery({
+            tab: ObjectFilterTabs.ObjectForm,
+            objectId: value,
+          })
+        }
+        setOjectForView={(value) =>
+          locationHelpers.pushQuery({
+            tab: ObjectFilterTabs.ObjectView,
+            objectId: value,
+          })
+        }
+      />
+    </TabPage>
   );
 }

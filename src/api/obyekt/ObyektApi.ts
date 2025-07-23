@@ -7,8 +7,8 @@ export class ObyektApi extends BaseApi {
     });
   }
 
-  public getObyektLocations() {
-    return this.get("Obyekts/GetLocations");
+  public getObyektLocations(query: any) {
+    return this.get("Obyekts/GetLocations", { query });
   }
 
   public getObyektProducts(query: any) {

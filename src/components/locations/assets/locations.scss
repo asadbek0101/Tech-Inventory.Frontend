@@ -1,0 +1,45 @@
+.locations-tab-layout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  position: relative;
+
+  .locations-tab-sidebar {
+    width: 360px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+
+    .locations-regions,
+    .locations-projects,
+    .locations-classifications {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid rgb(196, 193, 193);
+    }
+  }
+
+  .total-count-card {
+    width: 200px;
+    height: 50px;
+
+    background-color: #fff;
+    border: 1px solid rgb(196, 193, 193);
+
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: bold;
+  }
+}

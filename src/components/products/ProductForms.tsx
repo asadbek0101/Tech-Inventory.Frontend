@@ -49,23 +49,58 @@ interface Props {
 export default function ProductForms({ initialValues, setInitialValues }: Props) {
   return (
     <>
-      <AkumalatorsFormWrapper
-        title="Akumalator"
+      <CameraC733FormWrapper
+        title="Yuz yoki avtotransport vositasi davlat raqamini aniqlovchi kamera(733)"
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
-      <AvtomatsFormWrapper
-        title="Avotmat"
+      <CameraPTZFormWrapper
+        title="Aynalma kamera(PTZ)"
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
-      <BoxesFormWrapper
-        title="Korob"
+      <CameraANPRFormWrapper
+        title="Davlat raqamini aniqlovchi kamera(ANPR)"
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
-      <BracketsFormWrapper
-        title="Kronshteyn"
+      <CameraFormWrapper
+        title="Kamera"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <CameraC327FormWrapper
+        title="To'xtash va to'xtab turish qoidabuzarligini aniqlovchi kamera(3.27)"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <CameraCHQBAFormWrapper
+        title="Chorrahadagi qoidabuzarligini aniqlovchi kamera"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <CameraradarFormWrapper
+        title="Avtomabil tezligini aniqlovchi kamera(radar)"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <TShelvesFormWrapper
+        title="Telekomunikatsion javon"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <PoeSwitchesFormWrapper
+        title="Switch Poe"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <UpsFormWrapper
+        title="Ups"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <ConnectorsFormWrapper
+        title="Konnektor"
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
@@ -79,61 +114,6 @@ export default function ProductForms({ initialValues, setInitialValues }: Props)
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
-      <CameraFormWrapper
-        title="Kamera"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <CameraANPRFormWrapper
-        title="Davlat raqamini aniqlovchi kamera(ANPR)"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <CameraC327FormWrapper
-        title="To'xtash va to'xtab turish qoidabuzarligini aniqlovchi kamera(3.27)"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <CameraC733FormWrapper
-        title="Yuz yoki avtotransport vositasi davlat raqamini aniqlovchi kamera(733"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <CameraCHQBAFormWrapper
-        title="Chorrahadagi qoidabuzarligini aniqlovchi kamera"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <CameraPTZFormWrapper
-        title="Aynalma kamera(PTZ)"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <CameraradarFormWrapper
-        title="Avtomabil tezligini aniqlovchi kamera(radar)"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <ConnectorsFormWrapper
-        title="Konnektor"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <CountersFormWrapper
-        title="Elektr energiya hisoblagichi"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <FreezersFormWrapper
-        title="Qotirgich"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <GluesFormWrapper
-        title="Burama mix uchun yelim pona"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
       <CabelHooksFormWrapper
         title="Kabel Xomut"
         initialValues={initialValues}
@@ -144,13 +124,78 @@ export default function ProductForms({ initialValues, setInitialValues }: Props)
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
-      <MountingBoxFormWrapper
-        title="Montaj qutisi"
+      <GofraShellsFormWrapper
+        title="Gofra qobiq"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <PlasticShellsFormWrapper
+        title="Plastik qobiq"
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
       <NailsFormWrapper
         title="Burama mix"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <SocketFormWrapper
+        title="Rozetka"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <AvtomatsFormWrapper
+        title="Avotmat"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <MountingBoxFormWrapper
+        title="Montaj qutisi"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <CountersFormWrapper
+        title="Elektr energiya hisoblagichi"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <BracketsFormWrapper
+        title="Kronshteyn"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <CShelvesFormWrapper
+        title="Markaziy telekomunikatsion javon"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <DShelvesFormWrapper
+        title="Tarqatish javon"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <MShelvesFormWrapper
+        title="Asosiy elektron javon"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <AkumalatorsFormWrapper
+        title="Akumalator"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <BoxesFormWrapper
+        title="Korob"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <FreezersFormWrapper
+        title="Qotirgich"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <GluesFormWrapper
+        title="Burama mix uchun yelim pona"
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
@@ -179,41 +224,6 @@ export default function ProductForms({ initialValues, setInitialValues }: Props)
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
-      <GofraShellsFormWrapper
-        title="Gofra qobiq"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <PlasticShellsFormWrapper
-        title="Plastik qobiq"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <CShelvesFormWrapper
-        title="Markaziy telekomunikatsion javon"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <DShelvesFormWrapper
-        title="Tarqatish javon"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <MShelvesFormWrapper
-        title="Asosiy elektron javon"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <TShelvesFormWrapper
-        title="Telekomunikatsion javon"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <SocketFormWrapper
-        title="Rozetka"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
       <StabilizersFormWrapper
         title="Stabilizator"
         initialValues={initialValues}
@@ -234,11 +244,6 @@ export default function ProductForms({ initialValues, setInitialValues }: Props)
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
-      <PoeSwitchesFormWrapper
-        title="Switch Poe"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
       <ComboSwitchesFormWrapper
         title="Switch Kombo"
         initialValues={initialValues}
@@ -246,11 +251,6 @@ export default function ProductForms({ initialValues, setInitialValues }: Props)
       />
       <TerminalServersFormWrapper
         title="Terminal server"
-        initialValues={initialValues}
-        setInitialValues={setInitialValues}
-      />
-      <UpsFormWrapper
-        title="Ups"
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
