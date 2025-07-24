@@ -3,7 +3,7 @@ import { useAuthContext } from "../../api/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AuthProps } from "../../api/auth/AuthDto";
-import { setToken, setUserId } from "../../reducers/authReducer";
+import { setAuthDate, setAuthDateExpired, setToken, setUserId } from "../../reducers/authReducer";
 import { toast } from "react-toastify";
 import { useI18n } from "../../i18n/I18nContext";
 import { showError } from "../../utils/NotificationUtils";
@@ -41,6 +41,9 @@ export default function AuthFormWrapper() {
               toast.success(response?.data?.message);
               dispatch(setToken({ token: response?.data?.token }));
               dispatch(setUserId({ userId: response?.data?.userId }));
+              dispatch(setAuthDateExpired({ authExpiredDate: false }));
+              const now = Date.now();
+              dispatch(setAuthDate({ authDate: now }));
               navigate("/dashboard/objects");
             } else {
               toast.error(response?.data?.message);
