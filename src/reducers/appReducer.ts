@@ -1,6 +1,5 @@
 import { update } from "immupdate";
 import { PersistConfig } from "redux-persist";
-
 import { AppStoreState } from "../store/RootReducer";
 import { AppLanguage, getDefaultLanguage } from "../i18n/I18nContext";
 import { createReducer, createRootReducer, PerformAction } from "../utils/ReducerUtils";

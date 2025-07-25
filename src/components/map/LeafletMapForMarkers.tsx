@@ -9,6 +9,7 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { MapContainer, TileLayer, Polygon } from "react-leaflet";
 import { RecenterMap } from "./RecenterMap";
 import { regionPolygons } from "./data";
+import { useCallback } from "react";
 
 import L from "leaflet";
 import ShowCrimes from "./ClasterMapMarkers";
@@ -29,13 +30,35 @@ interface Props {
   }[];
   readonly center: [number, number];
   readonly zoom: number;
+  readonly selectPolygonId: number;
 }
 
 const southWest = L.latLng(37.0, 55.0);
 const northEast = L.latLng(46.0, 74.0);
 const bounds = L.latLngBounds(southWest, northEast);
 
-export default function LeafletMapForMarkers({ markerList, center, zoom = 12 }: Props) {
+export default function LeafletMapForMarkers({
+  markerList,
+  center,
+  zoom = 12,
+  selectPolygonId,
+}: Props) {
+  const checkSelectedPolygon = useCallback(
+    (stateId: number) => {
+      return Boolean(selectPolygonId == 0 || stateId === selectPolygonId)
+        ? "#1976D2"
+        : "transparent";
+    },
+    [selectPolygonId],
+  );
+
+  const checkSelectedBorder = useCallback(
+    (stateId: number) => {
+      return Boolean(stateId === selectPolygonId) ? 4 : 2;
+    },
+    [selectPolygonId],
+  );
+
   return (
     <MapContainer
       center={center}
@@ -54,10 +77,10 @@ export default function LeafletMapForMarkers({ markerList, center, zoom = 12 }: 
             pathOptions={{
               fillColor: "transparent",
               fillOpacity: 0.4,
-              weight: 2,
+              weight: checkSelectedBorder(state?.id),
               opacity: 1,
               dashArray: "0",
-              color: "#1976D2",
+              color: checkSelectedPolygon(state?.id),
             }}
             positions={coordinates}
             eventHandlers={{
@@ -67,19 +90,18 @@ export default function LeafletMapForMarkers({ markerList, center, zoom = 12 }: 
                   dashArray: "0",
                   fillColor: "transparent",
                   fillOpacity: 1,
-                  weight: 2,
+                  weight: checkSelectedBorder(state?.id),
                   opacity: 1,
-                  color: "#1976D2",
+                  color: checkSelectedPolygon(state?.id),
                 });
               },
               mouseout: (e: any) => {
                 const layer = e.target;
                 layer.setStyle({
                   fillOpacity: 0.4,
-                  weight: 2,
+                  weight: checkSelectedBorder(state?.id),
                   dashArray: "0",
-                  color: "#1976D2",
-                  fillColor: "transparent",
+                  color: checkSelectedPolygon(state?.id),
                 });
               },
               click: (e: any) => {},
@@ -87,10 +109,9 @@ export default function LeafletMapForMarkers({ markerList, center, zoom = 12 }: 
                 const layer = e.target;
                 layer.setStyle({
                   fillOpacity: 0.4,
-                  weight: 4,
+                  weight: checkSelectedBorder(state?.id),
                   dashArray: "0",
-                  color: "#1976D2",
-                  fillColor: "transparent",
+                  color: checkSelectedPolygon(state?.id),
                 });
               },
             }}

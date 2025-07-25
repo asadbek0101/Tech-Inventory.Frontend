@@ -162,7 +162,7 @@ export default function BarChart({
             color: "#798791",
           }}
         >
-          Umumiy summa: {totalCount}
+          Umumiy soni: {totalCount}
         </h5>
       </div>
 

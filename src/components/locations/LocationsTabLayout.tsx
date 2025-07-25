@@ -33,6 +33,7 @@ interface Props {
 
   readonly center: [number, number];
   readonly zoom: number;
+  readonly selectedRegionId: number;
 }
 
 export default function LocationsTabLayout({
@@ -58,6 +59,7 @@ export default function LocationsTabLayout({
 
   center,
   zoom,
+  selectedRegionId = 0,
 }: Props) {
   const onChangeStreet = useCallback(
     (event: any) => {
@@ -94,7 +96,12 @@ export default function LocationsTabLayout({
 
   return (
     <div className="locations-tab-layout">
-      <LeafletMapForMarkers markerList={markerList} center={center} zoom={zoom} />
+      <LeafletMapForMarkers
+        markerList={markerList}
+        center={center}
+        zoom={zoom}
+        selectPolygonId={selectedRegionId}
+      />
       <div className="locations-tab-sidebar">
         <div className="locations-regions">
           <Formik initialValues={initialFilter} onSubmit={noop}>

@@ -44,7 +44,7 @@ export default function AuthFormWrapper() {
               dispatch(setAuthDateExpired({ authExpiredDate: false }));
               const now = Date.now();
               dispatch(setAuthDate({ authDate: now }));
-              navigate("/dashboard/objects");
+              navigate("/dashboard/statistics");
             } else {
               toast.error(response?.data?.message);
               setLoading(false);

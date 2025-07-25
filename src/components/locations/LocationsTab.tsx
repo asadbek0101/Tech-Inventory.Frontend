@@ -66,6 +66,7 @@ export default function LocationsTab() {
 
   const [center, setCenter] = useState<any>([41.834704258607715, 64.20046593138136]);
   const [zoom, setZoom] = useState<number>(7);
+  const [selectedRegionId, setSelectedRegionId] = useState(0);
 
   useEffect(() => {
     RegionsApi.getRegionsList()
@@ -75,12 +76,16 @@ export default function LocationsTab() {
             label: item?.name,
             value: item?.id,
             center: [item?.lat, item?.lng],
+            zoom: item?.zoom,
+            id: item?.id,
           };
         });
         _regions.unshift({
           label: "Hammasi",
           value: 0,
           center: [41.834704258607715, 64.20046593138136],
+          zoom: 7,
+          id: 0,
         });
         setRegions(_regions);
       })
@@ -169,11 +174,8 @@ export default function LocationsTab() {
         }),
       );
       setCenter(event?.center);
-      if (event?.value === 0) {
-        setZoom(7);
-      } else {
-        setZoom(9);
-      }
+      setZoom(event?.zoom);
+      setSelectedRegionId(event?.id);
     },
     [DistrictsApi, setInitialFilter, setCenter, setZoom],
   );
@@ -278,6 +280,7 @@ export default function LocationsTab() {
       classTypesList={classTypes}
       classesList={classes}
       initialFilter={initialFilter}
+      selectedRegionId={selectedRegionId}
       setInitialFilter={setInitialFilter}
       onChangeRegion={onChangeRegion}
       onChangeDistrict={onChangeDistrict}

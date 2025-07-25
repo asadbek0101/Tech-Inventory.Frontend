@@ -29,7 +29,6 @@ export default function DashboardTab() {
   useEffect(() => {
     DashboardApi.getGetAll()
       .then((r) => {
-        console.log(r?.data);
         const _regionsLabels: any = r?.data?.regions?.map((item: any) => item?.label);
         const _regionsCounts: any = r?.data?.regions?.map((item: any) => item.value);
 

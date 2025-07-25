@@ -1,7 +1,7 @@
 export const regionPolygons = {
   features: [
     {
-      id: 1,
+      id: 2,
       name: "Andijon",
       code: 17,
       coordinates: [
@@ -3346,7 +3346,7 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 2,
+      id: 3,
       name: "Buxoro",
       code: 20,
       coordinates: [
@@ -4269,7 +4269,7 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 6,
+      id: 7,
       name: "Namangan",
       code: 16,
       coordinates: [
@@ -8759,8 +8759,8 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 3,
-      name: "Jizzah",
+      id: 4,
+      name: "Jizzax",
       code: 13,
       coordinates: [
         [
@@ -10920,7 +10920,7 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 9,
+      id: 10,
       name: "Sirdaryo",
       code: 12,
       coordinates: [
@@ -19207,7 +19207,7 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 14,
+      id: 1,
       name: "Qoraqalpog'iston",
       code: 23,
       coordinates: [
@@ -20864,7 +20864,7 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 5,
+      id: 6,
       name: "Navoiy",
       code: 21,
       coordinates: [
@@ -23357,7 +23357,7 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 7,
+      id: 8,
       name: "Samarqand",
       code: 14,
       coordinates: [
@@ -26948,7 +26948,7 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 4,
+      id: 5,
       name: "Qashqadaryo",
       code: 18,
       coordinates: [
@@ -29865,7 +29865,7 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 8,
+      id: 9,
       name: "Surxondaryo",
       code: 19,
       coordinates: [
@@ -33180,7 +33180,7 @@ export const regionPolygons = {
       ],
     },
     {
-      id: 10,
+      id: 14,
       name: "Tashkent city",
       code: 10,
       coordinates: [
@@ -34071,152 +34071,3 @@ export const regionPolygons = {
     },
   ],
 };
-
-export const regions = [
-  {
-    name: "Respublika",
-    value: "all",
-    center: [41.3775, 64.5853],
-    id: 0,
-    zoom: 7,
-    for_request_id: 0,
-  },
-  {
-    name: "Toshkent shahri",
-    value: "tashkent_city",
-    center: [41.2777, 69.2797],
-    zoom: 12,
-    id: 20,
-    for_request_id: 10,
-  },
-  // { name: 'Andijon viloyati', value: 'andijan', center: [40.7821, 72.3442], id: 2, zoom: 10, for_request_id: 1 },
-  {
-    name: "Andijon viloyati",
-    value: "andijan",
-    center: [40.780801315407594, 71.67334324133523],
-    id: 2,
-    zoom: 10,
-    for_request_id: 1,
-  },
-  {
-    name: "Buxoro viloyati",
-    value: "bukhara",
-    center: [39.7683, 64.455],
-    id: 3,
-    zoom: 8,
-    for_request_id: 2,
-  },
-  {
-    name: "Farg‘ona viloyati",
-    value: "fergana",
-    center: [40.3842, 71.384],
-    id: 12,
-    zoom: 10,
-    for_request_id: 12,
-  },
-  {
-    name: "Jizzax viloyati",
-    value: "jizzakh",
-    center: [40.128, 67.828],
-    id: 4,
-    zoom: 9,
-    for_request_id: 3,
-  },
-  {
-    name: "Xorazm viloyati",
-    value: "khorezm",
-    center: [41.55, 60.6333],
-    id: 13,
-    zoom: 10,
-    for_request_id: 13,
-  },
-  {
-    name: "Namangan viloyati",
-    value: "namangan",
-    center: [41.11, 71.2726],
-    id: 7,
-    zoom: 10,
-    for_request_id: 6,
-  },
-  {
-    name: "Navoiy viloyati",
-    value: "navoiy",
-    center: [41.7, 65.3792],
-    id: 6,
-    zoom: 8,
-    for_request_id: 5,
-  },
-  {
-    name: "Qashqadaryo viloyati",
-    value: "qashqadarya",
-    center: [38.86, 66.2558],
-    id: 5,
-    zoom: 9,
-    for_request_id: 4,
-  },
-  {
-    name: "Qoraqalpogʻiston Respublikasi",
-    value: "karakalpakstan",
-    center: [43.427613119689155, 58.83712589472372],
-    id: 1,
-    zoom: 8,
-    for_request_id: 14,
-  },
-  {
-    name: "Samarqand viloyati",
-    value: "samarkand",
-    center: [39.6542, 66.9597],
-    id: 8,
-    zoom: 9,
-    for_request_id: 7,
-  },
-  {
-    name: "Sirdaryo viloyati",
-    value: "sirdarya",
-    center: [40.537, 68.6619],
-    id: 10,
-    zoom: 10,
-    for_request_id: 9,
-  },
-  {
-    name: "Surxondaryo viloyati",
-    value: "surkhandarya",
-    center: [37.94, 67.57],
-    id: 9,
-    zoom: 9,
-    for_request_id: 8,
-  },
-  {
-    name: "Toshkent viloyati",
-    value: "tashkent",
-    center: [41.3, 69.9],
-    id: 14,
-    zoom: 9,
-    for_request_id: 11,
-  },
-];
-
-export const districts = [{ name: "Toshkent" }];
-
-export const cameraTypes = [
-  {
-    id: 1,
-    name: "Айланма камера (PTZ)",
-  },
-  {
-    id: 2,
-    name: "Радар",
-  },
-  {
-    id: 3,
-    name: "Давлат рақами белгисини аниқлови",
-  },
-  {
-    id: 4,
-    name: "Юздан таниб олувчи",
-  },
-  {
-    id: 5,
-    name: "Барчаси",
-  },
-];
