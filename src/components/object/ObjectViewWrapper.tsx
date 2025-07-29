@@ -4,7 +4,6 @@ import Button, { BgColors } from "../ui/Button";
 import { useObyektApiContext } from "../../api/obyekt/ObyektApiContext";
 import { showError } from "../../utils/NotificationUtils";
 
-import CustomCard from "../ui/CustomCard";
 import ObjectView from "./ObjectView";
 
 import useLocationHelpers from "../../hooks/userLocationHelpers";

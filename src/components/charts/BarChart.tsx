@@ -18,18 +18,22 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 interface Props {
   readonly labels: string[];
   readonly values: number[];
+  readonly ids: number[];
   readonly title: string;
   readonly labelType?: "inline" | "block";
 
   readonly onClickBar: (value: any) => void;
+  readonly onClickTitle?: () => void;
 }
 
 export default function BarChart({
   labels = [],
   values = [],
+  ids = [],
   title,
   labelType = "block",
   onClickBar,
+  onClickTitle,
 }: Props) {
   const [totalCount, setTotalCount] = useState(0);
 
@@ -126,13 +130,12 @@ export default function BarChart({
 
       if (elements.length) {
         const index = elements[0].index;
-        const clickedLabel = labels[index];
-        const clickedValue = values[index];
+        const clickedId = ids?.[index];
 
-        onClickBar({ label: clickedLabel, value: clickedValue });
+        onClickBar({ id: clickedId });
       }
     },
-    [labels, values, onClickBar],
+    [labels, values, ids, onClickBar],
   );
 
   return (
@@ -152,7 +155,9 @@ export default function BarChart({
           style={{
             fontSize: "16px",
             color: "#798791",
+            cursor: "pointer",
           }}
+          onClick={() => onClickTitle && onClickTitle()}
         >
           {title}
         </h5>

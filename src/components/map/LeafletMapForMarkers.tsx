@@ -11,8 +11,8 @@ import { RecenterMap } from "./RecenterMap";
 import { regionPolygons } from "./data";
 import { useCallback } from "react";
 
-import L from "leaflet";
 import ShowCrimes from "./ClasterMapMarkers";
+import L from "leaflet";
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -50,7 +50,7 @@ export default function LeafletMapForMarkers({
         : "transparent";
     },
     [selectPolygonId],
-  );
+  );  
 
   const checkSelectedBorder = useCallback(
     (stateId: number) => {
@@ -69,8 +69,8 @@ export default function LeafletMapForMarkers({
       maxBoundsViscosity={0.5}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {regionPolygons.features.map((state, index) => {
-        const coordinates: any = state.coordinates[0].map((item) => [item[1], item[0]]);
+      {regionPolygons?.features?.map((state: any, index: any) => {
+        const coordinates: any = state.coordinates[0].map((item: any) => [item[1], item[0]]);
         return (
           <Polygon
             key={index}

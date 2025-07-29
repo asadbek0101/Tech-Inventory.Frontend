@@ -1,4 +1,4 @@
-export const regionPolygons = {
+export const regionPolygons: any = {
   features: [
     {
       id: 2,

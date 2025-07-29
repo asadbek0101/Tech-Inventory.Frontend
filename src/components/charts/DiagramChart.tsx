@@ -11,14 +11,23 @@ ChartJS.register(ArcElement, Tooltip, Legend, Title, ChartDataLabels);
 interface Props {
   readonly labels?: string[];
   readonly values?: number[];
+  readonly ids?: number[];
   readonly title?: string;
 
   readonly onClickPart: (value: any) => void;
+  readonly onClickTitle?: () => void;
 }
 
 const chartImage = new Image();
 
-export default function DiagramChart({ labels = [], values = [], title, onClickPart }: Props) {
+export default function DiagramChart({
+  labels = [],
+  values = [],
+  ids = [],
+  title,
+  onClickPart,
+  onClickTitle,
+}: Props) {
   const [totalCount, setTotalCount] = useState(0);
 
   const chartRef = useRef<any>(null);
@@ -28,13 +37,43 @@ export default function DiagramChart({ labels = [], values = [], title, onClickP
     datasets: [
       {
         data: values,
-        backgroundColor: ["#3C73C5", "#3FC195"],
+        backgroundColor: [
+          "#3C73C5",
+          "#3FC195",
+          "#298B69",
+          "#4FB06D",
+          "#43A5BE",
+          "#699422",
+          "#71A024",
+          "#339B59",
+          "#28A074",
+          "#209889",
+          "#1999AD",
+          "#308695",
+          "#5BA8A0",
+          "#329D9C",
+        ],
         borderWidth: 0,
       },
     ],
   };
 
-  const colors = ["#3C73C5", "#3FC195"];
+  const colors = [
+    "#3C73C5",
+    "#3FC195",
+    "#298B69",
+    "#4FB06D",
+    "#43A5BE",
+    "#699422",
+    "#71A024",
+    "#339B59",
+    "#28A074",
+    "#209889",
+    "#1999AD",
+    "#308695",
+    "#5BA8A0",
+    "#329D9C",
+  ];
 
   const options: any = {
     responsive: true,
@@ -82,13 +121,12 @@ export default function DiagramChart({ labels = [], values = [], title, onClickP
 
       if (elements.length) {
         const index = elements[0].index;
-        const clickedLabel = labels[index];
-        const clickedValue = values[index];
+        const clickedId = ids?.[index];
 
-        onClickPart({ label: clickedLabel, value: clickedValue });
+        onClickPart({ id: clickedId });
       }
     },
-    [labels, values, onClickPart],
+    [labels, values, ids, onClickPart],
   );
 
   return (
@@ -110,7 +148,9 @@ export default function DiagramChart({ labels = [], values = [], title, onClickP
           style={{
             fontSize: "16px",
             color: "#798791",
+            cursor: "pointer",
           }}
+          onClick={() => onClickTitle && onClickTitle()}
         >
           {title}
         </h5>
