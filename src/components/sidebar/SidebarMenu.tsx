@@ -51,6 +51,7 @@ export default function SidebarMenu() {
           CheckRole(UserRoles.DepartmentHead, profile) ||
           CheckRole(UserRoles.ChiefSpecialist, profile) ||
           CheckRole(UserRoles.LeadingExpert, profile) ||
+          CheckRole(UserRoles.Accountant, profile) ||
           CheckRole(UserRoles.SeniorSpecialist, profile)) && (
           <SidebarItem link="statistics" icon={<DashboardIcon />}>
             {translate("SIDE_MENU_DASHBOARD_TITLE")}
@@ -60,6 +61,7 @@ export default function SidebarMenu() {
           CheckRole(UserRoles.DepartmentHead, profile) ||
           CheckRole(UserRoles.ChiefSpecialist, profile) ||
           CheckRole(UserRoles.LeadingExpert, profile) ||
+          CheckRole(UserRoles.Accountant, profile) ||
           CheckRole(UserRoles.SeniorSpecialist, profile)) && (
           <SidebarItem link="locations" icon={<LocationIcon />}>
             {translate("SIDE_MENU_MAP_TITLE")}
@@ -68,6 +70,7 @@ export default function SidebarMenu() {
         {(CheckRole(UserRoles.Programmer, profile) ||
           CheckRole(UserRoles.DepartmentHead, profile) ||
           CheckRole(UserRoles.ChiefSpecialist, profile) ||
+          CheckRole(UserRoles.Accountant, profile) ||
           CheckRole(UserRoles.LeadingExpert, profile) ||
           CheckRole(UserRoles.SeniorSpecialist, profile)) && (
           <SidebarItem link="objects" icon={<LandMarkIcon />}>
@@ -106,6 +109,7 @@ export default function SidebarMenu() {
           CheckRole(UserRoles.DepartmentHead, profile) ||
           CheckRole(UserRoles.ChiefSpecialist, profile) ||
           CheckRole(UserRoles.LeadingExpert, profile) ||
+          CheckRole(UserRoles.Accountant, profile) ||
           CheckRole(UserRoles.SeniorSpecialist, profile)) && (
           <SidebarItem link="settings" icon={<SettingsIcon />}>
             {translate("SIDE_MENU_SETTINGS_TITLE")}

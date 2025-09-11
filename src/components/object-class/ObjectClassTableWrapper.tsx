@@ -99,13 +99,7 @@ export default function ObjectClassTableWrapper({ filter }: Props) {
           )
         }
       />
-      <Modal
-        show={deleteModal}
-        closeHandler={() => setDeleteModal(false)}
-        className="d-flex justify-content-center align-items-center"
-        contentClassName="rounded p-4"
-        width="500px"
-      >
+      <Modal show={deleteModal} onHide={() => setDeleteModal(false)}>
         <GroupBox>
           <YesOrNoModal
             title="REGION_TABLE_DELETE_REGIONS_MODAL_QUESTION"

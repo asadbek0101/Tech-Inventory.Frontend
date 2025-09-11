@@ -13,6 +13,9 @@ export enum UserRoles {
 
   // katta mutaxassis
   SeniorSpecialist = "SeniorSpecialist",
+
+  // xisobchi
+  Accountant = "Accountant",
 }
 
 export enum TabPageType {

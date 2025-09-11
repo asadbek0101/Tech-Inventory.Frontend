@@ -41,6 +41,7 @@ export default function LocationsTab() {
       label: "Hammasi",
       value: 0,
     },
+    searchValue: "",
   });
 
   const [locations, setLocations] = useState([]);
@@ -137,6 +138,7 @@ export default function LocationsTab() {
       orderId: initialFilter?.order?.value,
       classTypeId: initialFilter?.classType?.value,
       classId: initialFilter?.class?.value,
+      searchValue: initialFilter?.searchValue,
     })
       .then((r) => setLocations(r?.data))
       .catch(showError);

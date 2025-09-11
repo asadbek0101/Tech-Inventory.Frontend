@@ -91,13 +91,7 @@ export default function SettingsFormWrapper() {
         }}
         savePassword={savePassword}
       />
-      <Modal
-        show={languageModal}
-        closeHandler={() => setLanguageModal(false)}
-        className="d-flex justify-content-center align-items-center"
-        contentClassName="rounded p-4"
-        width="500px"
-      >
+      <Modal show={languageModal} onHide={() => setLanguageModal(false)}>
         <GroupBox>
           <YesOrNoModal
             title="SETTINGS_FORM_LANGUAGE_QUESTION_TITLE"

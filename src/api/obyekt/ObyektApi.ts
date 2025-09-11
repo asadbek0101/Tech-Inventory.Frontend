@@ -11,12 +11,6 @@ export class ObyektApi extends BaseApi {
     return this.get("Obyekts/GetLocations", { query });
   }
 
-  public getObyektProducts(query: any) {
-    return this.get("Obyekts/GetProductsCounts", {
-      query,
-    });
-  }
-
   public getOneObyekt(query: any) {
     return this.get("Obyekts/GetOne", {
       query,

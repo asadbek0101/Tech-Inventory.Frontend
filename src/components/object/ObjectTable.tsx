@@ -1,5 +1,9 @@
 import { useI18n } from "../../i18n/I18nContext";
 import { useMemo } from "react";
+import { CheckRole } from "../../utils/CheckRole";
+import { UserRoles } from "../../api/AppDto";
+import { useShallowEqualSelector } from "../../hooks/useShallowSelector";
+import { profileSelector } from "../../reducers/authReducer";
 
 import Table from "../table/Table";
 import moment from "moment";
@@ -29,6 +33,8 @@ export default function ObjectTable({
   downloadPdf,
 }: Props) {
   const { translate } = useI18n();
+
+  const profile = useShallowEqualSelector(profileSelector);
 
   const columns = useMemo(
     () => [
@@ -120,30 +126,35 @@ export default function ObjectTable({
               >
                 <EyeIcon />
               </Button>
-              <Button
-                onClick={() => editObyekt(row?.row?.original?.id)}
-                className="py-2 px-2 text-light"
-                bgColor={BgColors.Yellow}
-                hoverLabel="Obyektni yangilash"
-              >
-                <PencilIcon />
-              </Button>
-              <Button
-                onClick={() => downloadPdf(row?.row?.original?.id, row?.row?.original?.name)}
-                className="py-2 px-2 text-light"
-                bgColor={BgColors.Navy}
-                hoverLabel="PDFda yuklash"
-              >
-                <DonwloadIcon />
-              </Button>
-              <Button
-                onClick={() => readOnMap(row?.row?.original?.id)}
-                className="py-2 px-2 text-light"
-                bgColor={BgColors.Navy}
-                hoverLabel="Xaritada ko'rish"
-              >
-                <LocationIcon />
-              </Button>
+
+              {!Boolean(CheckRole(UserRoles.Accountant, profile)) && (
+                <>
+                  <Button
+                    onClick={() => editObyekt(row?.row?.original?.id)}
+                    className="py-2 px-2 text-light"
+                    bgColor={BgColors.Yellow}
+                    hoverLabel="Obyektni yangilash"
+                  >
+                    <PencilIcon />
+                  </Button>
+                  <Button
+                    onClick={() => downloadPdf(row?.row?.original?.id, row?.row?.original?.name)}
+                    className="py-2 px-2 text-light"
+                    bgColor={BgColors.Navy}
+                    hoverLabel="PDFda yuklash"
+                  >
+                    <DonwloadIcon />
+                  </Button>
+                  <Button
+                    onClick={() => readOnMap(row?.row?.original?.id)}
+                    className="py-2 px-2 text-light"
+                    bgColor={BgColors.Navy}
+                    hoverLabel="Xaritada ko'rish"
+                  >
+                    <LocationIcon />
+                  </Button>
+                </>
+              )}
             </div>
           );
         },

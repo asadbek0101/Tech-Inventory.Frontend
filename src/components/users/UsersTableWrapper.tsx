@@ -143,18 +143,10 @@ export default function UsersTableWrapper({ filter }: Props) {
           row.status = value;
           setDocument(row);
         }}
-        editDocument={(value) =>
-          navigate(`/dashboard/users/${TabPageType.Form}?userId=${value}`)
-        }
+        editDocument={(value) => navigate(`/dashboard/users/${TabPageType.Form}?userId=${value}`)}
         deleteUser={setDeleteDocuments}
       />
-      <Modal
-        show={deleteModal}
-        closeHandler={() => setDeleteModal(false)}
-        className="d-flex justify-content-center align-items-center"
-        contentClassName="rounded p-4"
-        width="500px"
-      >
+      <Modal show={deleteModal} onHide={() => setDeleteModal(false)}>
         <GroupBox>
           <YesOrNoModal
             title="LESSONS_TABLE_DELETE_LESSONS_QUESTION_TITLE"

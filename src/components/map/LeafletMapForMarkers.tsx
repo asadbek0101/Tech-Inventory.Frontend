@@ -50,7 +50,7 @@ export default function LeafletMapForMarkers({
         : "transparent";
     },
     [selectPolygonId],
-  );  
+  );
 
   const checkSelectedBorder = useCallback(
     (stateId: number) => {

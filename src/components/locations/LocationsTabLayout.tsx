@@ -3,6 +3,7 @@ import "./assets/locations.scss";
 import { useCallback } from "react";
 import { SelectPickerField } from "../form/SelectPrickerField";
 import { Form, Formik } from "formik";
+import { InputField } from "../form/InputField";
 import { noop } from "lodash";
 import { update } from "immupdate";
 
@@ -94,6 +95,17 @@ export default function LocationsTabLayout({
     [setInitialFilter],
   );
 
+  const onChangeSearchValue = useCallback(
+    (event: any) => {
+      setInitialFilter((prev: any) =>
+        update(prev, {
+          searchValue: event?.target?.value,
+        }),
+      );
+    },
+    [setInitialFilter],
+  );
+
   return (
     <div className="locations-tab-layout">
       <LeafletMapForMarkers
@@ -103,7 +115,19 @@ export default function LocationsTabLayout({
         selectPolygonId={selectedRegionId}
       />
       <div className="locations-tab-sidebar">
-        <div className="locations-regions">
+        <div className="locations-search-tab">
+          <Formik initialValues={initialFilter} onSubmit={noop}>
+            <Form>
+              <InputField
+                name="searchValue"
+                placeholder="Qidirishi..."
+                onChange={onChangeSearchValue}
+                value={initialFilter?.searchValue}
+              />
+            </Form>
+          </Formik>
+        </div>
+        <div className="locations-regions mt-3">
           <Formik initialValues={initialFilter} onSubmit={noop}>
             <Form>
               <SelectPickerField

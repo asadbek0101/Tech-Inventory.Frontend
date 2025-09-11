@@ -1,50 +1,25 @@
-import React, {ReactNode, useEffect} from "react";
-import "./assets/modal.scss";
+import { ReactNode } from "react";
+import Modal from "react-bootstrap/Modal";
 
-interface ModalProps{
-    readonly children: ReactNode;
-    readonly show: boolean;
-    readonly closeHandler: ()=>void;
-    readonly className?: string;
-    readonly contentClassName?: string;
-    readonly width?: string;
-    readonly height?: string;
+interface Props {
+  readonly show: boolean;
+  readonly onHide: () => void;
+  readonly children: ReactNode;
+  readonly width?: string | number;
+  readonly height?: string | number;
 }
 
-export default function Modal({
-    children, 
-    show = true, 
-    closeHandler, 
-    className, 
-    contentClassName,
-    width, 
-    height
-}:ModalProps){
-    
-    window.onclick = function(event: any) {
-        if(event.target.matches('.modal-container')){
-            closeHandler();
-        }
-    }
+export default function CustomModal({ show, onHide, children, width, height }: Props) {
+  const dialogStyle: React.CSSProperties = {
+    width: typeof width === "number" ? `${width}px` : width,
+    height: typeof height === "number" ? `${height}px` : height,
+    maxWidth: "100%",
+    maxHeight: "100%",
+  };
 
-    useEffect(()=>{
-        if(show){
-            document.body.style.overflow = "hidden";
-        }else{
-            document.body.style.overflow = "auto";
-        }
-    },[show])
-
-    if(!show){
-        return null
-    } 
-    
-    return (
-        <div className={`modal-container ${className}`}>
-            <div className={`modal-children ${contentClassName}`} 
-                style={{width: `${width}`, height: `${height}`}}>
-                {children}
-            </div>
-        </div>
-    )
+  return (
+    <Modal show={show} onHide={onHide} centered dialogStyle={dialogStyle} contentClassName="p-0">
+      <Modal.Body style={{ height: "100%", overflowY: "auto" }}>{children}</Modal.Body>
+    </Modal>
+  );
 }

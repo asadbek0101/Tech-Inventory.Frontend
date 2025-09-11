@@ -44,6 +44,7 @@ export default function RootContainer() {
             CheckRole(UserRoles.DepartmentHead, profile) ||
             CheckRole(UserRoles.ChiefSpecialist, profile) ||
             CheckRole(UserRoles.SeniorSpecialist, profile) ||
+            CheckRole(UserRoles.Accountant, profile) ||
             CheckRole(UserRoles.LeadingExpert, profile)) && (
             <Route path="statistics/:tab?" element={<DashboardContainer />} />
           )}
@@ -51,6 +52,7 @@ export default function RootContainer() {
             CheckRole(UserRoles.DepartmentHead, profile) ||
             CheckRole(UserRoles.ChiefSpecialist, profile) ||
             CheckRole(UserRoles.SeniorSpecialist, profile) ||
+            CheckRole(UserRoles.Accountant, profile) ||
             CheckRole(UserRoles.LeadingExpert, profile)) && (
             <Route path="objects/:tab?" element={<ObjectContainer />} />
           )}
@@ -75,6 +77,7 @@ export default function RootContainer() {
           {(CheckRole(UserRoles.Programmer, profile) ||
             CheckRole(UserRoles.DepartmentHead, profile) ||
             CheckRole(UserRoles.ChiefSpecialist, profile) ||
+            CheckRole(UserRoles.Accountant, profile) ||
             CheckRole(UserRoles.LeadingExpert, profile) ||
             CheckRole(UserRoles.SeniorSpecialist, profile)) && (
             <Route path="settings/:tab?" element={<SettingsContainer />} />
@@ -82,6 +85,7 @@ export default function RootContainer() {
           {(CheckRole(UserRoles.Programmer, profile) ||
             CheckRole(UserRoles.DepartmentHead, profile) ||
             CheckRole(UserRoles.ChiefSpecialist, profile) ||
+            CheckRole(UserRoles.Accountant, profile) ||
             CheckRole(UserRoles.LeadingExpert, profile) ||
             CheckRole(UserRoles.SeniorSpecialist, profile)) && (
             <Route path="locations/:tab?" element={<LocationsContainer />} />

@@ -10,9 +10,10 @@ import { noop } from "lodash";
 import { toast } from "react-toastify";
 import { useShallowEqualSelector } from "../../hooks/useShallowSelector";
 import { appIsCreatedBySelector, switchIsCreatedBy } from "../../reducers/appReducer";
-import { userIdSelector } from "../../reducers/authReducer";
-import { CheckboxField } from "../form/CheckboxField";
+import { profileSelector, userIdSelector } from "../../reducers/authReducer";
 import { useDispatch } from "react-redux";
+import { CheckRole } from "../../utils/CheckRole";
+import { UserRoles } from "../../api/AppDto";
 
 import AddIcon from "../icons/AddIcon";
 import Button, { BgColors } from "../ui/Button";
@@ -38,6 +39,8 @@ export default function ObjectTableWrapper({ filter }: Props) {
   const showOnlyCreatedMe = useShallowEqualSelector(appIsCreatedBySelector);
   const userId = useShallowEqualSelector(userIdSelector);
 
+  const profile = useShallowEqualSelector(profileSelector);
+
   const { translate } = useI18n();
   const { ObyektApi } = useObyektApiContext();
 
@@ -60,22 +63,27 @@ export default function ObjectTableWrapper({ filter }: Props) {
     <TabPage
       headerComponent={
         <div className="d-flex justify-content-between">
-          <Button
-            className="py-1 px-3 text-light"
-            bgColor={BgColors.Green}
-            heigh="34px"
-            icon={<AddIcon />}
-            onClick={() =>
-              locationHelpers.pushQuery({
-                tab: ObjectFilterTabs.ObjectForm,
-                formType: "create",
-                productFormType: "1",
-                objectFormType: "1",
-              })
-            }
-          >
-            {translate("ADD_BUTTON_TITLE")}
-          </Button>
+          {!Boolean(CheckRole(UserRoles.Accountant, profile)) ? (
+            <Button
+              className="py-1 px-3 text-light"
+              bgColor={BgColors.Green}
+              heigh="34px"
+              icon={<AddIcon />}
+              onClick={() =>
+                locationHelpers.pushQuery({
+                  tab: ObjectFilterTabs.ObjectForm,
+                  formType: "create",
+                  productFormType: "1",
+                  objectFormType: "1",
+                })
+              }
+            >
+              {translate("ADD_BUTTON_TITLE")}
+            </Button>
+          ) : (
+            <div />
+          )}
+
           <Formik
             initialValues={{
               searchValue: filter?.getObjectFilter()?.searchValue,
@@ -86,19 +94,22 @@ export default function ObjectTableWrapper({ filter }: Props) {
           >
             {() => (
               <Form className="d-flex gap-2">
-                <div className="d-flex align-items-center gap-2">
-                  <OwnerCheckbox
-                    checked={showOnlyCreatedMe}
-                    title="Faqat men yaratganlar"
-                    onChange={(value) => {
-                      dispatch(
-                        switchIsCreatedBy({
-                          isCreatedBy: !showOnlyCreatedMe,
-                        }),
-                      );
-                    }}
-                  />
-                </div>
+                {!Boolean(CheckRole(UserRoles.Accountant, profile)) && (
+                  <div className="d-flex align-items-center gap-2">
+                    <OwnerCheckbox
+                      checked={showOnlyCreatedMe}
+                      title="Faqat men yaratganlar"
+                      onChange={(value) => {
+                        dispatch(
+                          switchIsCreatedBy({
+                            isCreatedBy: !showOnlyCreatedMe,
+                          }),
+                        );
+                      }}
+                    />
+                  </div>
+                )}
+
                 <InputField
                   name="searchValue"
                   width={320}
@@ -117,31 +128,29 @@ export default function ObjectTableWrapper({ filter }: Props) {
       footerComponent={
         <div>
           <div className="d-flex justify-content-between align-items-center mt-4 pb-3">
-            <Button
-              disabled={!(deleteDocuments && deleteDocuments?.length > 0)}
-              onClick={() => setDeleteModal(true)}
-              className="py-2 px-2 text-light"
-              bgColor={
-                deleteDocuments && deleteDocuments?.length > 0 ? BgColors.Red : BgColors.White
-              }
-            >
-              <DeleteIcon
-                color={deleteDocuments && deleteDocuments?.length > 0 ? "#fff" : "#000"}
-              />
-            </Button>
+            {!Boolean(CheckRole(UserRoles.Accountant, profile)) ? (
+              <Button
+                disabled={!(deleteDocuments && deleteDocuments?.length > 0)}
+                onClick={() => setDeleteModal(true)}
+                className="py-2 px-2 text-light"
+                bgColor={
+                  deleteDocuments && deleteDocuments?.length > 0 ? BgColors.Red : BgColors.White
+                }
+              >
+                <DeleteIcon
+                  color={deleteDocuments && deleteDocuments?.length > 0 ? "#fff" : "#000"}
+                />
+              </Button>
+            ) : (
+              <div />
+            )}
             <Paginator
               filter={filter}
               totalPageCount={data?.totalPageCount}
               totalRowCount={data?.totalRowCount}
             />
           </div>
-          <Modal
-            show={deleteModal}
-            closeHandler={() => setDeleteModal(false)}
-            className="d-flex justify-content-center align-items-center"
-            contentClassName="rounded p-4"
-            width="500px"
-          >
+          <Modal show={deleteModal} onHide={() => setDeleteModal(false)}>
             <GroupBox>
               <YesOrNoModal
                 title="REGION_TABLE_DELETE_REGIONS_MODAL_QUESTION"
