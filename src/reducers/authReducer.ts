@@ -7,7 +7,7 @@ import { DELETE, update } from "immupdate";
 import { Action } from "redux";
 
 export const authReducerPersistConfig: Partial<PersistConfig<AuthReducerState>> = {
-  whitelist: ["token", "UserId", "authDate", "authExpiredDate"],
+  whitelist: ["token", "userId", "authDate", "authExpiredDate"],
 };
 
 export interface Profile {

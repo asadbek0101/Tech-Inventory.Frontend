@@ -119,7 +119,7 @@ export default function LeafletMapForMarkers({
         );
       })}
       <RecenterMap center={center} zoom={zoom} />
-      <ShowCrimes data={markerList} />
+      {markerList.length > 0 && <ShowCrimes data={markerList} />}
     </MapContainer>
   );
 }

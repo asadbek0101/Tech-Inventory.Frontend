@@ -1,6 +1,11 @@
 export const IS_DEV = "production";
 
-export const API_HOST = process.env.REACT_APP_API_URL as string;
+const ipType = window.location.hostname;
+
+export const API_HOST =
+  ipType === "172.24.201.4"
+    ? (process.env.REACT_APP_API_URL_IN as string)
+    : (process.env.REACT_APP_API_URL_HOST as string);
 
 export const modelTypesOptions = [
   {

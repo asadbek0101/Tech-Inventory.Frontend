@@ -72,8 +72,6 @@ export default function ObjectTableWrapper({ filter }: Props) {
               onClick={() =>
                 locationHelpers.pushQuery({
                   tab: ObjectFilterTabs.ObjectForm,
-                  formType: "create",
-                  productFormType: "1",
                   objectFormType: "1",
                 })
               }
@@ -196,12 +194,14 @@ export default function ObjectTableWrapper({ filter }: Props) {
             objectId: value,
           })
         }
-        setOjectForView={(value) =>
+        setOjectForView={(value) => {
+          console.log("old location", location);
+          console.log("new query", { tab: ObjectFilterTabs.ObjectView, objectId: value });
           locationHelpers.pushQuery({
             tab: ObjectFilterTabs.ObjectView,
             objectId: value,
-          })
-        }
+          });
+        }}
       />
     </TabPage>
   );

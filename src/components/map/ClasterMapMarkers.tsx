@@ -1,6 +1,6 @@
 import "./assets/cluster-map-marker.scss";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Marker, useMap } from "react-leaflet";
 import L, { LatLngBounds } from "leaflet";
 
@@ -41,7 +41,7 @@ export default function ShowCrimes({ data }: Props) {
 
   useEffect(() => {
     updateMap();
-  }, [map]);
+  }, [data]);
 
   useEffect(() => {
     map.on("move", onMove);
@@ -50,24 +50,39 @@ export default function ShowCrimes({ data }: Props) {
     };
   }, [map, onMove]);
 
-  const points = data.map((crime) => ({
-    type: "Feature" as const,
-    properties: {
-      cluster: false,
-      crimeId: crime.id,
-      category: crime.category,
-      nameAndAddress: crime?.nameAndAddress,
-    },
-    geometry: {
-      type: "Point" as const,
-      coordinates: [parseFloat(crime.longitude), parseFloat(crime.latitude)],
-    },
-  }));
+  const points = useMemo(() => {
+    if (!data || data.length === 0) return [];
+
+    const validPoints = data
+      .filter(
+        (crime) =>
+          crime &&
+          crime.latitude &&
+          crime.longitude &&
+          !isNaN(parseFloat(crime.latitude)) &&
+          !isNaN(parseFloat(crime.longitude)),
+      )
+      .map((crime) => ({
+        type: "Feature" as const,
+        properties: {
+          cluster: false,
+          crimeId: crime.id,
+          category: crime.category,
+          nameAndAddress: crime.nameAndAddress || "",
+        },
+        geometry: {
+          type: "Point" as const,
+          coordinates: [parseFloat(crime.longitude), parseFloat(crime.latitude)],
+        },
+      }));
+
+    return validPoints;
+  }, [data]);
 
   const { clusters, supercluster } = useSupercluster({
     points,
-    bounds,
-    zoom,
+    bounds: bounds,
+    zoom: zoom,
     options: { radius: 75, maxZoom: 17 },
   });
 

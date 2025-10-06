@@ -49,7 +49,6 @@ export default function ObjectFormWrapper({ filter }: Props) {
     serialNumber: "",
     numberOfPort: "",
     phoneNumber: "",
-    // products
     akumalator: [],
     avtomat: [],
     box: [],
