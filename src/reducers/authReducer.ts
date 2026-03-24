@@ -101,11 +101,13 @@ export function userIdSelector(state: AppStoreState): string | undefined {
 }
 
 export function profileSelector(state: AppStoreState): Profile | undefined {
-  if (state.auth.token) {
-    const profile: Profile = jwtDecode(state?.auth?.token);
-    return profile;
+  try {
+    if (state.auth.token) {
+      return jwtDecode<Profile>(state.auth.token);
+    }
+  } catch {
+    return undefined;
   }
-  return;
 }
 
 // ==================

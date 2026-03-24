@@ -146,6 +146,20 @@ export default function ObjectFormWrapper({ filter }: Props) {
               .catch(showError);
           }
 
+          if (r?.data?.districtId) {
+            DistrictsApi.getStreetsList({ districtId: r?.data?.districtId })
+              .then((r) => {
+                const _streets = r?.data?.map((d: any) => {
+                  return {
+                    label: d.name,
+                    value: d.id,
+                  };
+                });
+                setStreets(_streets);
+              })
+              .catch(showError);
+          }
+
           if (r?.data?.projectId) {
             NumberOfOrdersApi.getNumberOfOrdersList({ projectId: r?.data?.projectId })
               .then((r) => {

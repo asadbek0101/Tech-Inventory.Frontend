@@ -1,10 +1,10 @@
-import { useQuery } from "../../hooks/useQuery";
 import { useMemo } from "react";
+import { useQuery } from "../../hooks/useQuery";
+
 import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 
 import ObjectTableWrapper from "./ObjectTableWrapper";
 import ObjectViewWrapper from "./ObjectViewWrapper";
-import ObjectPdfWrapper from "./ObjectPdfWrapper";
 import ObjectFormWrapper from "./ObjectFormWrapper";
 
 export default function ObjectTab() {
@@ -19,7 +19,6 @@ export default function ObjectTab() {
       {tab === "object-table" && <ObjectTableWrapper filter={filter} />}
       {tab === "object-form" && <ObjectFormWrapper filter={filter} />}
       {tab === "object-view" && <ObjectViewWrapper filter={filter} />}
-      {tab === "object-pdf-report" && <ObjectPdfWrapper filter={filter} />}
     </>
   );
 }

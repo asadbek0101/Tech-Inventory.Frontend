@@ -4,14 +4,10 @@ import { useEffect, useState } from "react";
 import { showError } from "../../utils/NotificationUtils";
 import { ObjectFilter, ObjectFilterTabs } from "../../filters/ObjectFilter";
 import { GroupBox } from "../ui/GroupBox";
-import { Form, Formik } from "formik";
-import { InputField } from "../form/InputField";
-import { noop } from "lodash";
 import { toast } from "react-toastify";
 import { useShallowEqualSelector } from "../../hooks/useShallowSelector";
 import { appIsCreatedBySelector, switchIsCreatedBy } from "../../reducers/appReducer";
 import { profileSelector, userIdSelector } from "../../reducers/authReducer";
-import { useDispatch } from "react-redux";
 import { CheckRole } from "../../utils/CheckRole";
 import { UserRoles } from "../../api/AppDto";
 
@@ -24,17 +20,52 @@ import Modal from "../ui/Modal";
 import YesOrNoModal from "../ui/YesOrNoModal";
 import useLocationHelpers from "../../hooks/userLocationHelpers";
 import TabPage from "../tabs/TabPage";
-import OwnerCheckbox from "../ui/OwnerCheckbox";
+import ObjectFilterWrapper from "./ObjectFilterWrapper";
 
 interface Props {
   readonly filter: ObjectFilter;
 }
 
+const initValue = {
+  region: {
+    label: "Hammasi",
+    value: 0,
+  },
+  district: {
+    label: "Hammasi",
+    value: 0,
+  },
+  street: {
+    label: "Hammasi",
+    value: 0,
+  },
+  project: {
+    label: "Hammasi",
+    value: 0,
+  },
+  order: {
+    label: "Hammasi",
+    value: 0,
+  },
+  classType: {
+    label: "Hammasi",
+    value: 0,
+  },
+  class: {
+    label: "Hammasi",
+    value: 0,
+  },
+  searchValue: "",
+};
+
 export default function ObjectTableWrapper({ filter }: Props) {
+  const [initialFilter, setInitialFilter] = useState<any>(initValue);
+
   const [data, setData] = useState<any>();
   const [deleteDocuments, setDeleteDocuments] = useState<number[]>();
   const [loading, setLoading] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+
   const locationHelpers = useLocationHelpers();
   const showOnlyCreatedMe = useShallowEqualSelector(appIsCreatedBySelector);
   const userId = useShallowEqualSelector(userIdSelector);
@@ -42,22 +73,29 @@ export default function ObjectTableWrapper({ filter }: Props) {
   const profile = useShallowEqualSelector(profileSelector);
 
   const { translate } = useI18n();
-  const { ObyektApi } = useObyektApiContext();
 
-  const dispatch = useDispatch();
+  const { ObyektApi } = useObyektApiContext();
 
   useEffect(() => {
     setLoading(true);
     ObyektApi.getObyekts({
       ...filter.getObjectFilter(),
-      createdBy: showOnlyCreatedMe ? Number(userId) : filter.getObjectFilter().createdBy,
+      // createdBy: Number(userId),
+      regionId: initialFilter?.region?.value,
+      districtId: initialFilter?.district?.value,
+      streetId: initialFilter?.street?.value,
+      projectId: initialFilter?.project?.value,
+      numberOfOrderId: initialFilter?.order?.value,
+      objectClassificationTypeId: initialFilter?.classType?.value,
+      objectClassificationId: initialFilter?.class?.value,
+      searchValue: initialFilter?.searchValue,
     })
       .then((r) => {
         setData(r?.data);
         setLoading(false);
       })
       .catch(showError);
-  }, [ObyektApi, filter, userId, showOnlyCreatedMe]);
+  }, [ObyektApi, filter, userId, showOnlyCreatedMe, initialFilter]);
 
   return (
     <TabPage
@@ -82,45 +120,15 @@ export default function ObjectTableWrapper({ filter }: Props) {
             <div />
           )}
 
-          <Formik
-            initialValues={{
-              searchValue: filter?.getObjectFilter()?.searchValue,
-              showOnlyCreatedMe: showOnlyCreatedMe,
-            }}
-            onSubmit={noop}
-            enableReinitialize={true}
+          <ObjectFilterWrapper initialFilter={initialFilter} setInitialFilter={setInitialFilter} />
+          <Button
+            className="py-1 px-3 text-light"
+            bgColor={BgColors.Yellow}
+            heigh="34px"
+            onClick={() => setInitialFilter(initValue)}
           >
-            {() => (
-              <Form className="d-flex gap-2">
-                {!Boolean(CheckRole(UserRoles.Accountant, profile)) && (
-                  <div className="d-flex align-items-center gap-2">
-                    <OwnerCheckbox
-                      checked={showOnlyCreatedMe}
-                      title="Faqat men yaratganlar"
-                      onChange={(value) => {
-                        dispatch(
-                          switchIsCreatedBy({
-                            isCreatedBy: !showOnlyCreatedMe,
-                          }),
-                        );
-                      }}
-                    />
-                  </div>
-                )}
-
-                <InputField
-                  name="searchValue"
-                  width={320}
-                  onChange={(event) =>
-                    locationHelpers.replaceQuery({
-                      searchValue: event.target.value,
-                    })
-                  }
-                  placeholder="Seach..."
-                />
-              </Form>
-            )}
-          </Formik>
+            {translate("Tozalash")}
+          </Button>
         </div>
       }
       footerComponent={
@@ -195,8 +203,6 @@ export default function ObjectTableWrapper({ filter }: Props) {
           })
         }
         setOjectForView={(value) => {
-          console.log("old location", location);
-          console.log("new query", { tab: ObjectFilterTabs.ObjectView, objectId: value });
           locationHelpers.pushQuery({
             tab: ObjectFilterTabs.ObjectView,
             objectId: value,

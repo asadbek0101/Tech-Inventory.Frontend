@@ -298,7 +298,7 @@ export default function ObjectForm({
             <div className="col-4 mt-2">
               <GroupBox>
                 <div className="row">
-                  <div className="col-12">
+                  <div className="col-6">
                     <SelectPickerField
                       name="regionId"
                       label="OBJECT_FORM_REGION_NAME_FIELD_TITLE"
@@ -306,7 +306,7 @@ export default function ObjectForm({
                       onChanges={onChangeRegion}
                     />
                   </div>
-                  <div className="col-12 mt-3">
+                  <div className="col-6">
                     <SelectPickerField
                       name="districtId"
                       label="OBJECT_FORM_DISTRICT_NAME_FIELD_TITLE"

@@ -20,14 +20,14 @@ export default function ObjectView({ initialValues, setPath }: Props) {
             <div className="col-4">
               <GroupBox>
                 <div className="row">
-                  <div className="col-12">
+                  <div className="col-6">
                     <InputField
                       name="region"
                       label="OBJECT_FORM_REGION_NAME_FIELD_TITLE"
                       disabled
                     />
                   </div>
-                  <div className="col-12 mt-3">
+                  <div className="col-6">
                     <InputField
                       name="district"
                       label="OBJECT_FORM_DISTRICT_NAME_FIELD_TITLE"
