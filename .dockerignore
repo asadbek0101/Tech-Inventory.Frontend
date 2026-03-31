@@ -1,0 +1,51 @@
+# Node modules (eng muhim)
+
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build output
+
+dist
+build
+
+# Env files
+
+.env
+.env.*
+!.env.example
+
+# Logs
+
+logs
+*.log
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# Git
+
+.git
+.gitignore
+
+# Docker
+
+Dockerfile
+.dockerignore
+
+# IDE / Editor
+
+.vscode
+.idea
+
+# Coverage
+
+coverage
+
+# Misc
+
+*.md
+*.swp
+*.swo

@@ -30,9 +30,10 @@ interface Props {
 }
 
 export default function ObjectFormWrapper({ filter }: Props) {
-  const [initialValues, setInitalValues] = useState({
+  const [initialValues, setInitalValues] = useState<any>({
     regionId: 0,
     districtId: 0,
+    streetId: 0,
     projectId: 0,
     numberOfOrderId: 0,
     objectClassId: 0,
@@ -198,6 +199,10 @@ export default function ObjectFormWrapper({ filter }: Props) {
               label: r?.data?.district,
               value: r?.data?.districtId,
             },
+            streetId: {
+              label: r?.data?.street,
+              value: r?.data?.streetId,
+            },
             projectId: {
               label: r?.data?.project,
               value: r?.data?.projectId,
@@ -324,7 +329,11 @@ export default function ObjectFormWrapper({ filter }: Props) {
 
   const onChangeProject = useCallback(
     (value: any) => {
-      NumberOfOrdersApi.getNumberOfOrdersList({ projectId: value.value })
+      NumberOfOrdersApi.getNumberOfOrdersList({
+        projectId: value.value,
+        regionId: initialValues?.regionId?.value,
+        districtId: initialValues?.districtId?.value,
+      })
         .then((r) => {
           const _numberOfOrders = r?.data?.map((d: any) => {
             return {
@@ -346,7 +355,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
         }),
       );
     },
-    [NumberOfOrdersApi],
+    [NumberOfOrdersApi, initialValues?.regionId, initialValues?.districtId],
   );
 
   const onChangeObjectClassType = useCallback(

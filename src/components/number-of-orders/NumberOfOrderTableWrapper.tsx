@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNumberOfOrdersApiContext } from "../../api/number-of-orders/NumberOfOrderApiContext";
 import Button, { BgColors } from "../ui/Button";
 import { showError } from "../../utils/NotificationUtils";
+import { GroupBox } from "../ui/GroupBox";
 
 import AddIcon from "../icons/AddIcon";
 import TabPage from "../tabs/TabPage";
@@ -12,7 +13,6 @@ import NumberOfOrderTable from "./NumberOfOrderTable";
 import DeleteIcon from "../icons/DeleteIcon";
 import Paginator from "../paginator/Paginator";
 import Modal from "../ui/Modal";
-import { GroupBox } from "../ui/GroupBox";
 import YesOrNoModal from "../ui/YesOrNoModal";
 
 interface Props {

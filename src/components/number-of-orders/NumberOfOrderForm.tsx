@@ -14,6 +14,8 @@ import { SelectPickerField } from "../form/SelectPrickerField";
 interface Props {
   readonly initialValues: InitialNumberOfOrderProps;
   readonly regions: SelectPickerOptionsProps[];
+  readonly districts: SelectPickerOptionsProps[];
+  readonly onChangeRegionId: (value: any) => void;
   readonly setInitialValues: (value: any) => void;
   readonly onSubmit: (value: any) => void;
 }
@@ -25,9 +27,11 @@ const validationSchema = object({
 
 export default function NumberOfOrderForm({
   initialValues,
+  onChangeRegionId,
   setInitialValues,
   onSubmit,
   regions,
+  districts,
 }: Props) {
   const { translate } = useI18n();
 
@@ -42,11 +46,11 @@ export default function NumberOfOrderForm({
     [setInitialValues],
   );
 
-  const onChangeRegionId = useCallback(
+  const onChangeDistrictId = useCallback(
     (event: any) => {
       setInitialValues((prev: any) =>
         update(prev, {
-          regionId: event,
+          districtId: event,
         }),
       );
     },
@@ -90,6 +94,14 @@ export default function NumberOfOrderForm({
                     label="Viloyat"
                     onChanges={onChangeRegionId}
                     options={regions}
+                  />
+                </div>
+                <div className="col-12 mt-3">
+                  <SelectPickerField
+                    name="districtId"
+                    label="Tuman"
+                    onChanges={onChangeDistrictId}
+                    options={districts}
                   />
                 </div>
                 <div className="col-12 mt-3">

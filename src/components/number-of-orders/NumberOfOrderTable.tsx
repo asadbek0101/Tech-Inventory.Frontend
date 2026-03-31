@@ -36,8 +36,13 @@ export default function NumberOfOrderTable({
         width: 300,
       },
       {
-        Header: translate("Hudud"),
+        Header: translate("Viloyat"),
         accessor: "region",
+        width: 300,
+      },
+      {
+        Header: translate("Tuman"),
+        accessor: "district",
         width: 300,
       },
       {
