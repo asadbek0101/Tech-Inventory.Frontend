@@ -40,6 +40,7 @@ import CShelvesFormWrapper from "./CShelvesFormWrapper";
 import SvetaforForCameraFormWrapper from "./SvetaforForCameraFormWrapper";
 import PoeSwitchesFormWrapper from "./PoeSwitchesFormWrapper";
 import ComboSwitchesFormWrapper from "./ComboSwitchesFormWrapper";
+import CameraVariofakalFormWrapper from "./CameraVariofakalFormWrapper";
 
 interface Props {
   readonly initialValues: any;
@@ -81,6 +82,11 @@ export default function ProductForms({ initialValues, setInitialValues }: Props)
       />
       <CameraradarFormWrapper
         title="Avtomabil tezligini aniqlovchi kamera(radar)"
+        initialValues={initialValues}
+        setInitialValues={setInitialValues}
+      />
+      <CameraVariofakalFormWrapper
+        title="Variofokal kamera"
         initialValues={initialValues}
         setInitialValues={setInitialValues}
       />
