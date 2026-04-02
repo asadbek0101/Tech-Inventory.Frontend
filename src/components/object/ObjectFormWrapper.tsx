@@ -63,6 +63,7 @@ export default function ObjectFormWrapper({ filter }: Props) {
     c327Camera: [],
     chqbaCamera: [],
     c733Camera: [],
+    variofakalCamera: [],
     videoRecorder: [],
     server: [],
     switchPoe: [],
